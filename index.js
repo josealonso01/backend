@@ -1,104 +1,56 @@
-const { LOADIPHLPAPI } = require('dns');
-const fs = require('fs');
-const { Z_ASCII } = require('zlib');
+ const productos = [
+  { id: 1, nombre: 'Escuadra', precio: 323.45 },
+  { id: 2, nombre: 'Calculadora', precio: 234.56 },
+  { id: 3, nombre: 'Globo Terráqueo', precio: 45.67 },
+  { id: 4, nombre: 'Paleta Pintura', precio: 456.78 },
+  { id: 5, nombre: 'Reloj', precio: 67.89 },
+  { id: 6, nombre: 'Agenda', precio: 78.9 },
+];
 
-class Contenedor {
-  constructor(nombreArchivo) {
-    this.nombreArchivo = './' + nombreArchivo + '.json';
-  }
 
-  async getData() {
-    try {
-      return await fs.promises.readFile(this.nombreArchivo, 'utf-8');
-    } catch (error) {
-      if (error.code == 'ENOENT') {
-        fs.writeFile(this.nombreArchivo, '[]', (error) => {
-          if (error) {
-            console.log('el archivo no se puede crear');
-          }
-        });
-      }
+const nombres = () => {
+  let nombre = "";
+  let precio = 0;
+  let promedio;
+  let menorPrecio = 9999;
+  let mayorPrecio = 1;
+  productos.forEach(element => {
+    nombre += element.nombre + ',';
+    precio += element.precio
+    if (menorPrecio > element.precio) {
+      menorPrecio = element.precio
     }
-  }
-
-  async save(productos) {
-    let contenido = await this.getData();
-    let contenidoEnJson = JSON.parse(contenido);
-    let array = [];
-    const indice = contenidoEnJson.map((x) => x.id).sort();
-    productos.id = indice[indice.length - 1] + 1;
-
-    if (!productos.id) {
-      productos.id = 1;
-      array = [{ ...productos }];
-      await fs.promises.writeFile(
-        this.nombreArchivo,
-        JSON.stringify(array)
-      );
-      return array[0].id;
+    if (mayorPrecio < element.precio) {
+      mayorPrecio = element.precio
     }
+  });
+  promedio = precio/productos.length;
+  /* console.log(nombre);
+  console.log( Math.trunc(precio) );
+  console.log( Math.trunc(promedio) );
+  console.log(Math.trunc(menorPrecio));
+  console.log(Math.trunc(mayorPrecio)); */
+ 
+  return {
+    nombre: nombre,
+    precio: parseFloat(precio.toFixed(2)),
+    promedio: parseFloat(promedio.toFixed(2)),
+    menorPrecio: parseFloat(menorPrecio.toFixed(2)),
+    mayorPrecio: parseFloat(mayorPrecio.toFixed(2)),
+  };
 
-    contenidoEnJson.push(productos);
-
-    await fs.promises.writeFile(
-      this.nombreArchivo,
-      JSON.stringify(contenidoEnJson)
-    );
-  }
-
-  async getAll() {
-    const data = await this.getData();
-    return JSON.parse(data);
-  }
-
-  async getById(id) {
-    const data = await this.getData();
-    let dataEnJson = JSON.parse(data);
-    const ob = dataEnJson.filter((el) => {
-      return el.id == id;
-    });
-    if (ob == null) {
-      console.log('El producto no existe');
-      return null;
-    } else return ob[0];
-  }
-
-  async deleteById(id) {
-    const data = await this.getData();
-    let dataEnJson = JSON.parse(data);
-    const ob = dataEnJson.filter((ob) => {
-      return ob.id !== id;
-    });
-    if (ob == null) {
-      return null;
-    } else {
-      await fs.promises.writeFile(
-        this.nombreArchivo,
-        JSON.stringify(ob)
-      );
-    }
-  }
-
-  async deleteAll() {
-    const data = [];
-    await fs.promises.writeFile(
-      this.nombreArchivo,
-      JSON.stringify(data)
-    );
-  }
 }
 
-const catalogo = {
-  title: 'Escuadra',
-  price: 123.45,
-  thumbnail:
-    'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',
-};
 
-const archivo = new Contenedor('productos');
-archivo.getData();
-//archivo.getAll().then((x) => console.log(x));
-//archivo.save(catalogo);
-//archivo.getById(1).then((x) => console.log('getByID', x));
-//archivo.deleteById(3).then((x) => console.log('delete', x));
-//archivo.deleteAll();
+console.log(nombres(productos)); 
+
+const moment = require('moment');
+
+var a = moment([2022, 07, 23]);
+var b = moment([1997, 06, 07]);
+const dif = a.diff(b, 'years', 'days'); 
+
+console.log(dif);
+
+
+
