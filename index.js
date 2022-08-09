@@ -1,39 +1,96 @@
-const Contenedor = require('./Contenedor/Contenedor');
 const express = require('express');
+const { Router } = express;
+const Contenedor = require('./Contenedor/Contenedor');
 const app = express();
+const router = Router();
 const PORT = process.env.PORT || 8080;
-
-const catalogo = {
-  title: 'Escuadra',
-  price: 123.45,
-  thumbnail:
-    'https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png',
-};
-
-const archivo = new Contenedor('productos');
-archivo.getData();
-archivo.getAll().then((x) => console.log(x));
-archivo.save(catalogo);
-//archivo.getById(1).then((x) => console.log('getByID', x));
-//archivo.deleteById(3).then((x) => console.log('delete', x));
-//archivo.deleteAll();
 
 const server = app.listen(PORT, () => {
   console.log(
     `Servidor http escuchando en el puerto ${server.address().port}`
   );
 });
+
 server.on('error', (error) =>
   console.log(`Error en servidor ${error}`)
 );
-app.get('/productos', (req, res) => {
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/public', express.static(__dirname + '/public'));
+
+app.use('/api/productos', router);
+
+const catalogo = {
+  title: 'nike',
+  price: 123.45,
+  thumbnail: 'http://localhost:8080/public/nike.jpg',
+};
+
+const archivo = new Contenedor('productos');
+
+//archivo.getData();
+//archivo.getAll().then((x) => console.log(x));
+//archivo.save(catalogo);
+//archivo.getById(1).then((x) => console.log('getByID', x));
+//archivo.deleteById(3).then((x) => console.log('delete', x));
+//archivo.deleteAll();
+
+router.get('/', (req, res) => {
   archivo.getAll().then((prod) => {
-    res.send(JSON.stringify(prod, null));
+    res.json(prod);
   });
 });
-app.get('/productoRandom', (req, res) => {
-  archivo.getAll().then((response) => {
-    let random = Math.floor(Math.random() * response.length);
-    res.send(response[random]);
+
+router.get('/:id', (req, res) => {
+  let { id } = req.params;
+  console.log('id', id);
+  archivo.getById(id).then((found) => {
+    if (found) {
+      res.json(found);
+    } else {
+      res.json({ error: 'el producto no existe' });
+    }
   });
+});
+
+router.post('/', (req, res) => {
+  const { body } = req;
+  body.price = parseFloat(body.price);
+ archivo.addOne(body).then((n) => {
+    if (n) {
+      res.json({ success: 'ok', new: body});
+    } else {
+      ({ error: 'error' });
+    }
+  });
+});
+
+router.put('/:id', (req, res) => {
+  let { id } = req.params;
+  const { body } = req
+  archivo.updateById(id, body).then((prod) => {
+    if (prod) {
+      res.json({ success: 'ok', new: prod });
+    }else {
+      res.json({ error: 'error' });
+    }
+  });
+});
+
+router.delete('/:id', (req, res) => {
+  let { id } = req.params;
+  id = parseInt(id);
+  console.log('id', id);
+  archivo.deleteById(id).then((found) => {
+    if (found) {
+      res.json({ success: 'ok', id});
+    } else {
+      res.json({ error: 'el producto no existe' });
+    }
+  });
+});
+
+app.get('/form', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
 });

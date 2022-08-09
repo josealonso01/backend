@@ -1,20 +1,56 @@
 [
   {
-    "title": "Escuadra",
+    "title": "nike",
     "price": 123.45,
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
     "id": 1
   },
   {
-    "title": "Escuadra",
+    "title": "nike",
     "price": 123.45,
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
     "id": 2
   },
   {
-    "title": "Escuadra",
+    "title": "nike",
     "price": 123.45,
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
     "id": 3
+  },
+  {
+    "title": "nike",
+    "price": 123.45,
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
+    "id": 4
+  },
+  {
+    "title": "nike",
+    "price": 123.45,
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
+    "id": 5
+  },
+  {
+    "title": "nike",
+    "price": 123.45,
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
+    "id": 6
+  },
+  {
+    "title": "nike",
+    "price": 123.45,
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
+    "id": 7
+  },
+  {
+    "title": "nike",
+    "price": 123.45,
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
+    "id": 8
+  },
+  {
+    "title": "nike",
+    "price": 123.45,
+    "thumbnail": "http://localhost:8080/public/nike.jpg",
+    "id": 9
   }
 ]

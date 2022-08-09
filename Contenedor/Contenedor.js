@@ -1,6 +1,6 @@
 const fs = require('fs');
 
- class Contenedor {
+class Contenedor {
   constructor(nombreArchivo) {
     this.nombreArchivo = './' + nombreArchivo + '.json';
   }
@@ -52,28 +52,45 @@ const fs = require('fs');
   async getById(id) {
     const data = await this.getData();
     let dataEnJson = JSON.parse(data);
-    const ob = dataEnJson.filter((el) => {
-      return el.id == id;
-    });
-    if (ob == null) {
-      console.log('El producto no existe');
-      return null;
-    } else return ob[0];
+    return dataEnJson.find((item) => item.id == id);
+  }
+
+  async addOne(productos) {
+    const data = await this.getData();
+    let dataEnJson = JSON.parse(data);
+    const lastItem = dataEnJson[dataEnJson.length - 1];
+    let lastId = 1;
+    if (lastItem) {
+      lastId = lastItem.id + 1;
+    }
+    productos.id = lastId;
+    dataEnJson.push(productos);
+    return dataEnJson[dataEnJson.length - 1];
+  }
+
+  async updateById(id, productos) {
+    const data = await this.getData();
+    let dataEnJson = JSON.parse(data);
+    const productToInsert = { ...productos, id };
+    for (let i = 0; i < dataEnJson.length; i++) {
+      if (dataEnJson[i].id == id) {
+        dataEnJson[i] = productToInsert;
+        return productToInsert;
+      }
+    }
+    return undefined;
   }
 
   async deleteById(id) {
     const data = await this.getData();
     let dataEnJson = JSON.parse(data);
     const ob = dataEnJson.filter((ob) => {
-      return ob.id !== id;
+      ob.id !== id;
     });
     if (ob == null) {
       return null;
     } else {
-      await fs.promises.writeFile(
-        this.nombreArchivo,
-        JSON.stringify(ob)
-      );
+      return id
     }
   }
 
@@ -85,6 +102,5 @@ const fs = require('fs');
     );
   }
 }
-
 
 module.exports = Contenedor;
