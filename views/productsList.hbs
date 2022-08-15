@@ -49,10 +49,13 @@
 </table>
     {{/each}}
 {{/if}}
+{{#else}}
+<div class="alert alert-danger" role="alert">
+  NO SE ENCONTRARON PRODUCTOS
+</div>
 <br/>
-
+{{/else}}
 {{> footer}}
 <br/>
-
 </body>
 </html>
