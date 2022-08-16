@@ -21,7 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api/productos', router);
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
+app.set('views', './views');
 
 const catalogo = {
   title: 'nike',
@@ -40,7 +41,7 @@ const archivo = new Contenedor('productos');
 
 router.get('/', (req, res) => {
   archivo.getAll().then((prod) => {
-    res.render('productsList', { prod });
+    res.render('productsList.pug', { prod });
   });
 });
 
@@ -49,10 +50,7 @@ router.get('/:id', (req, res) => {
   console.log('id', id);
   archivo.getById(id).then((found) => {
     if (found) {
-      res.render('oneProduct', {
-        product: found,
-        title: 'Detalle de producto',
-      });
+      res.render('oneProduct.pug', { product: found });
     } else {
       res.json({ error: 'el producto no existe' });
     }
@@ -97,5 +95,5 @@ router.delete('/:id', (req, res) => {
 });
 
 app.get('/form', (req, res) => {
-  res.render('form');
+  res.render('form.pug');
 });
