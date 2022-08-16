@@ -1,4 +1,4 @@
-{{> navbar}}
+<%- include('./partials/navbar'); %>
 <br/>
 
 <h1 class="bg-dark text-white">Listado de productos</h1>
@@ -13,10 +13,10 @@
   </thead>
   <tbody>
     <tr>
-      <td >{{product.id}} </td>
-      <td>  {{product.title}}</td>
-      <td>{{product.price}} </td>
-       <td><img src="{{product.thumbnail}}" class="img-thumbnail " style="width: 15%;"/></td>
+      <td >id: <%=product.id%><br/> </td>
+      <td>  titulo: <%=product.title%></td>
+      <td> price: <%=product.price%><br/></td>
+       <td><img src="<%=product.thumbnail %>" class="img-thumbnail " style="width: 15%;"/></td>
     </tr>
   </tbody>
 </table>
@@ -24,5 +24,5 @@
     <button class='btn btn-secondary'>VOLVER AL FORMULARIO</button>
 </a>
 <br/>
-{{> footer}}
+<%- include('./partials/footer'); %>
 <br/>

@@ -21,19 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api/productos', router);
 
-
-//CONFIGURACION DLE MOTOR
-app.set('view engine', 'hbs');
-app.set('views', './views'); //DONDE VAN LOS HTMLS (CARPETA VIWES)
-app.engine(
-  'hbs',
-  engine({
-    extname: '.hbs', //EXTENSIONES SON .HBS
-    defaultLayout: 'index.hbs', //CUAL ES EL LAYOUT POR DEFECTO (PLANTILLA BASE)
-    layoutsDir: __dirname + '/views/layouts', //DONDE VAN A ESTAR LOS LAYOUTS
-    partialsDir: __dirname + '/views/partials', //DONDE VAN A ESTAR LOS PARTIALS(PEDAZOS DE HTML QUE QUIERO REUTILIZAR EN DISTINTAS VISTAS)
-  })
-);
+app.set('view engine', 'ejs');
 
 const catalogo = {
   title: 'nike',
@@ -52,7 +40,7 @@ const archivo = new Contenedor('productos');
 
 router.get('/', (req, res) => {
   archivo.getAll().then((prod) => {
-    res.render('productsList', { prod, productsExist: true });
+    res.render('productsList', { prod });
   });
 });
 
