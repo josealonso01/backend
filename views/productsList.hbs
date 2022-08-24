@@ -16,6 +16,8 @@
       integrity='sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa'
       crossorigin='anonymous'
     ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/public/index.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -25,7 +27,7 @@
     <button class='btn btn-secondary'>VOLVER AL FORMULARIO</button>
 </a>
 <h1 class="bg-dark text-white">Listado de productos</h1>
-<div id:'productsList'>
+<div>
   {{#if productsExist}}
     {{#each prod}}
 <table class="table table-dark">

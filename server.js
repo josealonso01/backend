@@ -3,13 +3,10 @@ const { Router } = express;
 const router = require('../backend/Controller/routes');
 const { engine } = require('express-handlebars');
 const path = require('path');
-const app = express();
 const Contenedor = require('./Contenedor/Contenedor');
-const archivo = new Contenedor('productos');
+const app = express();
 const httpServer = require('http').createServer(app);
-const io = require('socket.io')(httpServer, {
-  cors: { origin:'*' },
-});
+const io = require('socket.io')(httpServer);
 
 httpServer.listen(process.env.PORT || 8080, () =>
   console.log('SERVER ON')
@@ -35,32 +32,36 @@ app.engine(
 );
 
 app.get('/', (req, res) => {
-  res.render('productsList', {root: __dirname + '/public'});
+  res.sendFile('index.hbs', { root: __dirname });
 });
 
-let chat = [{
-  email: 'admin@admin.com',
-  message: 'hola',
-  date: new Date().toLocaleDateString()
-}];
+let chat = [];
 
 
-const catalogo = {
+const catalogo = [{
+  id: 1,
   title: 'nike',
   price: 123.45,
   thumbnail: 'http://localhost:8080/public/nike.png',
-};
+}];
 
 io.on('connection', (socket) => {
-  console.log('new connection');
-  io.sockets.emit('productsList', catalogo);
-  io.sockets.emit('chat', chat);
-  socket.on('newMessage', (msg) => {
-   chat.push(msg),
-   io.sockets.emit('chat', chat)
+  console.log('Usuario conectado ' + socket.id);
+  chat.push('se unio al chat ' + socket.id);
+  io.sockets.emit('arr-chat', chat);
+  setTimeout(() => {
+    socket.emit('Este es mi mensaje desde el servidor');
+  }, 4000);
+
+  socket.on('data-generica', (data) => {
+    chat.push(data);
+    io.sockets.emit('arr-chat', chat);
   });
-  socket.on('newProduct', (product) => {
-    archivo.push(product), 
-    io.sockets.emit('archivo', catalogo);
+  
+
+  io.sockets.emit('prod', catalogo);
+  socket.on('listaProductos', (prod) => {
+    catalogo.push(prod);
+    io.sockets.emit('prod', catalogo);
   });
 });

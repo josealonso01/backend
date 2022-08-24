@@ -17,9 +17,12 @@
       integrity='sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa'
       crossorigin='anonymous'
     ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/public/index.js"></script>
     <title>Document</title>
   </head>
   <body>
+    {{> navbar}}
     <section class='p-4 bg-secondary'>
       <h2 class='text-primary'>Ingrese Producto</h2>
       <form action='/api/productos' method='post'>
@@ -44,10 +47,20 @@
         </div>
       </form>
       <div>
+        <h1>LISTA DE PRODUCTOS</h1>
+      <div id='lista'> </div>
         <a href='/api/productos'>
           <button class='btn btn-warning'>IR AL LISTADO DE PRODUCTOS</button>
         </a>
       </div>
+      <h1>CENTRO DE MENSAJES</h1>
+      <input id='caja-nombre' type='text' value='josefina' />
+      <input id='caja-msg' type='text' value='' />
+      <button onclick='enviar()'>enviar msg</button>
+      
+      <div id='html'> </div>
+
     </section>
+    {{> footer}}
   </body>
 </html>
