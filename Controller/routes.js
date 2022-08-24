@@ -1,28 +1,7 @@
 const express = require('express');
-const { Router } = express;
-const { engine } = require('express-handlebars');
-const Contenedor = require('./Contenedor/Contenedor');
-
+const Contenedor = require('../Contenedor/Contenedor');
+const router = express.Router();
 const app = express();
-const router = Router();
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT, () => {
-  console.log(
-    `Servidor http escuchando en el puerto ${server.address().port}`
-  );
-});
-
-server.on('error', (error) =>
-  console.log(`Error en servidor ${error}`)
-);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use('/public', express.static(__dirname + '/public'));
-app.use('/api/productos', router);
-
-app.set('view engine', 'pug');
-app.set('views', './views');
 
 const catalogo = {
   title: 'nike',
@@ -39,9 +18,13 @@ const archivo = new Contenedor('productos');
 //archivo.deleteById(3).then((x) => console.log('delete', x));
 //archivo.deleteAll();
 
+router.get('/form', (req, res) => {
+  res.render('form');;
+});
+
 router.get('/', (req, res) => {
   archivo.getAll().then((prod) => {
-    res.render('productsList.pug', { prod });
+    res.render('productsList', { prod, productsExist: true });;
   });
 });
 
@@ -50,7 +33,10 @@ router.get('/:id', (req, res) => {
   console.log('id', id);
   archivo.getById(id).then((found) => {
     if (found) {
-      res.render('oneProduct.pug', { product: found });
+      res.render('oneProduct', {
+        product: found,
+        title: 'Detalle de producto',
+      });
     } else {
       res.json({ error: 'el producto no existe' });
     }
@@ -94,6 +80,5 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-app.get('/form', (req, res) => {
-  res.render('form.pug');
-});
+
+module.exports = router;
