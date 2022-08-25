@@ -1,80 +1,98 @@
 [
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 1
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 2
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 3
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 4
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 5
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 6
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 7
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 8
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 9
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 10
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 10
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 10
-  },
-  {
-    "title": "nike",
-    "price": 123.45,
-    "thumbnail": "http://localhost:8080/public/nike.png",
-    "id": 10
-  }
+	{
+		"name": "avionlaser",
+		"price": 121,
+		"picture": "https://imagenes.20minutos.es/files/image_990_v3/uploads/imagenes/2021/11/24/google-imagenes-2.png",
+		"id": 1
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 2
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 3
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 4
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 5
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 6
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 7
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 8
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 9
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 10
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 11
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 12
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 13
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 14
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 15
+	},
+	{
+		"name": "avionlaser",
+		"price": 6,
+		"picture": "https://wordle.danielfrg.com/",
+		"id": 16
+	}
 ]

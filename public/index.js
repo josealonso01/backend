@@ -21,21 +21,21 @@ sockets.on('arr-chat', (data) => {
 function enviar() {
   const nombre = document.getElementById('caja-nombre').value;
   const msg = document.getElementById('caja-msg').value;
-  socket.emit('data-generica', nombre + ' dice ' + msg);
+  sockets.emit('data-generica', nombre + ' [ ' + new Date () + ' ] dice: ' + msg);
   console.log(nombre + ' dice ' + msg);
 }
 
-let prod = [];
 
-sockets.on('prod', (data) => {
-  prod = data;
+sockets.emit('prod');
 
-  let htmlToRender = '';
+sockets.on('prod', (unProducto) => {
+  attachRow(unProducto);
+});
 
-  for (let i = 0; i < prod.length; i++) {
-    htmlToRender =
-      htmlToRender +
-      `<table class="table table-dark">
+const attachRow = (unProducto) => {
+  const fila = document.createElement('div');
+  fila.innerHTML = `
+  <table class="table table-dark">
   <thead>
     <tr>
       <th scope="col">ID</th>
@@ -46,13 +46,15 @@ sockets.on('prod', (data) => {
   </thead>
   <tbody>
     <tr>
-      <td >${prod[i].id} </td>
-      <td>  ${prod[i].title}</td>
-      <td>${prod[i].price} </td>
-       <td><img src="${prod[i].thumbnail}" class="img-thumbnail " style="width: 15%;"/></td>
+      <td >${unProducto.id} </td>
+      <td>  ${unProducto.name}</td>
+      <td>${unProducto.price} </td>
+       <td><img src="${unProducto.picture}" class="img-thumbnail " style="width: 15%;"/></td>
     </tr>
   </tbody>
-</table>`;
-  }
-  document.getElementById('lista').innerHTML = htmlToRender;
-});
+</table>
+  `;
+  const mitabla = document.getElementById('myTable');
+  mitabla.appendChild(fila);
+};
+

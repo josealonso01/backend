@@ -47,18 +47,24 @@
         </div>
       </form>
       <div>
-        <h1>LISTA DE PRODUCTOS</h1>
-      <div id='lista'> </div>
+      <h1>LISTA DE PRODUCTOS</h1>
+      <div id="myTable">  </div>
         <a href='/api/productos'>
           <button class='btn btn-warning'>IR AL LISTADO DE PRODUCTOS</button>
         </a>
       </div>
       <h1>CENTRO DE MENSAJES</h1>
-      <input id='caja-nombre' type='text' value='josefina' />
-      <input id='caja-msg' type='text' value='' />
-      <button onclick='enviar()'>enviar msg</button>
+      <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">@</span>
+      <input id='caja-nombre' type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+        <div id='html'> </div>
+      <div class="input-group mb-3">
+      <input id='caja-msg' type="text" class="form-control .text-primary" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+      <button onclick='enviar()' class="btn btn-dark" type="button" id="button-addon2">ENVIAR</button>
+      </div>
       
-      <div id='html'> </div>
+    
 
     </section>
     {{> footer}}

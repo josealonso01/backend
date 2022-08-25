@@ -38,12 +38,8 @@ app.get('/', (req, res) => {
 let chat = [];
 
 
-const catalogo = [{
-  id: 1,
-  title: 'nike',
-  price: 123.45,
-  thumbnail: 'http://localhost:8080/public/nike.png',
-}];
+const catalogo = new Contenedor ('productos')
+
 
 io.on('connection', (socket) => {
   console.log('Usuario conectado ' + socket.id);
@@ -58,10 +54,12 @@ io.on('connection', (socket) => {
     io.sockets.emit('arr-chat', chat);
   });
   
-
-  io.sockets.emit('prod', catalogo);
-  socket.on('listaProductos', (prod) => {
-    catalogo.push(prod);
-    io.sockets.emit('prod', catalogo);
+  io.sockets.emit('prod', catalogo.getAll());
+  
+ socket.on("prod", async () => {
+      const productos = await catalogo.getAll();
+      productos.forEach((unProducto) => {
+        socket.emit("prod", unProducto);
+      });
+    });
   });
-});

@@ -5,7 +5,7 @@ class Contenedor {
     this.nombreArchivo = './' + nombreArchivo + '.json';
   }
 
-  async getData() {
+  async getData() { //TODO: REFORMAR ESTO O BORRARLO
     try {
       return await fs.promises.readFile(this.nombreArchivo, 'utf-8');
     } catch (error) {
@@ -55,17 +55,26 @@ class Contenedor {
     return dataEnJson.find((item) => item.id == id);
   }
 
-  async addOne(productos) {
+  async addOne(nuevoProducto) {
     const data = await this.getData();
     let dataEnJson = JSON.parse(data);
-    const lastItem = dataEnJson[dataEnJson.length - 1];
-    let lastId = 1;
-    if (lastItem) {
-      lastId = lastItem.id + 1;
+    if (dataEnJson.length == 0){
+      nuevoProducto.id = 1;
+      let nuevoJson = [ nuevoProducto ];
+      await fs.promises.writeFile(
+        this.nombreArchivo,
+        JSON.stringify(nuevoJson, null, '\t')
+      );
+    } else{
+      nuevoProducto.id = dataEnJson.length + 1;
+      dataEnJson.push(nuevoProducto);
+      await fs.promises.writeFile(
+        this.nombreArchivo,
+        JSON.stringify(dataEnJson, null, '\t')
+      );
+      return dataEnJson[dataEnJson.length - 1];
     }
-    productos.id = lastId;
-    dataEnJson.push(productos);
-    return dataEnJson[dataEnJson.length - 1];
+    
   }
 
   async updateById(id, productos) {

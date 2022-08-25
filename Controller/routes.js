@@ -3,17 +3,12 @@ const Contenedor = require('../Contenedor/Contenedor');
 const router = express.Router();
 const app = express();
 
-const catalogo = {
-  title: 'nike',
-  price: 123.45,
-  thumbnail: 'http://localhost:8080/public/nike.png',
-};
-
 const archivo = new Contenedor('productos');
 
 //archivo.getData();
+//console.log('he dicho')
 //archivo.getAll().then((x) => console.log(x));
-//archivo.save(catalogo);
+//archivo.save();
 //archivo.getById(1).then((x) => console.log('getByID', x));
 //archivo.deleteById(3).then((x) => console.log('delete', x));
 //archivo.deleteAll();
@@ -31,7 +26,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   let { id } = req.params;
   console.log('id', id);
-  archivo.getById(id).then((found) => {
+  /* archivo.getById(id).then((found) => {
     if (found) {
       res.render('oneProduct', {
         product: found,
@@ -40,7 +35,7 @@ router.get('/:id', (req, res) => {
     } else {
       res.json({ error: 'el producto no existe' });
     }
-  });
+  }); */
 });
 
 router.post('/', (req, res) => {
