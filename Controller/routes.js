@@ -14,19 +14,19 @@ const archivo = new Contenedor('productos');
 //archivo.deleteAll();
 
 router.get('/form', (req, res) => {
-  res.render('form');;
+  res.render('form');
 });
 
 router.get('/', (req, res) => {
   archivo.getAll().then((prod) => {
-    res.render('productsList', { prod, productsExist: true });;
+    res.render('productsList', { prod, productsExist: true });
   });
 });
 
 router.get('/:id', (req, res) => {
   let { id } = req.params;
   console.log('id', id);
-  /* archivo.getById(id).then((found) => {
+  archivo.getById(id).then((found) => {
     if (found) {
       res.render('oneProduct', {
         product: found,
@@ -35,7 +35,7 @@ router.get('/:id', (req, res) => {
     } else {
       res.json({ error: 'el producto no existe' });
     }
-  }); */
+  });
 });
 
 router.post('/', (req, res) => {
@@ -74,6 +74,5 @@ router.delete('/:id', (req, res) => {
     }
   });
 });
-
 
 module.exports = router;
