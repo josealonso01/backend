@@ -25,9 +25,6 @@ function enviar() {
   console.log(nombre + ' dice ' + msg);
 }
 
-function agregarAlCarrito() {
-  
-}
 
 sockets.emit('prod');
 

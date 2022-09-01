@@ -46,9 +46,12 @@
       <td>  {{this.name}}</td>
       <td>{{this.price}} </td>
       <td><img src="{{this.picture}}" class="img-thumbnail " style="width: 15%;"/></td>
-      <td><form class='mb-3' action='/api/basket' method='post' >
-          <input type="Submit" Enviar/> 
-        </form></td>
+      <td> <form action='/api/form' method='post'><input 
+            class='btn btn-success'
+            type='submit'
+            value='agregar al carrito'
+          /></form> 
+        </td>
     </tr>
   </tbody>
 </table>

@@ -15,8 +15,8 @@ basket.save();
 
 
 routerBasket.get('/', (req, res) => {
-  basket.getAll().then((prod) => {
-    res.render('cartBasket', { prod, productsExist: true });
+  basket.getAll().then((addToCart) => {
+    res.render('cartBasket', { addToCart });
   });
 });
 
@@ -35,31 +35,33 @@ routerBasket.get('/:id/productos', (req, res) => {
   });
 });
 
-routerBasket.post('/', (req, res) => {
-  const { body } = req;
-  body.price = parseFloat(body.price);
-  basket.addOne(body).then((n) => {
-    if (n) {
-      res.render('cartBasket');
-    } else {
-      ({ error: 'error' });
-    }
+routerBasket.post('/', async (req, res) => {
+  const addToCart = await basket.save();
+  res.render('cartBasket', { addToCart });
+});
+
+routerBasket.post("/:id/productos/:id_prod", async (req, res) => {
+  const BuscoProducto = await basket.getById(req.params.id_prod);
+
+  if (BuscoProducto == null) {
+    return res.status(404).json({
+      msj: "El producto no existe",
+    });
+  }
+
+  const product = await basket.addProductToCart(
+    req.params.id,
+    req.params.id_prod
+  );
+
+  res.json({
+    msg: "Los productos de tu carrito son:",
+    data: product,
   });
 });
 
-routerBasket.put('/:id', (req, res) => {
-  let { id } = req.params;
-  const { body } = req;
-  basket.updateById(id, body).then((prod) => {
-    if (prod) {
-      res.json({ success: 'ok', new: prod });
-    } else {
-      res.json({ error: 'error' });
-    }
-  });
-});
 
-routerBasket.delete('/:id', (req, res) => {
+routerBasket.delete('/:id/productos', (req, res) => {
   let { id } = req.params;
   id = parseInt(id);
   console.log('id', id);

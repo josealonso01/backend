@@ -37,6 +37,7 @@ routerProducts.get('/:id', (req, res) => {
 routerProducts.post('/', (req, res) => {
   const { body } = req;
   body.price = parseFloat(body.price);
+  body.stock = parseFloat(body.stock);
   archivo.addOne(body).then((n) => {
     if (n) {
       res.render('form');

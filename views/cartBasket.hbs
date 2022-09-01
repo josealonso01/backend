@@ -24,24 +24,22 @@
   </head>
   <body>
     {{> navbar}}
-    {{#if productsExist}}
-    {{#each prod}}
     <div class="card">
             <div class="row">
                 <div class="col-md-8 cart">
                     <div class="title">
                         <div class="row">
                             <div class="col"><h4><b>CARRITO</b></h4></div>
-                            <div class="col align-self-center text-right text-muted">{{this.id}}</div>
+                            <div class="col align-self-center text-right text-muted">{{addToCart.id}}</div>
                         </div>
                     </div>    
                     <div class="row border-top border-bottom">
                         <div class="row main align-items-center">
-                            <div class="col-2"><img class="img-fluid" src="{{this.picture}}"></div>
+                            <div class="col-2"><img class="img-fluid" src="{{addToCart.picture}}"></div>
                             <div class="col">
-                                <div class="row text-muted">{{this.name}}</div>
+                                <div class="row text-muted">{{addToCart.name}}</div>
                             </div>
-                            <div class="col">{{this.price}}</div>
+                            <div class="col">{{addToCart.price}}</div>
                         </div>
                     </div>
                     
@@ -51,8 +49,8 @@
                     <div><h5><b>TOTAL</b></h5></div>
                     <hr>
                     <div class="row">
-                        <div class="col" style="padding-left:0;">{{this.id}}</div>
-                        <div class="col text-right">{{this.price}}</div>
+                        <div class="col" style="padding-left:0;">{{addToCart.id}}</div>
+                        <div class="col text-right">{{addToCart.price}}</div>
                     </div>
                     <form>
                         <p>SHIPPING</p>
@@ -60,14 +58,12 @@
                     </form>
                     <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                         <div class="col">PRECIO TOTAL</div>
-                        <div class="col text-right">{{this.price}}</div>
+                        <div class="col text-right">{{addToCart.price}}</div>
                     </div>
                     <button class="btn">CHECKOUT</button>
                 </div>
             </div>           
         </div>
-    {{/each}}
-    {{/if}}
     {{> footer}}
   </body>
 </html>
