@@ -1,9 +1,10 @@
 const express = require('express');
 const { Router } = express;
-const router = require('../backend/Controller/routes');
+const router = require('./Controller/router');
 const { engine } = require('express-handlebars');
 const path = require('path');
 const Contenedor = require('./Contenedor/Contenedor');
+const Basket = require('./Contenedor/Basket');
 const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
@@ -15,8 +16,7 @@ httpServer.listen(process.env.PORT || 8080, () =>
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/public'));
-app.use('/api/productos', router);
-app.use('/', router);
+app.use('/api', router);
 
 //CONFIGURACION HBS
 app.set('view engine', 'hbs');
@@ -37,9 +37,9 @@ app.get('/', (req, res) => {
 
 let chat = [];
 
+const catalogo = new Contenedor('productos');
 
-const catalogo = new Contenedor ('productos')
-
+const basket = new Basket('carrito');
 
 io.on('connection', (socket) => {
   console.log('Usuario conectado ' + socket.id);
@@ -53,13 +53,13 @@ io.on('connection', (socket) => {
     chat.push(data);
     io.sockets.emit('arr-chat', chat);
   });
-  
+
   io.sockets.emit('prod', catalogo.getAll());
-  
- socket.on("prod", async () => {
-      const productos = await catalogo.getAll();
-      productos.forEach((unProducto) => {
-        socket.emit("prod", unProducto);
-      });
+
+  socket.on('prod', async () => {
+    const productos = await catalogo.getAll();
+    productos.forEach((unProducto) => {
+      socket.emit('prod', unProducto);
     });
   });
+});

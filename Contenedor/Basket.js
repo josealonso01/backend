@@ -1,13 +1,12 @@
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
-class Contenedor {
+class Basket {
   constructor(nombreArchivo) {
     this.nombreArchivo = './' + nombreArchivo + '.json';
   }
 
   async getData() {
-    //TODO: REFORMAR ESTO O BORRARLO
     try {
       return await fs.promises.readFile(this.nombreArchivo, 'utf-8');
     } catch (error) {
@@ -21,29 +20,20 @@ class Contenedor {
     }
   }
 
-  async save(productos) {
+  async save() {
     let contenido = await this.getData();
     let contenidoEnJson = JSON.parse(contenido);
-    let array = [{ id: uuidv4(), timestamp: Date.now(), code: [] }];
-    const indice = contenidoEnJson.map((x) => x.id).sort();
-    productos.id = indice[indice.length - 1] + 1;
-
-    if (!productos.id) {
-      productos.id = 1;
-      array = [{ ...productos }];
-      await fs.promises.writeFile(
-        this.nombreArchivo,
-        JSON.stringify(array)
-      );
-      return array[0].id;
-    }
-
-    contenidoEnJson.push(productos);
-
+    let newCart = {
+      id: uuidv4(),
+      timestamp: Date.now(),
+      userCart: [],
+    };
+    contenidoEnJson.push(newCart);
     await fs.promises.writeFile(
       this.nombreArchivo,
-      JSON.stringify(contenidoEnJson)
+      JSON.stringify(contenidoEnJson, null, '\t')
     );
+    return newCart.id;
   }
 
   async getAll() {
@@ -113,4 +103,4 @@ class Contenedor {
   }
 }
 
-module.exports = Contenedor;
+module.exports = Basket;

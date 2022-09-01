@@ -1,26 +1,18 @@
 [
 	{
-		"name": "avionlaser",
-		"price": 123123,
-		"picture": "https://wordle.danielfrg.com/tukituki",
+		"name": "Hola",
+		"price": 1233,
+		"Descripcion": "Me llamo Josefina",
+		"Codigo": "3478234",
+		"picture": "https://imagenes.20minutos.es/files/image_990_v3/uploads/imagenes/2021/11/24/google-imagenes-2.png",
 		"id": 1
 	},
 	{
-		"name": "SDA",
-		"price": 123123,
-		"picture": "https://i.blogs.es/4f0662/consejos-foto-movil-01/840_560.jpg",
-		"id": 2
-	},
-	{
-		"name": "",
-		"price": null,
+		"name": "Hola",
+		"price": 1233,
+		"Descripcion": "Me llamo Josefina",
+		"Codigo": "3478234",
 		"picture": "https://imagenes.20minutos.es/files/image_990_v3/uploads/imagenes/2021/11/24/google-imagenes-2.png",
-		"id": 3
-	},
-	{
-		"name": "",
-		"price": null,
-		"picture": "",
-		"id": 4
+		"id": 2
 	}
 ]

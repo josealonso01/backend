@@ -35,8 +35,20 @@
           <input class='form-control' type='number' name='price' />
         </div>
         <div class='mb-3'>
+          <label class='form-label fw-bold' for='Descripcion'>Descripcion</label>
+          <input class='form-control' type='text' name='Descripcion' />
+        </div>
+        <div class='mb-3'>
+          <label class='form-label fw-bold' for='Codigo'>Codigo</label>
+          <input class='form-control' type='text' name='Codigo' />
+        </div>
+        <div class='mb-3'>
           <label class='form-label fw-bold' for='picture'>Foto URL</label>
           <input class='form-control' type='url' name='picture' />
+        </div>
+        <div class='mb-3'>
+          <label class='form-label fw-bold' for='price'>Stock</label>
+          <input class='form-control' type='number' name='price' />
         </div>
         <div class='mb-3'>
           <input
@@ -56,11 +68,11 @@
       <h1>CENTRO DE MENSAJES</h1>
       <div class="input-group mb-3">
       <span class="input-group-text" id="basic-addon1">@</span>
-      <input id='caja-nombre' type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+      <input id='caja-nombre' type="text" class="form-control" placeholder="Ingresa tu mail" aria-label="Ingresa tu mail" aria-describedby="basic-addon1">
       </div>
         <div id='html'> </div>
       <div class="input-group mb-3">
-      <input id='caja-msg' type="text" class="form-control .text-primary" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+      <input id='caja-msg' type="text" class="form-control .text-primary" placeholder="Tu Mensaje" aria-label="Tu Mensaje" aria-describedby="button-addon2">
       <button onclick='enviar()' class="btn btn-dark" type="button" id="button-addon2">ENVIAR</button>
       </div>
     </section>

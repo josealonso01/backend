@@ -25,6 +25,9 @@ function enviar() {
   console.log(nombre + ' dice ' + msg);
 }
 
+function agregarAlCarrito() {
+  
+}
 
 sockets.emit('prod');
 
@@ -33,7 +36,7 @@ sockets.on('prod', (unProducto) => {
 });
 
 const attachRow = (unProducto) => {
-  const fila = document.createElement('div');
+  const fila = document.createElement('h1');
   fila.innerHTML = `
   <table class="table table-dark">
   <thead>

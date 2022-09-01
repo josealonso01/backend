@@ -1,29 +1,25 @@
 const express = require('express');
 const Contenedor = require('../Contenedor/Contenedor');
-const router = express.Router();
+const routerProducts = express.Router();
+const router = require('./router');
 const app = express();
 
 const archivo = new Contenedor('productos');
 
 //archivo.getData();
-//console.log('he dicho')
 //archivo.getAll().then((x) => console.log(x));
 //archivo.save();
-//archivo.getById(1).then((x) => console.log('getByID', x));
-//archivo.deleteById(3).then((x) => console.log('delete', x));
-//archivo.deleteAll();
+///archivo.getById().then((x) => console.log('getByID', x));
+//archivo.deleteById().then((x) => console.log('delete', x));
+//archivo.deleteAll(); 
 
-router.get('/form', (req, res) => {
-  res.render('form');
-});
-
-router.get('/', (req, res) => {
+routerProducts.get('/', (req, res) => {
   archivo.getAll().then((prod) => {
     res.render('productsList', { prod, productsExist: true });
   });
 });
 
-router.get('/:id', (req, res) => {
+routerProducts.get('/:id', (req, res) => {
   let { id } = req.params;
   console.log('id', id);
   archivo.getById(id).then((found) => {
@@ -38,7 +34,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-router.post('/', (req, res) => {
+routerProducts.post('/', (req, res) => {
   const { body } = req;
   body.price = parseFloat(body.price);
   archivo.addOne(body).then((n) => {
@@ -50,7 +46,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.put('/:id', (req, res) => {
+routerProducts.put('/:id', (req, res) => {
   let { id } = req.params;
   const { body } = req;
   archivo.updateById(id, body).then((prod) => {
@@ -62,7 +58,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-router.delete('/:id', (req, res) => {
+routerProducts.delete('/:id', (req, res) => {
   let { id } = req.params;
   id = parseInt(id);
   console.log('id', id);
@@ -75,4 +71,4 @@ router.delete('/:id', (req, res) => {
   });
 });
 
-module.exports = router;
+module.exports = routerProducts;

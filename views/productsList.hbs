@@ -23,7 +23,7 @@
 <body>
     {{> navbar}}
 <br/>
-<a href='/form'> 
+<a href='/api/form'> 
     <button class='btn btn-secondary'>VOLVER AL FORMULARIO</button>
 </a>
 <h1 class="bg-dark text-white">Listado de productos</h1>
@@ -37,6 +37,7 @@
       <th scope="col">NOMBRE</th>
       <th scope="col">PRECIO</th>
       <th scope="col">FOTO</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -44,7 +45,10 @@
       <td >{{this.id}} </td>
       <td>  {{this.name}}</td>
       <td>{{this.price}} </td>
-       <td><img src="{{this.picture}}" class="img-thumbnail " style="width: 15%;"/></td>
+      <td><img src="{{this.picture}}" class="img-thumbnail " style="width: 15%;"/></td>
+      <td><form class='mb-3' action='/api/basket' method='post' >
+          <input type="Submit" Enviar/> 
+        </form></td>
     </tr>
   </tbody>
 </table>
@@ -54,6 +58,9 @@
 
 </div>
 <br/>
+<a href='/api/basket'>
+  <button class='btn btn-secondary'>IR AL CARRITO</button>
+</a>
 {{> footer}}
 <br/>
 
