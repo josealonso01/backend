@@ -36,41 +36,10 @@ routerBasket.get('/:id/productos', (req, res) => {
 });
 
 routerBasket.post('/', async (req, res) => {
-  const addToCart = await basket.save();
-  res.render('cartBasket', { addToCart });
-});
-
-routerBasket.post("/:id/productos/:id_prod", async (req, res) => {
-  const BuscoProducto = await basket.getById(req.params.id_prod);
-
-  if (BuscoProducto == null) {
-    return res.status(404).json({
-      msj: "El producto no existe",
-    });
-  }
-
-  const product = await basket.addProductToCart(
-    req.params.id,
-    req.params.id_prod
-  );
-
+  const addToCart = await basket.addProductToCart();
   res.json({
-    msg: "Los productos de tu carrito son:",
-    data: product,
-  });
-});
-
-
-routerBasket.delete('/:id/productos', (req, res) => {
-  let { id } = req.params;
-  id = parseInt(id);
-  console.log('id', id);
-  basket.deleteById(id).then((found) => {
-    if (found) {
-      res.json({ success: 'ok', id });
-    } else {
-      res.json({ error: 'el producto no existe' });
-    }
+    titulo: 'Carrito creado con el ID:',
+    id: addToCart,
   });
 });
 

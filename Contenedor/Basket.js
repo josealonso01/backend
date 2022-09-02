@@ -26,7 +26,7 @@ class Basket {
     let newCart = {
       id: uuidv4(),
       timestamp: Date.now(),
-      userCart: [],
+      usercart: [],
     };
     contenidoEnJson.push(newCart);
     await fs.promises.writeFile(
@@ -41,10 +41,17 @@ class Basket {
     return JSON.parse(data);
   }
 
-  async getById(id) {
-    const data = await this.getData();
-    let dataEnJson = JSON.parse(data);
-    return dataEnJson.find((item) => item.id == id);
+  async getById(idCart) {
+    let contenido = await this.getData();
+    let contenidoEnJson = JSON.parse(contenido);
+    const indice = contenidoEnJson.find((carrito) => {
+      if (carrito.id === idCart) return true;
+      else return false;
+    });
+
+    if (indice === -1) return null;
+
+    return contenidoEnJson[indice];
   }
 
   async addOne(nuevoProducto) {
@@ -70,78 +77,46 @@ class Basket {
 
   async filterCart(idcart) {
     // Traigo todos los carritos
-    const FULLCART = await this.getData();
-
+    let contenido = await this.getData();
+    let contenidoEnJson = JSON.parse(contenido);
     // Filtro al carrito especifico;
-    const IDCART = FULLCART.findIndex((CART) => {
-      if (CART.id === idcart) return true;
+    const IDCART = contenidoEnJson.find((cart) => {
+      if (cart.id === idcart) return true;
       else return false;
     });
-    if (IDCART === -1) return null;
-    const FILTERCART = FULLCART[IDCART];
-    return FILTERCART;
-  }
-
-  async deleteProductOfCart(idcart, idproduct) {
-    // Traigo todos los carritos
-    const FULLCART = await this.getData();
-
-    // Filtro al carrito especifico;
-    const IDCART = FULLCART.findIndex((CART) => {
-      if (CART.id === idcart) return true;
-      else return false;
-    });
-    if (IDCART === -1) return null;
-    const FILTERCART = FULLCART[IDCART];
-
-    // Borro el producto del carrito;
-    const FILTERPRODUCT = FILTERCART.usercart.filter(
-      (product) => product.id != idproduct
-    );
-
-    // Reemplazo el array del carrito especifico por el nuevo carrito
-    const newCart = [];
-    FILTERPRODUCT.forEach((element) => {
-      newCart.push(element);
-    });
-
-    //Reemplazo el carrito especifico en el array de carritos
-    FILTERCART.usercart = [];
-    newCart.forEach((element) => {
-      FILTERCART.usercart.push(element);
-    });
-
-    //Escribo el archivo con el array de carritos.
-    await this.save(FULLCART);
-    return FILTERCART;
+    const filterCart = contenidoEnJson[IDCART];
+    return filterCart;
   }
 
   async addProductToCart(idcart, idproduct) {
     // Traigo todos los carritos
-    const FULLCART = await this.getData();
+    let contenido = await this.getData();
+    let contenidoEnJson = JSON.parse(contenido);
+    console.log(contenidoEnJson);
     // Filtro al carrito especifico;
-    const IDCART = FULLCART.findIndex((CART) => {
-      if (CART.id === idcart) return true;
+    const IDCART = contenidoEnJson.find((cart) => {
+      if (cart.id === idcart) return true;
       else return false;
     });
-    if (IDCART === -1) return null;
-    const FILTERCART = FULLCART[IDCART];
+    const filterCart = contenidoEnJson[IDCART];
+    console.log('aca',filterCart);
     // Traigo el producto para agregar al carro
     const ProductToAdd = await this.getById(idproduct);
     console.log('id producto a agregar', ProductToAdd);
     // Sumo el producto al carro.
-    const cart = FILTERCART.usercart;
+    const cart = filterCart.usercart;
     cart.push(ProductToAdd);
     //Reemplazo el carrito especifico en el array de carritos
-
-    FILTERCART.usercart = [];
-
+    filterCart.usercart = [];
     cart.forEach((element) => {
-      FILTERCART.usercart.push(element);
+      filterCart.usercart.push(element);
     });
     //Guardo la DB
-    await this.save(FULLCART);
-    return FILTERCART;
+    await fs.promises.writeFile(
+      this.nombreArchivo(contenidoEnJson),
+      JSON.stringify(contenidoEnJson, null, '\t')
+    );
+    return filterCart;
   }
 
   async updateById(id, productos) {
