@@ -11,8 +11,7 @@ basket.getData();
 basket.save();
 //basket.getById().then((x) => console.log('getByID', x));
 //basket.deleteById().then((x) => console.log('delete', x));
-//basket.deleteAll(); 
-
+//basket.deleteAll();
 
 routerBasket.get('/', (req, res) => {
   basket.getAll().then((addToCart) => {
@@ -36,12 +35,27 @@ routerBasket.get('/:id/productos', (req, res) => {
 });
 
 routerBasket.post('/', async (req, res) => {
-  const addToCart = await basket.addProductToCart();
+  const addToCart = await basket.save();
   res.json({
     titulo: 'Carrito creado con el ID:',
     id: addToCart,
   });
 });
 
+routerBasket.post('/:id/productos', async (req, res) => {
+  let { id } = req.params;
+  const BuscoProducto = await basket.getById(id);
+
+  if (BuscoProducto == null) {
+    return res.status(404).json({
+      msj: 'El producto no existe',
+    });
+  } 
+  const product = await basket.addProductToCart(id);
+  res.json({
+    msg: 'Los productos de tu carrito son:',
+    data: product,
+  });
+});
 
 module.exports = routerBasket;

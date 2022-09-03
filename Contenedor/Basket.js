@@ -1,6 +1,8 @@
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+const Contenedor  = require('../Contenedor/Contenedor');
 
+const catalogo = new Contenedor('productos');
 class Basket {
   constructor(nombreArchivo) {
     this.nombreArchivo = './' + nombreArchivo + '.json';
@@ -41,17 +43,17 @@ class Basket {
     return JSON.parse(data);
   }
 
-  async getById(idCart) {
-    let contenido = await this.getData();
-    let contenidoEnJson = JSON.parse(contenido);
-    const indice = contenidoEnJson.find((carrito) => {
-      if (carrito.id === idCart) return true;
+  async getById(id) {
+     const data = await this.getData();
+    let dataEnJson = JSON.parse(data);
+    const indice = dataEnJson.findIndex((item) => {
+      if (item.id === id) return true;
       else return false;
     });
 
     if (indice === -1) return null;
 
-    return contenidoEnJson[indice];
+    return dataEnJson[indice];
   }
 
   async addOne(nuevoProducto) {
@@ -75,48 +77,42 @@ class Basket {
     }
   }
 
-  async filterCart(idcart) {
+  async filterCart(idCart) {
     // Traigo todos los carritos
     let contenido = await this.getData();
     let contenidoEnJson = JSON.parse(contenido);
     // Filtro al carrito especifico;
-    const IDCART = contenidoEnJson.find((cart) => {
-      if (cart.id === idcart) return true;
+    const indice = contenidoEnJson.find((carrito) => {
+      if (carrito.id === idCart) return true;
       else return false;
     });
-    const filterCart = contenidoEnJson[IDCART];
+    const filterCart = contenidoEnJson[indice];
     return filterCart;
   }
 
-  async addProductToCart(idcart, idproduct) {
-    // Traigo todos los carritos
+  async addProductToCart(idcart, idProduct) {
     let contenido = await this.getData();
     let contenidoEnJson = JSON.parse(contenido);
     console.log(contenidoEnJson);
-    // Filtro al carrito especifico;
-    const IDCART = contenidoEnJson.find((cart) => {
-      if (cart.id === idcart) return true;
-      else return false;
-    });
-    const filterCart = contenidoEnJson[IDCART];
-    console.log('aca',filterCart);
-    // Traigo el producto para agregar al carro
-    const ProductToAdd = await this.getById(idproduct);
+    const indice = contenidoEnJson.findIndex(
+      (item) => item.id == idcart
+    );
+    const filter = contenidoEnJson[indice];
+    console.log('aca', filter);
+    const ProductToAdd = await catalogo.getById(idProduct);
     console.log('id producto a agregar', ProductToAdd);
-    // Sumo el producto al carro.
-    const cart = filterCart.usercart;
+    const cart = filter.usercart;
+    console.log('cart', cart);
     cart.push(ProductToAdd);
-    //Reemplazo el carrito especifico en el array de carritos
-    filterCart.usercart = [];
+    filter.usercart = [];
     cart.forEach((element) => {
-      filterCart.usercart.push(element);
+      filter.usercart.push(element);
     });
-    //Guardo la DB
     await fs.promises.writeFile(
-      this.nombreArchivo(contenidoEnJson),
+      this.nombreArchivo,
       JSON.stringify(contenidoEnJson, null, '\t')
     );
-    return filterCart;
+    return filter;
   }
 
   async updateById(id, productos) {

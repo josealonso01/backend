@@ -30,7 +30,18 @@ class Contenedor {
 
     if (!productos.id) {
       productos.id = 1;
-      array = [{ ...productos }];
+      array = [
+        {
+          id: uuidv4(),
+          timestamp: Date.now(),
+          name: objeto.name,
+          descripcion: objeto.descripcion,
+          codigo: objeto.codigo,
+          picture: objeto.picture,
+          price: objeto.price,
+          stock: objeto.stock,
+        },
+      ];
       await fs.promises.writeFile(
         this.nombreArchivo,
         JSON.stringify(array)
@@ -54,7 +65,14 @@ class Contenedor {
   async getById(id) {
     const data = await this.getData();
     let dataEnJson = JSON.parse(data);
-    return dataEnJson.find((item) => item.id == id);
+    const indice = dataEnJson.findIndex((item) => {
+      if (item.id === id) return true;
+      else return false;
+    });
+
+    if (indice === -1) return null;
+
+    return dataEnJson[indice];
   }
 
   async addOne(nuevoProducto) {

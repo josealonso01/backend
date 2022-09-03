@@ -1,102 +1,14 @@
 [
 	{
-		"id": "b4f9f125-b0a0-4c7c-b38c-c30793ce80b5",
-		"timestamp": 1662141128120,
-		"userCart": []
+		"id": "24a4fb36-7aff-434f-ba38-78f04477ea7c",
+		"timestamp": 1662225781683,
+		"usercart": [
+			null
+		]
 	},
 	{
-		"id": "e80aa1cc-f550-4550-9a49-8ec856ac4a8f",
-		"timestamp": 1662141269454,
-		"userCart": []
-	},
-	{
-		"id": "d1749fdb-996e-4fee-aefd-98b6e54ac410",
-		"timestamp": 1662141375589,
-		"userCart": []
-	},
-	{
-		"id": "cfdbae79-e124-496f-9784-ac6d75a22697",
-		"timestamp": 1662141396854,
-		"userCart": []
-	},
-	{
-		"id": "e8936805-059b-4b94-9ebf-f32f91889504",
-		"timestamp": 1662141637848,
-		"userCart": []
-	},
-	{
-		"id": "22cbde16-3e30-45f7-b8a0-b4bec2ecf262",
-		"timestamp": 1662141662759,
-		"userCart": []
-	},
-	{
-		"id": "3af4eeec-0af4-4dd6-a899-22c119751969",
-		"timestamp": 1662141678559,
-		"userCart": []
-	},
-	{
-		"id": "0d1bdc9d-1b48-4093-ae27-22b609ec1d84",
-		"timestamp": 1662141709313,
-		"userCart": []
-	},
-	{
-		"id": "6c8914fb-446f-4b43-a439-2ef69bafca72",
-		"timestamp": 1662141730646,
-		"userCart": []
-	},
-	{
-		"id": "a8495129-2563-48f3-bf5a-67c077c6103b",
-		"timestamp": 1662141838324,
-		"userCart": []
-	},
-	{
-		"id": "66076bfb-8442-4324-bfbf-132f0570c9b1",
-		"timestamp": 1662141999060,
-		"userCart": []
-	},
-	{
-		"id": "67fdc298-160c-45c5-ac2f-42f7ea099b92",
-		"timestamp": 1662142567896,
-		"userCart": []
-	},
-	{
-		"id": "834ea965-2791-4d86-bac1-e621fd5731c5",
-		"timestamp": 1662142623497,
-		"usercart": []
-	},
-	{
-		"id": "540f7b36-0dbe-483d-a546-08a43184bed4",
-		"timestamp": 1662142812150,
-		"usercart": []
-	},
-	{
-		"id": "6f8d12ec-fdda-4742-890a-d1c6db647c43",
-		"timestamp": 1662142826543,
-		"usercart": []
-	},
-	{
-		"id": "435f214c-7532-421a-926a-94fd95095af5",
-		"timestamp": 1662142930027,
-		"usercart": []
-	},
-	{
-		"id": "1e9104ab-5841-4452-95c8-6c957834fbff",
-		"timestamp": 1662143016245,
-		"usercart": []
-	},
-	{
-		"id": "d9325f54-140d-47ff-9988-21b70633c0f2",
-		"timestamp": 1662143040266,
-		"usercart": []
-	},
-	{
-		"id": "bd837474-b79a-491a-8c99-347eb162c12b",
-		"timestamp": 1662143063210,
-		"usercart": []
-	},
-	{
-		"id": "53fe0e4f-9dd9-4eb5-bec4-1ba6f084ffed",
-		"timestamp": 1662143071092,
+		"id": "15d4eabe-0ceb-4176-8e51-13fac7ee2717",
+		"timestamp": 1662225841241,
 		"usercart": []
 	}
 ]
