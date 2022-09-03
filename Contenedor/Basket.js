@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
-const Contenedor  = require('../Contenedor/Contenedor');
+const Contenedor = require('../Contenedor/Contenedor');
 
 const catalogo = new Contenedor('productos');
 class Basket {
@@ -44,7 +44,7 @@ class Basket {
   }
 
   async getById(id) {
-     const data = await this.getData();
+    const data = await this.getData();
     let dataEnJson = JSON.parse(data);
     const indice = dataEnJson.findIndex((item) => {
       if (item.id === id) return true;
@@ -97,22 +97,22 @@ class Basket {
     const indice = contenidoEnJson.findIndex(
       (item) => item.id == idcart
     );
-    const filter = contenidoEnJson[indice];
-    console.log('aca', filter);
+    const filteredCart = contenidoEnJson[indice];
+    console.log('el idproduct es:', idProduct);
     const ProductToAdd = await catalogo.getById(idProduct);
     console.log('id producto a agregar', ProductToAdd);
-    const cart = filter.usercart;
+    const cart = filteredCart.usercart;
     console.log('cart', cart);
     cart.push(ProductToAdd);
-    filter.usercart = [];
+    filteredCart.usercart = [];
     cart.forEach((element) => {
-      filter.usercart.push(element);
+      filteredCart.usercart.push(element);
     });
     await fs.promises.writeFile(
       this.nombreArchivo,
       JSON.stringify(contenidoEnJson, null, '\t')
     );
-    return filter;
+    return filteredCart;
   }
 
   async updateById(id, productos) {

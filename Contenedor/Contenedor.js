@@ -7,7 +7,6 @@ class Contenedor {
   }
 
   async getData() {
-    //TODO: REFORMAR ESTO O BORRARLO
     try {
       return await fs.promises.readFile(this.nombreArchivo, 'utf-8');
     } catch (error) {
@@ -69,7 +68,8 @@ class Contenedor {
       if (item.id === id) return true;
       else return false;
     });
-
+    console.log('el dataEnJson', dataEnJson);
+    console.log('el indice', indice);
     if (indice === -1) return null;
 
     return dataEnJson[indice];

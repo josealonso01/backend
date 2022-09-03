@@ -6,6 +6,7 @@ const routerBasket = express.Router();
 const app = express();
 
 const basket = new Basket('basket');
+const contenedor = new Contenedor('productos')
 
 //basket.getData();
 //basket.getAll().then((x) => console.log(x));
@@ -43,16 +44,18 @@ routerBasket.post('/', async (req, res) => {
   });
 });
 
-routerBasket.post('/:id/productos', async (req, res) => {
+routerBasket.post('/:id/productos/:id_prod', async (req, res) => {
   let { id } = req.params;
+  let { id_prod } = req.params;
+  console.log('el id_prod', id_prod)
   const BuscoProducto = await basket.getById(id);
 
   if (BuscoProducto == null) {
     return res.json({
       msj: 'El producto no existe',
     });
-  } 
-  const product = await basket.addProductToCart(id);
+  }
+  const product = await basket.addProductToCart(id, id_prod);
   res.json({
     msg: 'Los productos de tu carrito son:',
     data: product,
