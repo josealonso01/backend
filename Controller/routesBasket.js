@@ -1,14 +1,15 @@
 const express = require('express');
 const Basket = require('../Contenedor/Basket');
+const Contenedor = require('../Contenedor/Contenedor');
 const router = require('./router');
 const routerBasket = express.Router();
 const app = express();
 
 const basket = new Basket('basket');
 
-basket.getData();
+//basket.getData();
 //basket.getAll().then((x) => console.log(x));
-basket.save();
+//basket.save();
 //basket.getById().then((x) => console.log('getByID', x));
 //basket.deleteById().then((x) => console.log('delete', x));
 //basket.deleteAll();
@@ -47,7 +48,7 @@ routerBasket.post('/:id/productos', async (req, res) => {
   const BuscoProducto = await basket.getById(id);
 
   if (BuscoProducto == null) {
-    return res.status(404).json({
+    return res.json({
       msj: 'El producto no existe',
     });
   } 
