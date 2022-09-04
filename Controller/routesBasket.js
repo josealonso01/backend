@@ -6,7 +6,7 @@ const routerBasket = express.Router();
 const app = express();
 
 const basket = new Basket('basket');
-const contenedor = new Contenedor('productos')
+const contenedor = new Contenedor('productos');
 
 //basket.getData();
 //basket.getAll().then((x) => console.log(x));
@@ -47,7 +47,7 @@ routerBasket.post('/', async (req, res) => {
 routerBasket.post('/:id/productos/:id_prod', async (req, res) => {
   let { id } = req.params;
   let { id_prod } = req.params;
-  console.log('el id_prod', id_prod)
+  console.log('el id_prod', id_prod);
   const BuscoProducto = await basket.getById(id);
 
   if (BuscoProducto == null) {
