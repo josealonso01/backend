@@ -35,6 +35,37 @@ app.get('/', (req, res) => {
   res.sendFile('index.hbs', { root: __dirname });
 });
 
+//TODO CHEQUEAR SI LA BASE DE DATOS YA EXISTE ANTES DE CREARLA
+const knex = require('knex')({
+  client: 'sqlite3',
+  connection: {
+    filename: './DB/ecommerce',
+  },
+  useNullAsDefault: true,
+});
+
+knex.schema.hasTable('mensajes').then(function (exists) {
+  if (!exists) {
+    return knex.schema
+      .createTable('mensajes', (table) => {
+        table.increments('id'),
+          table.string('user'),
+          table.string('texto');
+        table.dateTime('dateTime');
+      })
+      .then((res) => {
+        console.log('todo bien', res);
+      })
+      .catch((err) => {
+        console.log(err);
+        throw new Error(err);
+      })
+      .finally(() => {
+        knex.destroy();
+      });
+  }
+});
+
 let chat = [];
 
 const catalogo = new Contenedor('productos');
@@ -42,24 +73,31 @@ const catalogo = new Contenedor('productos');
 const basket = new Basket('carrito');
 
 io.on('connection', (socket) => {
-  console.log('Usuario conectado ' + socket.id);
-  chat.push('se unio al chat ' + socket.id);
-  io.sockets.emit('arr-chat', chat);
   setTimeout(() => {
     socket.emit('Este es mi mensaje desde el servidor');
   }, 4000);
-
   socket.on('data-generica', (data) => {
     chat.push(data);
+    console.log('arr-chat adentro del on', chat);
     io.sockets.emit('arr-chat', chat);
+    knex('mensajes')
+      .insert(data)
+      .then((res) => console.log('mensajes insertados', res))
+      .catch((error) => console.log(error));
   });
 
   io.sockets.emit('prod', catalogo.getAll());
-
   socket.on('prod', async () => {
     const productos = await catalogo.getAll();
     productos.forEach((unProducto) => {
       socket.emit('prod', unProducto);
     });
   });
+});
+
+io.sockets.on('data-generica', (mensaje) => {
+  const enviar = document.createElement('h1');
+  enviar.innerHTML = `<div> ${mensaje.msg} </div>`;
+  const mensajes = document.getElementById('data');
+  mensajes.appendChild(enviar);
 });

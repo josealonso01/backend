@@ -1,11 +1,11 @@
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
-const Contenedor = require('../Contenedor/Contenedor');
 
-const catalogo = new Contenedor('productos');
-class Basket {
+class ContenedorDB {
   constructor(nombreArchivo) {
     this.nombreArchivo = './' + nombreArchivo + '.json';
+
+    //TODO CREAR LA BASE DE DATOS DE MARIA DB
   }
 
   async getData() {
@@ -22,20 +22,40 @@ class Basket {
     }
   }
 
-  async save() {
+  async save(productos) {
     let contenido = await this.getData();
     let contenidoEnJson = JSON.parse(contenido);
-    let newCart = {
-      id: uuidv4(),
-      timestamp: Date.now(),
-      usercart: [],
-    };
-    contenidoEnJson.push(newCart);
+    let array = [{ id: uuidv4(), timestamp: Date.now(), code: [] }];
+    const indice = contenidoEnJson.map((x) => x.id).sort();
+    productos.id = indice[indice.length - 1] + 1;
+
+    if (!productos.id) {
+      productos.id = 1;
+      array = [
+        {
+          id: uuidv4(),
+          timestamp: Date.now(),
+          name: objeto.name,
+          descripcion: objeto.descripcion,
+          codigo: objeto.codigo,
+          picture: objeto.picture,
+          price: objeto.price,
+          stock: objeto.stock,
+        },
+      ];
+      await fs.promises.writeFile(
+        this.nombreArchivo,
+        JSON.stringify(array)
+      );
+      return array[0].id;
+    }
+
+    contenidoEnJson.push(productos);
+
     await fs.promises.writeFile(
       this.nombreArchivo,
-      JSON.stringify(contenidoEnJson, null, '\t')
+      JSON.stringify(contenidoEnJson)
     );
-    return newCart.id;
   }
 
   async getAll() {
@@ -50,7 +70,6 @@ class Basket {
       if (item.id === id) return true;
       else return false;
     });
-
     if (indice === -1) return null;
 
     return dataEnJson[indice];
@@ -75,40 +94,6 @@ class Basket {
       );
       return dataEnJson[dataEnJson.length - 1];
     }
-  }
-
-  async filterCart(idCart) {
-    // Traigo todos los carritos
-    let contenido = await this.getData();
-    let contenidoEnJson = JSON.parse(contenido);
-    // Filtro al carrito especifico;
-    const indice = contenidoEnJson.find((carrito) => {
-      if (carrito.id === idCart) return true;
-      else return false;
-    });
-    const filterCart = contenidoEnJson[indice];
-    return filterCart;
-  }
-
-  async addProductToCart(idcart, idProduct) {
-    let contenido = await this.getData();
-    let contenidoEnJson = JSON.parse(contenido);
-    const indice = contenidoEnJson.findIndex(
-      (item) => item.id == idcart
-    );
-    const filteredCart = contenidoEnJson[indice];
-    const ProductToAdd = await catalogo.getById(idProduct);
-    const cart = filteredCart.usercart;
-    cart.push(ProductToAdd);
-    filteredCart.usercart = [];
-    cart.forEach((element) => {
-      filteredCart.usercart.push(element);
-    });
-    await fs.promises.writeFile(
-      this.nombreArchivo,
-      JSON.stringify(contenidoEnJson, null, '\t')
-    );
-    return filteredCart;
   }
 
   async updateById(id, productos) {
@@ -146,4 +131,4 @@ class Basket {
   }
 }
 
-module.exports = Basket;
+module.exports = ContenedorDB;

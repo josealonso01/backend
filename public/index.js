@@ -5,14 +5,18 @@ sockets.on('connect', () => {
   console.log('me conecte!');
 });
 
-sockets.on('data-generica', (data) => {
-  console.log(data);
-});
-
 sockets.on('arr-chat', (data) => {
   console.log(data);
   const html = data.reduce(
-    (html, item) => html + '<div>' + item + '</div>',
+    (html, item) =>
+      html +
+      '<div>' +
+      item.user +
+      '" a las: ' +
+      item.dateTime +
+      ' dijo: "' +
+      item.texto +
+      '</div>',
     ''
   );
   document.getElementById('html').innerHTML = html;
@@ -21,10 +25,11 @@ sockets.on('arr-chat', (data) => {
 function enviar() {
   const nombre = document.getElementById('caja-nombre').value;
   const msg = document.getElementById('caja-msg').value;
-  sockets.emit('data-generica', nombre + ' [ ' + new Date () + ' ] dice: ' + msg);
-  console.log(nombre + ' dice ' + msg);
+  const mensaje = { user: nombre, dateTime: new Date(), texto: msg };
+  sockets.emit('data-generica', mensaje);
+  mensaje.toString();
+  console.log('data-generica', mensaje);
 }
-
 
 sockets.emit('prod');
 
@@ -57,4 +62,3 @@ const attachRow = (unProducto) => {
   const mitabla = document.getElementById('myTable');
   mitabla.appendChild(fila);
 };
-
