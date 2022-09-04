@@ -62,4 +62,29 @@ routerBasket.post('/:id/productos/:id_prod', async (req, res) => {
   });
 });
 
+routerBasket.delete('/:id', (req, res) => {
+  let { id } = req.params;
+  console.log('id', id);
+  basket.deleteById(id).then((found) => {
+    if (found) {
+      res.json({ success: 'ok', id });
+    } else {
+      res.json({ error: 'el producto no existe' });
+    }
+  });
+});
+
+routerBasket.delete('/:id/productos/:id_prod', (req, res) => {
+  let { id } = req.params;
+  let { id_prod } = req.params;
+  console.log('id', id);
+  basket.deleteById(id, id_prod).then((found) => {
+    if (found) {
+      res.json({ success: 'ok', id, id_prod });
+    } else {
+      res.json({ error: 'el producto no existe' });
+    }
+  });
+});
+
 module.exports = routerBasket;

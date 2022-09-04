@@ -98,11 +98,8 @@ class Basket {
       (item) => item.id == idcart
     );
     const filteredCart = contenidoEnJson[indice];
-    console.log('el idproduct es:', idProduct);
     const ProductToAdd = await catalogo.getById(idProduct);
-    console.log('id producto a agregar', ProductToAdd);
     const cart = filteredCart.usercart;
-    console.log('cart', cart);
     cart.push(ProductToAdd);
     filteredCart.usercart = [];
     cart.forEach((element) => {

@@ -72,4 +72,6 @@ routerProducts.delete('/:id', (req, res) => {
   });
 });
 
+
+
 module.exports = routerProducts;
