@@ -11,7 +11,7 @@ const archivo = new Contenedor('productos');
 //archivo.save();
 ///archivo.getById().then((x) => console.log('getByID', x));
 //archivo.deleteById().then((x) => console.log('delete', x));
-//archivo.deleteAll(); 
+//archivo.deleteAll();
 
 routerProducts.get('/', (req, res) => {
   archivo.getAll().then((prod) => {
@@ -71,7 +71,5 @@ routerProducts.delete('/:id', (req, res) => {
     }
   });
 });
-
-
 
 module.exports = routerProducts;
