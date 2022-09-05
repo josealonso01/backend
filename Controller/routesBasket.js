@@ -41,10 +41,6 @@ routerBasket.post('/', async (req, res) => {
 routerBasket.post('/:id/productos/:id_prod', async (req, res) => {
   let { id } = req.params;
   let { id_prod } = req.params;
-<<<<<<< Updated upstream
-  console.log('el id_prod', id_prod);
-=======
->>>>>>> Stashed changes
   const BuscoProducto = await basket.getById(id);
 
   if (BuscoProducto == null) {

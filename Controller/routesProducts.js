@@ -1,19 +1,18 @@
 const express = require('express');
 const Contenedor = require('../Contenedor/Contenedor');
-const ContenedorDB = require('../Contenedor/ContenedorDB');
 const routerProducts = express.Router();
 const router = require('./router');
 const app = express();
 
-const archivo = new ContenedorDB('productos');
+const archivo = new Contenedor('productos');
 
 
 routerProducts.get('/', (req, res) => {
-  archivo.getData().then((prod) => {
+  archivo.getAll().then((prod) => {
     res.render('productsList', { prod, productsExist: true });
   });
 });
-/* 
+
 routerProducts.get('/:id', (req, res) => {
   let { id } = req.params;
   archivo.getById(id).then((found) => {
@@ -64,5 +63,5 @@ routerProducts.delete('/:id', (req, res) => {
     }
   });
 });
- */
+
 module.exports = routerProducts;
