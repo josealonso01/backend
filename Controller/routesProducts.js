@@ -1,27 +1,19 @@
 const express = require('express');
 const Contenedor = require('../Contenedor/Contenedor');
+const ContenedorDB = require('../Contenedor/ContenedorDB');
 const routerProducts = express.Router();
 const router = require('./router');
 const app = express();
 
-const archivo = new Contenedor('productos');
+const archivo = new ContenedorDB('productos');
 
-<<<<<<< Updated upstream
-//archivo.getData();
-//archivo.getAll().then((x) => console.log(x));
-//archivo.save();
-///archivo.getById().then((x) => console.log('getByID', x));
-//archivo.deleteById().then((x) => console.log('delete', x));
-//archivo.deleteAll();
 
-=======
->>>>>>> Stashed changes
 routerProducts.get('/', (req, res) => {
-  archivo.getAll().then((prod) => {
+  archivo.getData().then((prod) => {
     res.render('productsList', { prod, productsExist: true });
   });
 });
-
+/* 
 routerProducts.get('/:id', (req, res) => {
   let { id } = req.params;
   archivo.getById(id).then((found) => {
@@ -72,5 +64,5 @@ routerProducts.delete('/:id', (req, res) => {
     }
   });
 });
-
+ */
 module.exports = routerProducts;

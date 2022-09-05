@@ -18,16 +18,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', router);
 
-//CONFIGURACION HBS
+
 app.set('view engine', 'hbs');
-app.set('views', './views'); //DONDE VAN LOS HTMLS (CARPETA VIWES)
+app.set('views', './views'); 
 app.engine(
   'hbs',
   engine({
-    extname: '.hbs', //EXTENSIONES SON .HBS
-    defaultLayout: 'index.hbs', //CUAL ES EL LAYOUT POR DEFECTO (PLANTILLA BASE)
-    layoutsDir: __dirname + '/views/layouts', //DONDE VAN A ESTAR LOS LAYOUTS
-    partialsDir: __dirname + '/views/partials', //DONDE VAN A ESTAR LOS PARTIALS(PEDAZOS DE HTML QUE QUIERO REUTILIZAR EN DISTINTAS VISTAS)
+    extname: '.hbs', 
+    defaultLayout: 'index.hbs', 
+    layoutsDir: __dirname + '/views/layouts', 
+    partialsDir: __dirname + '/views/partials',
   })
 );
 
@@ -35,7 +35,6 @@ app.get('/', (req, res) => {
   res.sendFile('index.hbs', { root: __dirname });
 });
 
-//TODO CHEQUEAR SI LA BASE DE DATOS YA EXISTE ANTES DE CREARLA
 const knex = require('knex')({
   client: 'sqlite3',
   connection: {
