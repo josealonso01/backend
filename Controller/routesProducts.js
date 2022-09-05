@@ -1,27 +1,21 @@
 const express = require('express');
 const Contenedor = require('../Contenedor/Contenedor');
+const ContenedorDB = require('../Contenedor/ContenedorDB');
 const routerProducts = express.Router();
 const router = require('./router');
 const app = express();
 
-const archivo = new Contenedor('productos');
+const archivo = new ContenedorDB('productos');
 
-//archivo.getData();
-//archivo.getAll().then((x) => console.log(x));
-//archivo.save();
-///archivo.getById().then((x) => console.log('getByID', x));
-//archivo.deleteById().then((x) => console.log('delete', x));
-//archivo.deleteAll();
 
 routerProducts.get('/', (req, res) => {
-  archivo.getAll().then((prod) => {
+  archivo.getData().then((prod) => {
     res.render('productsList', { prod, productsExist: true });
   });
 });
-
+/* 
 routerProducts.get('/:id', (req, res) => {
   let { id } = req.params;
-  console.log('id', id);
   archivo.getById(id).then((found) => {
     if (found) {
       res.render('oneProduct', {
@@ -62,7 +56,6 @@ routerProducts.put('/:id', (req, res) => {
 routerProducts.delete('/:id', (req, res) => {
   let { id } = req.params;
   id = parseInt(id);
-  console.log('id', id);
   archivo.deleteById(id).then((found) => {
     if (found) {
       res.json({ success: 'ok', id });
@@ -71,5 +64,5 @@ routerProducts.delete('/:id', (req, res) => {
     }
   });
 });
-
+ */
 module.exports = routerProducts;

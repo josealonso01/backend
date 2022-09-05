@@ -8,12 +8,7 @@ const app = express();
 const basket = new Basket('basket');
 const contenedor = new Contenedor('productos');
 
-//basket.getData();
-//basket.getAll().then((x) => console.log(x));
-//basket.save();
-//basket.getById().then((x) => console.log('getByID', x));
-//basket.deleteById().then((x) => console.log('delete', x));
-//basket.deleteAll();
+
 
 routerBasket.get('/', (req, res) => {
   basket.getAll().then((addToCart) => {
@@ -23,7 +18,6 @@ routerBasket.get('/', (req, res) => {
 
 routerBasket.get('/:id/productos', (req, res) => {
   let { id } = req.params;
-  console.log('id', id);
   basket.getById(id).then((found) => {
     if (found) {
       res.render('oneProduct', {
@@ -47,7 +41,10 @@ routerBasket.post('/', async (req, res) => {
 routerBasket.post('/:id/productos/:id_prod', async (req, res) => {
   let { id } = req.params;
   let { id_prod } = req.params;
+<<<<<<< Updated upstream
   console.log('el id_prod', id_prod);
+=======
+>>>>>>> Stashed changes
   const BuscoProducto = await basket.getById(id);
 
   if (BuscoProducto == null) {
@@ -64,7 +61,6 @@ routerBasket.post('/:id/productos/:id_prod', async (req, res) => {
 
 routerBasket.delete('/:id', (req, res) => {
   let { id } = req.params;
-  console.log('id', id);
   basket.deleteById(id).then((found) => {
     if (found) {
       res.json({ success: 'ok', id });
@@ -77,7 +73,6 @@ routerBasket.delete('/:id', (req, res) => {
 routerBasket.delete('/:id/productos/:id_prod', (req, res) => {
   let { id } = req.params;
   let { id_prod } = req.params;
-  console.log('id', id);
   basket.deleteById(id, id_prod).then((found) => {
     if (found) {
       res.json({ success: 'ok', id, id_prod });

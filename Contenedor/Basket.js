@@ -93,7 +93,6 @@ class Basket {
   async addProductToCart(idcart, idProduct) {
     let contenido = await this.getData();
     let contenidoEnJson = JSON.parse(contenido);
-    console.log(contenidoEnJson);
     const indice = contenidoEnJson.findIndex(
       (item) => item.id == idcart
     );

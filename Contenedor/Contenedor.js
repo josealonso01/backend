@@ -68,8 +68,6 @@ class Contenedor {
       if (item.id === id) return true;
       else return false;
     });
-    console.log('el dataEnJson', dataEnJson);
-    console.log('el indice', indice);
     if (indice === -1) return null;
 
     return dataEnJson[indice];
