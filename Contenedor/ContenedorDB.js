@@ -1,13 +1,28 @@
-const fs = require('fs');
-const Knex = require('knex');
 const { options } = require('../options/optionsMDB');
+const fs = require('fs');
+const { json } = require('express');
+const knex = require('knex')(options);
 
 class ContenedorDB {
-  constructor() {
-    this.connection = Knex(options);
+  constructor(options, productos) {
+    this.connection = knex(options);
+    this.productos = './' + 'productos' + '.json';
   }
 
-  async createTable() {
+  async getData() {
+    try {
+      return await fs.promises.readFile(this.nuevoJson, 'utf-8');
+    } catch (error) {
+      if (error.code == 'ENOENT') {
+        fs.writeFile(this.nombreArchivo, '[]', (error) => {
+          if (error) {
+            console.log('el archivo no se puede crear');
+          }
+        });
+      }
+    }
+  }
+  createTable() {
     knex.schema.hasTable('productos').then(function (exists) {
       if (!exists) {
         return knex.schema
@@ -34,21 +49,48 @@ class ContenedorDB {
     });
   }
 
-  getData(productos, id) {
-    if (id) return this.connection(productos).where('id', id);
-    return this.connection(productos);
+  async insert(nuevoProducto) {
+    knex('productos')
+      .insert(nuevoProducto)
+      .then(() => {
+        console.log('data insertada');
+        fs.writeFile(this.nombreArchivo, nuevoProducto, (error) => {
+          if (error) {
+            console.log('el archivo no se puede crear');
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
   }
 
-  create(productos, data) {
-    return this.connection(productos).insert(data);
-  }
-
-  update(productos, id, data) {
-    return this.connection(productos).where('id', id).update(data);
-  }
-
-  delete(productos, id) {
-    return this.connection(productos).where('id', id).del();
+  async select() {
+    knex('productos')
+      .select('*')
+      .then((prod) => {
+        console.log(`Found ${prod.length} productos`);
+        fs.promises.writeFile(
+          this.productos,
+          JSON.stringify(prod, null, '\t'),
+          (error) => {
+            if (error) {
+              console.log('el archivo no se puede crear');
+            }
+          }
+         
+        );
+        prod.forEach((aProd) =>
+          console.log(
+            `${aProd.id} ${aProd.name}  ${aProd.price} ${aProd.Descripcion} ${aProd.Codigo} ${aProd.picture} ${aProd.stock}`
+          )
+        );
+      })
+      .catch((err) => {
+        console.log('There was an error inserting table');
+        console.log(err);
+      });
   }
 }
 

@@ -1,15 +1,15 @@
 const express = require('express');
-const Contenedor = require('../Contenedor/Contenedor');
+const ContenedorDB = require('../Contenedor/ContenedorDB');
 const routerProducts = express.Router();
 const router = require('./router');
 const app = express();
 
-const archivo = new Contenedor('productos');
-
+const archivo = new ContenedorDB('productos');
 
 routerProducts.get('/', (req, res) => {
-  archivo.getAll().then((prod) => {
-    res.render('productsList', { prod, productsExist: true });
+  archivo.select().then((prod) => {
+    console.log('aca', prod);
+    res.json({ productos: prod });
   });
 });
 
@@ -31,7 +31,7 @@ routerProducts.post('/', (req, res) => {
   const { body } = req;
   body.price = parseFloat(body.price);
   body.stock = parseFloat(body.stock);
-  archivo.addOne(body).then((n) => {
+  archivo.insert(body).then((n) => {
     if (n) {
       res.render('form');
     } else {
