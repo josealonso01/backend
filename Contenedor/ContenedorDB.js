@@ -1,6 +1,6 @@
 const { options } = require('../options/optionsMDB');
 const fs = require('fs');
-const { json } = require('express');
+const { isConstructorDeclaration } = require('typescript');
 const knex = require('knex')(options);
 
 class ContenedorDB {
@@ -9,19 +9,6 @@ class ContenedorDB {
     this.productos = './' + 'productos' + '.json';
   }
 
-  async getData() {
-    try {
-      return await fs.promises.readFile(this.nuevoJson, 'utf-8');
-    } catch (error) {
-      if (error.code == 'ENOENT') {
-        fs.writeFile(this.nombreArchivo, '[]', (error) => {
-          if (error) {
-            console.log('el archivo no se puede crear');
-          }
-        });
-      }
-    }
-  }
   createTable() {
     knex.schema.hasTable('productos').then(function (exists) {
       if (!exists) {
@@ -49,48 +36,50 @@ class ContenedorDB {
     });
   }
 
-  async insert(nuevoProducto) {
-    knex('productos')
-      .insert(nuevoProducto)
-      .then(() => {
-        console.log('data insertada');
-        fs.writeFile(this.nombreArchivo, nuevoProducto, (error) => {
-          if (error) {
-            console.log('el archivo no se puede crear');
-          }
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        throw err;
-      });
+  async getProductos() {
+    const queryResult = await knex('productos').select('*');
+    let listProducts = [];
+    queryResult.forEach((aProd) => {
+      console.log(
+        `${aProd.id} ${aProd.name}  ${aProd.price} ${aProd.Descripcion} ${aProd.Codigo} ${aProd.picture} ${aProd.stock}`
+      );
+      listProducts.push(aProd);
+    });
+    return listProducts;
   }
 
-  async select() {
-    knex('productos')
+  async getById(id) {
+    const queryResult = await knex('productos')
       .select('*')
-      .then((prod) => {
-        console.log(`Found ${prod.length} productos`);
-        fs.promises.writeFile(
-          this.productos,
-          JSON.stringify(prod, null, '\t'),
-          (error) => {
-            if (error) {
-              console.log('el archivo no se puede crear');
-            }
-          }
-         
-        );
-        prod.forEach((aProd) =>
-          console.log(
-            `${aProd.id} ${aProd.name}  ${aProd.price} ${aProd.Descripcion} ${aProd.Codigo} ${aProd.picture} ${aProd.stock}`
-          )
-        );
-      })
-      .catch((err) => {
-        console.log('There was an error inserting table');
-        console.log(err);
-      });
+      .where('id', '=', id);
+    return queryResult;
+  }
+
+  async save(nuevoProducto) {
+    const queryResult = await knex('productos').insert(nuevoProducto);
+    queryResult.push(nuevoProducto);
+    return queryResult;
+  }
+
+  async deleteById(id) {
+    const queryResult = await knex('productos')
+      .select('*')
+      .where('id', '=', id)
+      .del();
+    return queryResult;
+  }
+
+  async deleteAll() {
+    const queryResult = await knex('productos').select('*').del();
+    return queryResult;
+  }
+
+  async updateById(id, body) {
+    const queryResult = await knex('productos')
+      .select('*')
+      .where('id', '=', id)
+      .update(body);
+    return queryResult;
   }
 }
 

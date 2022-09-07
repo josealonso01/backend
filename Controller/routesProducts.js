@@ -7,36 +7,23 @@ const app = express();
 const archivo = new ContenedorDB('productos');
 
 routerProducts.get('/', (req, res) => {
-  archivo.select().then((prod) => {
-    console.log('aca', prod);
-    res.json({ productos: prod });
+  archivo.getProductos().then((productos) => {
+    res.json({ product: productos });
   });
 });
 
 routerProducts.get('/:id', (req, res) => {
   let { id } = req.params;
-  archivo.getById(id).then((found) => {
-    if (found) {
-      res.render('oneProduct', {
-        product: found,
-        title: 'Detalle de producto',
-      });
-    } else {
-      res.json({ error: 'el producto no existe' });
-    }
+  archivo.getById(id).then((producto) => {
+    res.json({ product: producto });
   });
 });
 
 routerProducts.post('/', (req, res) => {
   const { body } = req;
-  body.price = parseFloat(body.price);
-  body.stock = parseFloat(body.stock);
-  archivo.insert(body).then((n) => {
-    if (n) {
-      res.render('form');
-    } else {
-      ({ error: 'error' });
-    }
+  console.log('aca', body);
+  archivo.save(body).then((body) => {
+    res.json({ productosagregados: body });
   });
 });
 
@@ -45,7 +32,7 @@ routerProducts.put('/:id', (req, res) => {
   const { body } = req;
   archivo.updateById(id, body).then((prod) => {
     if (prod) {
-      res.json({ success: 'ok', new: prod });
+      res.json({ success: 'ok', new: body });
     } else {
       res.json({ error: 'error' });
     }
@@ -54,13 +41,14 @@ routerProducts.put('/:id', (req, res) => {
 
 routerProducts.delete('/:id', (req, res) => {
   let { id } = req.params;
-  id = parseInt(id);
-  archivo.deleteById(id).then((found) => {
-    if (found) {
-      res.json({ success: 'ok', id });
-    } else {
-      res.json({ error: 'el producto no existe' });
-    }
+  archivo.deleteById(id).then(() => {
+    res.json({ productoBorrado: id });
+  });
+});
+
+routerProducts.delete('/', (req, res) => {
+  archivo.deleteAll().then((productos) => {
+    res.json({ productosBorrados: productos });
   });
 });
 
