@@ -1,13 +1,15 @@
-const fs = require('fs');
-const Knex = require('knex');
 const { options } = require('../options/optionsMDB');
+const fs = require('fs');
+const { isConstructorDeclaration } = require('typescript');
+const knex = require('knex')(options);
 
 class ContenedorDB {
-  constructor() {
-    this.connection = Knex(options);
+  constructor(options, productos) {
+    this.connection = knex(options);
+    this.productos = './' + 'productos' + '.json';
   }
 
-  async createTable() {
+  createTable() {
     knex.schema.hasTable('productos').then(function (exists) {
       if (!exists) {
         return knex.schema
@@ -34,21 +36,50 @@ class ContenedorDB {
     });
   }
 
-  getData(productos, id) {
-    if (id) return this.connection(productos).where('id', id);
-    return this.connection(productos);
+  async getProductos() {
+    const queryResult = await knex('productos').select('*');
+    let listProducts = [];
+    queryResult.forEach((aProd) => {
+      console.log(
+        `${aProd.id} ${aProd.name}  ${aProd.price} ${aProd.Descripcion} ${aProd.Codigo} ${aProd.picture} ${aProd.stock}`
+      );
+      listProducts.push(aProd);
+    });
+    return listProducts;
   }
 
-  create(productos, data) {
-    return this.connection(productos).insert(data);
+  async getById(id) {
+    const queryResult = await knex('productos')
+      .select('*')
+      .where('id', '=', id);
+    return queryResult;
   }
 
-  update(productos, id, data) {
-    return this.connection(productos).where('id', id).update(data);
+  async save(nuevoProducto) {
+    const queryResult = await knex('productos').insert(nuevoProducto);
+    queryResult.push(nuevoProducto);
+    return queryResult;
   }
 
-  delete(productos, id) {
-    return this.connection(productos).where('id', id).del();
+  async deleteById(id) {
+    const queryResult = await knex('productos')
+      .select('*')
+      .where('id', '=', id)
+      .del();
+    return queryResult;
+  }
+
+  async deleteAll() {
+    const queryResult = await knex('productos').select('*').del();
+    return queryResult;
+  }
+
+  async updateById(id, body) {
+    const queryResult = await knex('productos')
+      .select('*')
+      .where('id', '=', id)
+      .update(body);
+    return queryResult;
   }
 }
 
