@@ -63,37 +63,37 @@ routerBasket.delete(
       const agregado = await basket.deleteProductoDeCarrito(
         id,
         id_prod
-      );
-      res.status(200).send({
-        status: 200,
-        data: {
-          agregado,
-        },
-        message: 'producto eliminado del carrito',
-      });
-    } catch (error) {
-      res.status(500).send({
-        status: 500,
-        message: error.message,
-      });
+        );
+        res.status(200).send({
+          status: 200,
+          data: {
+            agregado,
+          },
+          message: 'producto eliminado del carrito',
+        });
+      } catch (error) {
+        res.status(500).send({
+          status: 500,
+          message: error.message,
+        });
+      }
     }
-  }
-);
-
-routerBasket.delete('/producto/:idProduct', (req, res) => {
-  let { idProduct } = req.params;
-  basket.deleteById(idProduct).then((found) => {
-    if (found) {
-      res.json({ success: 'ok', idProduct });
-    } else {
-      res.json({ error: 'el producto no existe' });
-    }
-  });
-});
-
-routerBasket.put('/:id/productos/:id_prod', async (req, res) => {
-  let { id } = req.params;
-  let { id_prod } = req.params;
+    );
+    
+    routerBasket.delete('/producto/:idProduct', (req, res) => {
+      let { idProduct } = req.params;
+      basket.deleteById(idProduct).then((found) => {
+        if (found) {
+          res.json({ success: 'ok', idProduct });
+        } else {
+          res.json({ error: 'el producto no existe' });
+        }
+      });
+    });
+    
+    routerBasket.put('/:id/productos/:id_prod', async (req, res) => {
+      let { id } = req.params;
+      let { id_prod } = req.params;
   const { body } = req;
   try {
     const nuevoProducto = await basket.updateById(id, id_prod, body);

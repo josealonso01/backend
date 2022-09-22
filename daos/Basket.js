@@ -6,6 +6,7 @@ const { query } = require('express');
 const arrayRemove = require('firebase-admin');
 const FieldValue = require('firebase-admin');
 const FirebaseFirestore = require('firebase-admin');
+const { remove } = require('./modelsMDB/schemaProduct');
 const catalogo = new Producto('productos');
 
 class Basket {
@@ -129,8 +130,8 @@ class Basket {
       const db = admin.firestore();
       const query = db.collection('basket');
       const doc = query.doc(idCart);
-      const item = await doc.update({
-        productos: admin.firestore.FieldValue.arrayUnion({
+      const removeItem = await doc.update({
+        productos: admin.firestore.FieldValue.arrayRemove({
           id: product.id,
           name: product.name,
           price: product.price,
@@ -140,7 +141,17 @@ class Basket {
           picture: product.picture,
         }),
       });
-      return item;
+      const replaceItem = await doc.update({
+        productos: admin.firestore.FieldValue.arrayUnion({
+          name: body.name,
+          price: body.price,
+          Descripcion: body.Descripcion,
+          Codigo: body.Codigo,
+          stock: body.stock,
+          picture: body.picture,
+        }),
+      }); 
+      return replaceItem;
     } catch (error) {
       throw Error(error.message);
     }
