@@ -1,5 +1,5 @@
 const express = require('express');
-const ContenedorDB = require('../Contenedor/ContenedorDB');
+const ContenedorDB = require('../daos/Products');
 const routerProducts = express.Router();
 const router = require('./router');
 const app = express();
@@ -21,7 +21,6 @@ routerProducts.get('/:id', (req, res) => {
 
 routerProducts.post('/', (req, res) => {
   const { body } = req;
-  console.log('aca', body);
   archivo.save(body).then((body) => {
     res.json({ productosagregados: body });
   });
