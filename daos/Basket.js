@@ -1,0 +1,150 @@
+const { v4: uuidv4 } = require('uuid');
+const admin = require('firebase-admin');
+const config = require('./bd/ecommerce-nodejs-90296-firebase-adminsdk-ltiph-b74c0a1b45.json');
+const Producto = require('./Products');
+const { query } = require('express');
+const arrayRemove = require('firebase-admin');
+const FieldValue = require('firebase-admin');
+const FirebaseFirestore = require('firebase-admin');
+const catalogo = new Producto('productos');
+
+class Basket {
+  constructor() {
+    admin.initializeApp({
+      credential: admin.credential.cert(config),
+    });
+  }
+
+  async save() {
+    const db = admin.firestore();
+    const query = db.collection('basket');
+    let time = new Date();
+    try {
+      const doc = query.doc();
+      const carrito = await doc.create({
+        timestamp: time.toString(),
+        productos: [],
+      });
+      return carrito;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async getAll() {
+    try {
+      const found = await admin
+        .firestore()
+        .collection('basket')
+        .get();
+      return found.docs.map((doc) => doc.data());
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async getById(id) {
+    try {
+      const db = admin.firestore();
+      const query = db.collection('basket');
+      const doc = query.doc(String(id));
+      const found = await doc.get();
+      return found.data();
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async addProductToCart(idcart, idProduct) {
+    try {
+      function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+      let product = await catalogo.getById(idProduct);
+
+      const db = admin.firestore();
+      const query = db.collection('basket');
+      const doc = query.doc(idcart);
+
+      let idRandom = random(1, 10000);
+
+      product.id = String(idRandom);
+
+      const item = await doc.update({
+        productos: admin.firestore.FieldValue.arrayUnion({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          Descripcion: product.Descripcion,
+          Codigo: product.Codigo,
+          stock: product.stock,
+          picture: product.picture,
+        }),
+      });
+      return item;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async deleteById(id) {
+    try {
+      const db = admin.firestore();
+      const query = db.collection('basket');
+      const doc = query.doc(String(id));
+      const found = await doc.delete();
+      return found;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async deleteProductoDeCarrito(idCarrito, idProduct) {
+    try {
+      let product = await catalogo.getById(idProduct);
+
+      const db = admin.firestore();
+      const query = db.collection('basket');
+      const doc = query.doc(idCarrito);
+      const item = await doc.update({
+        productos: admin.firestore.FieldValue.arrayRemove({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          Descripcion: product.Descripcion,
+          Codigo: product.Codigo,
+          stock: product.stock,
+          picture: product.picture,
+        }),
+      });
+      return item;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async updateById(idCart, idProduct, body) {
+    try {
+      let product = await catalogo.getById(idProduct);
+      const db = admin.firestore();
+      const query = db.collection('basket');
+      const doc = query.doc(idCart);
+      const item = await doc.update({
+        productos: admin.firestore.FieldValue.arrayUnion({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          Descripcion: product.Descripcion,
+          Codigo: product.Codigo,
+          stock: product.stock,
+          picture: product.picture,
+        }),
+      });
+      return item;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+}
+
+module.exports = Basket;

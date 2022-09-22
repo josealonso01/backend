@@ -1,10 +1,9 @@
 const express = require('express');
 const { Router } = express;
-const router = require('./Controller/router');
+const router = require('./routers/router');
 const { engine } = require('express-handlebars');
 const path = require('path');
-const Contenedor = require('./Contenedor/Contenedor');
-const Basket = require('./Contenedor/Basket');
+const Products = require('./daos/Products');
 const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
@@ -67,9 +66,8 @@ knex.schema.hasTable('mensajes').then(function (exists) {
 
 let chat = [];
 
-const catalogo = new Contenedor('productos');
+const catalogo = new Products('productos');
 
-const basket = new Basket('carrito');
 
 io.on('connection', (socket) => {
   setTimeout(() => {
