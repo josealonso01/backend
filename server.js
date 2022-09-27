@@ -1,6 +1,11 @@
 const express = require('express');
 const { Router } = express;
 const router = require('./routers/router');
+const Handlebars = require('handlebars');
+const hbs = require('express-handlebars');
+const {
+  allowInsecurePrototypeAccess,
+} = require('@handlebars/allow-prototype-access');
 const { engine } = require('express-handlebars');
 const path = require('path');
 const Products = require('./daos/Products');
@@ -17,16 +22,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', router);
 
-
 app.set('view engine', 'hbs');
-app.set('views', './views'); 
+app.set('views', './views');
 app.engine(
   'hbs',
   engine({
-    extname: '.hbs', 
-    defaultLayout: 'index.hbs', 
-    layoutsDir: __dirname + '/views/layouts', 
+    extname: '.hbs',
+    defaultLayout: 'index.hbs',
+    layoutsDir: __dirname + '/views/layouts',
     partialsDir: __dirname + '/views/partials',
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
 );
 
@@ -68,7 +73,6 @@ let chat = [];
 
 const catalogo = new Products('productos');
 
-
 io.on('connection', (socket) => {
   setTimeout(() => {
     socket.emit('Este es mi mensaje desde el servidor');
@@ -83,9 +87,9 @@ io.on('connection', (socket) => {
       .catch((error) => console.log(error));
   });
 
-  io.sockets.emit('prod', catalogo.getAll());
+  io.sockets.emit('prod', catalogo.getProductos());
   socket.on('prod', async () => {
-    const productos = await catalogo.getAll();
+    const productos = await catalogo.getProductos();
     productos.forEach((unProducto) => {
       socket.emit('prod', unProducto);
     });

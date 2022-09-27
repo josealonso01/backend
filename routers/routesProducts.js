@@ -6,9 +6,29 @@ const app = express();
 
 const archivo = new ContenedorDB('productos');
 
+routerProducts.get('/-test', (req, res, next) => {
+  archivo.getProductos().then((prod) => {
+    res.render('productsList', { prod, productsExist: true });
+    console.log(prod);
+  });
+});
+
+routerProducts.post('/-test', (req, res, next) => {
+  archivo.popular().then((prod) => {
+    res.json({prod: prod})
+  });
+});
+
+
 routerProducts.get('/', (req, res) => {
   archivo.getProductos().then((productos) => {
     res.json({ product: productos });
+  });
+})
+
+routerProducts.get('/mensajes', (req, res) => {
+  archivo.getProductos().then((productos) => {
+    res.render('centroMensajes', { prod: productos });
   });
 });
 

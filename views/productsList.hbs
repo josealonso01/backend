@@ -36,8 +36,9 @@
       <th scope="col">ID</th>
       <th scope="col">NOMBRE</th>
       <th scope="col">PRECIO</th>
+      <th scope="col">STOCK</th>
+      <th scope="col">CODIGO</th>
       <th scope="col">FOTO</th>
-      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -45,13 +46,9 @@
       <td >{{this.id}} </td>
       <td>  {{this.name}}</td>
       <td>{{this.price}} </td>
+      <td>{{this.stock}} </td>
+      <td>{{this.Codigo}} </td>
       <td><img src="{{this.picture}}" class="img-thumbnail " style="width: 15%;"/></td>
-      <td> <form action='/api/form' method='post'><input 
-            class='btn btn-success'
-            type='submit'
-            value='agregar al carrito'
-          /></form> 
-        </td>
     </tr>
   </tbody>
 </table>

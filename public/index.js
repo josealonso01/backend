@@ -31,6 +31,8 @@ function enviar() {
   console.log('data-generica', mensaje);
 }
 
+
+/* 
 sockets.emit('prod');
 
 sockets.on('prod', (unProducto) => {
@@ -62,3 +64,4 @@ const attachRow = (unProducto) => {
   const mitabla = document.getElementById('myTable');
   mitabla.appendChild(fila);
 };
+ */
