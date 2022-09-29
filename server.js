@@ -1,9 +1,16 @@
 const express = require('express');
 const { Router } = express;
 const router = require('./routers/router');
+const Handlebars = require('handlebars');
+const hbs = require('express-handlebars');
+const {
+  allowInsecurePrototypeAccess,
+} = require('@handlebars/allow-prototype-access');
 const { engine } = require('express-handlebars');
 const path = require('path');
 const Products = require('./daos/Products');
+const Messagges = require('./daos/Messages');
+const { normalizeMessages } = require('./src/normalize');
 const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
@@ -17,16 +24,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', router);
 
-
 app.set('view engine', 'hbs');
-app.set('views', './views'); 
+app.set('views', './views');
 app.engine(
   'hbs',
   engine({
-    extname: '.hbs', 
-    defaultLayout: 'index.hbs', 
-    layoutsDir: __dirname + '/views/layouts', 
+    extname: '.hbs',
+    defaultLayout: 'index.hbs',
+    layoutsDir: __dirname + '/views/layouts',
     partialsDir: __dirname + '/views/partials',
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
 );
 
@@ -34,7 +41,7 @@ app.get('/', (req, res) => {
   res.sendFile('index.hbs', { root: __dirname });
 });
 
-const knex = require('knex')({
+/* const knex = require('knex')({
   client: 'sqlite3',
   connection: {
     filename: './DB/ecommerce',
@@ -63,11 +70,11 @@ knex.schema.hasTable('mensajes').then(function (exists) {
       });
   }
 });
-
+ */
 let chat = [];
 
 const catalogo = new Products('productos');
-
+const mensajes = new Messagges('mensajes');
 
 io.on('connection', (socket) => {
   setTimeout(() => {
@@ -76,16 +83,13 @@ io.on('connection', (socket) => {
   socket.on('data-generica', (data) => {
     chat.push(data);
     console.log('arr-chat adentro del on', chat);
-    io.sockets.emit('arr-chat', chat);
-    knex('mensajes')
-      .insert(data)
-      .then((res) => console.log('mensajes insertados', res))
-      .catch((error) => console.log(error));
+    io.sockets.emit('arr-chat', normalizeMessages(chat));
+    mensajes.save(data);
   });
 
-  io.sockets.emit('prod', catalogo.getAll());
+  io.sockets.emit('prod', catalogo.getProductos());
   socket.on('prod', async () => {
-    const productos = await catalogo.getAll();
+    const productos = await catalogo.getProductos();
     productos.forEach((unProducto) => {
       socket.emit('prod', unProducto);
     });

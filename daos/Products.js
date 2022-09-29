@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const esquemaProducto = require('./modelsMDB/schemaProduct')
+const esquemaProducto = require('./modelsMDB/schemaProduct');
+const generarUsuario = require('../public/generadorDeProductos');
+const generarId = require('../public/generadorDeIds');
 
 class ContenedorDB {
   async connectMDB() {
@@ -31,6 +33,20 @@ class ContenedorDB {
     }
   }
 
+  async popular(cant = 5) {
+    try {
+      const nuevos = [];
+      for (let i = 0; i < cant; i++) {
+        const nuevoUsuario = generarUsuario(generarId());
+        const guardado = await this.save(nuevoUsuario);
+        nuevos.push(guardado);
+      }
+      mongoose.disconnect();
+      return nuevos;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
   async getProductos() {
     try {
       await this.connectMDB();
@@ -45,9 +61,11 @@ class ContenedorDB {
   async getById(id) {
     try {
       await this.connectMDB();
-      const prodId = await esquemaProducto.findById(id);
-      mongoose.disconnect();
-      return prodId;
+      if (id.match(/^[0-9a-fA-F]{24}$/)) {
+        const prodId = await esquemaProducto.findById(id);
+        mongoose.disconnect();
+        return prodId;
+      }
     } catch (error) {
       throw Error(error.message);
     }

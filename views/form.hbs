@@ -44,7 +44,7 @@
         </div>
         <div class='mb-3'>
           <label class='form-label fw-bold' for='picture'>Foto URL</label>
-          <input class='form-control' type='url' name='picture' />
+          <input class='form-control' type='text' name='picture' />
         </div>
         <div class='mb-3'>
           <label class='form-label fw-bold' for='stock'>Stock</label>
@@ -64,17 +64,6 @@
         <a href='/api/productos'>
           <button class='btn btn-warning'>IR AL LISTADO DE PRODUCTOS</button>
         </a>
-      </div>
-      <h1>CENTRO DE MENSAJES</h1>
-      <div class="input-group mb-3">
-      <span class="input-group-text" id="basic-addon1">@</span>
-      <input id='caja-nombre' type="text" class="form-control" placeholder="Ingresa tu mail" aria-label="Ingresa tu mail" aria-describedby="basic-addon1">
-      </div>
-        <div id='html'> </div>
-        <div id="data"> </div>
-      <div class="input-group mb-3">
-      <input id='caja-msg' type="text" class="form-control .text-primary" placeholder="Tu Mensaje" aria-label="Tu Mensaje" aria-describedby="button-addon2">
-      <button onclick='enviar()' class="btn btn-dark" type="button" id="button-addon2">ENVIAR</button>
       </div>
     </section>
     {{> footer}}
