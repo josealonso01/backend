@@ -9,6 +9,8 @@ const {
 const { engine } = require('express-handlebars');
 const path = require('path');
 const Products = require('./daos/Products');
+const Messagges = require('./daos/Messages');
+const { normalizeMessages } = require('./src/normalize');
 const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
@@ -39,7 +41,7 @@ app.get('/', (req, res) => {
   res.sendFile('index.hbs', { root: __dirname });
 });
 
-const knex = require('knex')({
+/* const knex = require('knex')({
   client: 'sqlite3',
   connection: {
     filename: './DB/ecommerce',
@@ -68,10 +70,11 @@ knex.schema.hasTable('mensajes').then(function (exists) {
       });
   }
 });
-
+ */
 let chat = [];
 
 const catalogo = new Products('productos');
+const mensajes = new Messagges('mensajes');
 
 io.on('connection', (socket) => {
   setTimeout(() => {
@@ -80,11 +83,8 @@ io.on('connection', (socket) => {
   socket.on('data-generica', (data) => {
     chat.push(data);
     console.log('arr-chat adentro del on', chat);
-    io.sockets.emit('arr-chat', chat);
-    knex('mensajes')
-      .insert(data)
-      .then((res) => console.log('mensajes insertados', res))
-      .catch((error) => console.log(error));
+    io.sockets.emit('arr-chat', normalizeMessages(chat));
+    mensajes.save(data);
   });
 
   io.sockets.emit('prod', catalogo.getProductos());
