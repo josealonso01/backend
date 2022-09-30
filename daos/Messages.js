@@ -21,8 +21,7 @@ class Messagges {
     try {
       await this.connect();
       await esquemaMensaje.create(nuevoProducto);
-      mongoose.disconnect();
-      return esquemaMensaje;
+      return nuevoProducto;
     } catch (error) {
       console.log('error en el save', error);
     }

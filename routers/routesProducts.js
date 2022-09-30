@@ -1,10 +1,12 @@
 const express = require('express');
+const Messagges = require('../daos/Messages');
 const ContenedorDB = require('../daos/Products');
 const routerProducts = express.Router();
 const router = require('./router');
 const app = express();
 
 const archivo = new ContenedorDB('productos');
+const mensajes = new Messagges('mensajes');
 
 routerProducts.get('/-test', (req, res, next) => {
   archivo.getProductos().then((prod) => {
@@ -15,21 +17,18 @@ routerProducts.get('/-test', (req, res, next) => {
 
 routerProducts.post('/-test', (req, res, next) => {
   archivo.popular().then((prod) => {
-    res.json({prod: prod})
+    res.json({ prod: prod });
   });
 });
-
 
 routerProducts.get('/', (req, res) => {
   archivo.getProductos().then((productos) => {
     res.json({ product: productos });
   });
-})
+});
 
 routerProducts.get('/mensajes', (req, res) => {
-  archivo.getProductos().then((productos) => {
-    res.render('centroMensajes', { prod: productos });
-  });
+  res.render('centroMensajes');
 });
 
 routerProducts.get('/:id', (req, res) => {
