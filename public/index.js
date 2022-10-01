@@ -40,7 +40,6 @@ button.addEventListener('click', (e) => {
   sockets.emit('data-generica', mensaje);
   mensaje.toString();
   document.getElementById('caja-msg').value = '';
-  console.log('data-generica', mensaje);
 });
 
 sockets.on('arr-chat', (data) => {

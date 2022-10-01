@@ -43,6 +43,17 @@ class Messagges {
       throw Error(error.message);
     }
   }
+
+  async deleteAll() {
+    try {
+      await this.connect();
+      const deleteAll = await esquemaMensaje.deleteMany({});
+      mongoose.disconnect();
+      return deleteAll;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
 }
 
 module.exports = Messagges;

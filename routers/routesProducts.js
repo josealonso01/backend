@@ -31,6 +31,12 @@ routerProducts.get('/mensajes', (req, res) => {
   res.render('centroMensajes');
 });
 
+routerProducts.delete('/mensajes', (req, res) => {
+ mensajes.deleteAll().then((productos) => {
+   res.json({ productosBorrados: productos });
+ });
+});
+
 routerProducts.get('/:id', (req, res) => {
   let { id } = req.params;
   archivo.getById(id).then((producto) => {
