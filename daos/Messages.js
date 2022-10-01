@@ -21,8 +21,7 @@ class Messagges {
     try {
       await this.connect();
       await esquemaMensaje.create(nuevoProducto);
-      mongoose.disconnect();
-      return esquemaMensaje;
+      return nuevoProducto;
     } catch (error) {
       console.log('error en el save', error);
     }
@@ -40,6 +39,17 @@ class Messagges {
       }
 
       return messages;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async deleteAll() {
+    try {
+      await this.connect();
+      const deleteAll = await esquemaMensaje.deleteMany({});
+      mongoose.disconnect();
+      return deleteAll;
     } catch (error) {
       throw Error(error.message);
     }
