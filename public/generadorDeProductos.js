@@ -1,5 +1,4 @@
-var faker = require('faker');
-
+import faker from 'faker';
 
 function generarUsuario(id) {
   return {
@@ -13,4 +12,4 @@ function generarUsuario(id) {
   };
 }
 
-module.exports = generarUsuario;
+export default generarUsuario;

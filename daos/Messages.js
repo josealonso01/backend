@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const esquemaMensaje = require('./modelsMDB/schemaMessage');
+import mongoose from 'mongoose';
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import esquemaMensaje from './modelsMDB/schemaMessage.js';
 
 class Messagges {
   async connect() {
@@ -27,18 +27,12 @@ class Messagges {
     }
   }
 
-  async getAll(options) {
+  async getAll() {
     try {
-      let messages;
-      if (options?.sort == true) {
-        messages = await esquemaMensaje
-          .find({})
-          .sort({ timestamp: -1 });
-      } else {
-        messages = await esquemaMensaje.find({});
-      }
-
-      return messages;
+      await this.connect();
+      const prod = await esquemaMensaje.find({});
+      mongoose.disconnect();
+      return prod;
     } catch (error) {
       throw Error(error.message);
     }
@@ -55,5 +49,4 @@ class Messagges {
     }
   }
 }
-
-module.exports = Messagges;
+export default Messagges;

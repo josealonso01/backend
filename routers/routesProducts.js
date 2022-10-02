@@ -1,8 +1,9 @@
-const express = require('express');
-const Messagges = require('../daos/Messages');
-const ContenedorDB = require('../daos/Products');
-const routerProducts = express.Router();
-const router = require('./router');
+import  express from  'express';
+import  Messagges from '../daos/Messages.js';
+import ContenedorDB from  '../daos/Products.js';
+import  router from  './router.js';
+
+const  routerProducts = express.Router();
 const app = express();
 
 const archivo = new ContenedorDB('productos');
@@ -76,4 +77,4 @@ routerProducts.delete('/', (req, res) => {
   });
 });
 
-module.exports = routerProducts;
+export default routerProducts;

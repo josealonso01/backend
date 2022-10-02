@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 
-const routerProducts = require('./routesProducts');
-const routerBasket = require('./routesBasket');
+import routerProducts from './routesProducts.js';
+import routerBasket from './routesBasket.js';
 
 const router = express.Router();
 
@@ -12,4 +12,4 @@ router.get('/form', (req, res) => {
   res.render('form');
 });
 
-module.exports = router;
+export default router;

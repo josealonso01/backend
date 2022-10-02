@@ -1,27 +1,35 @@
-const express = require('express');
-const { Router } = express;
-const router = require('./routers/router');
-const Handlebars = require('handlebars');
-const hbs = require('express-handlebars');
-const {
-  allowInsecurePrototypeAccess,
-} = require('@handlebars/allow-prototype-access');
-const { engine } = require('express-handlebars');
-const path = require('path');
-const Products = require('./daos/Products');
-const Messagges = require('./daos/Messages');
-const { normalizeMessages } = require('./src/normalize');
-const app = express();
-const httpServer = require('http').createServer(app);
-const io = require('socket.io')(httpServer);
+import express from 'express';
 
-httpServer.listen(process.env.PORT || 8080, () =>
-  console.log('SERVER ON')
+import router from './routers/router.js';
+import Handlebars from 'handlebars';
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
+import { engine } from 'express-handlebars';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import Products from './daos/Products.js';
+import Messagges from './daos/Messages.js';
+import { normalizeMessages } from './src/normalize.js';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+
+const app = express();
+const PORT = 8080;
+const httpServer = createServer(app);
+const io = new Server(httpServer, {});
+
+//Inicio de Servidor
+httpServer.listen(process.env.PORT || PORT, () =>
+  console.log('Servidor Funcionando en Puerto: ' + PORT)
+);
+httpServer.on('error', (error) =>
+  console.log(`Error en servidor ${error}`)
 );
 
-app.use(express.json());
+const __filename = fileURLToPath(import.meta.url);
+export const __dirname = dirname(__filename);
+app.use(express.static(__dirname + '/public'));
+
 app.use(express.urlencoded({ extended: true }));
-app.use('/public', express.static(__dirname + '/public'));
 app.use('/api', router);
 
 app.set('view engine', 'hbs');
@@ -41,50 +49,27 @@ app.get('/', (req, res) => {
   res.sendFile('index.hbs', { root: __dirname });
 });
 
-/* const knex = require('knex')({
-  client: 'sqlite3',
-  connection: {
-    filename: './DB/ecommerce',
-  },
-  useNullAsDefault: true,
-});
-
-knex.schema.hasTable('mensajes').then(function (exists) {
-  if (!exists) {
-    return knex.schema
-      .createTable('mensajes', (table) => {
-        table.increments('id'),
-          table.string('user'),
-          table.string('texto');
-        table.dateTime('dateTime');
-      })
-      .then((res) => {
-        console.log('todo bien', res);
-      })
-      .catch((err) => {
-        console.log(err);
-        throw new Error(err);
-      })
-      .finally(() => {
-        knex.destroy();
-      });
-  }
-});
- */
 let chat = [];
 
 const catalogo = new Products('productos');
 const mensajes = new Messagges('mensajes');
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   setTimeout(() => {
     socket.emit('Este es mi mensaje desde el servidor');
   }, 4000);
-  socket.on('data-generica', (data) => {
-    chat.push(data);
-    console.log('arr-chat adentro del on', chat);
-    io.sockets.emit('arr-chat', normalizeMessages(chat));
-    mensajes.save(data);
+
+  let messages = await mensajes.getAll();
+
+  io.sockets.emit('arr-chat', normalizeMessages(messages));
+  socket.on('data-generica', async (data) => {
+    let message = JSON.parse(data);
+    await mensajes.save(message);
+    let allMessages = await mensajes.getAll({ sort: true });
+
+    console.log('arr-chat adentro del on', allMessages);
+
+    io.sockets.emit('arr-chat', normalizeMessages(allMessages));
   });
 
   io.sockets.emit('prod', catalogo.getProductos());
@@ -94,11 +79,4 @@ io.on('connection', (socket) => {
       socket.emit('prod', unProducto);
     });
   });
-});
-
-io.sockets.on('data-generica', (mensaje) => {
-  const enviar = document.createElement('h1');
-  enviar.innerHTML = `<div> ${mensaje.msg} </div>`;
-  const mensajes = document.getElementById('data');
-  mensajes.appendChild(enviar);
 });
