@@ -1,14 +1,16 @@
-const { v4: uuidv4 } = require('uuid');
-const admin = require('firebase-admin');
-const config = require('./bd/ecommerce-nodejs-90296-firebase-adminsdk-ltiph-b74c0a1b45.json');
-const Producto = require('./Products');
-const { query } = require('express');
-const arrayRemove = require('firebase-admin');
-const FieldValue = require('firebase-admin');
-const FirebaseFirestore = require('firebase-admin');
-const { remove } = require('./modelsMDB/schemaProduct');
-const catalogo = new Producto('productos');
+import admin from 'firebase-admin';
+import Producto from './Products.js';
+import { query } from 'express';
+import arrayRemove from 'firebase-admin';
+import FieldValue from 'firebase-admin';
+import FirebaseFirestore from 'firebase-admin';
+import remove  from './modelsMDB/schemaProduct.js';
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const config = require('./bd/ecommerce-nodejs-90296-firebase-adminsdk-ltiph-b74c0a1b45.json');
+
+const catalogo = new Producto('productos');
 class Basket {
   constructor() {
     admin.initializeApp({
@@ -150,7 +152,7 @@ class Basket {
           stock: body.stock,
           picture: body.picture,
         }),
-      }); 
+      });
       return replaceItem;
     } catch (error) {
       throw Error(error.message);
@@ -158,4 +160,4 @@ class Basket {
   }
 }
 
-module.exports = Basket;
+export default Basket;

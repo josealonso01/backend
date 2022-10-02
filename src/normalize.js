@@ -1,4 +1,4 @@
-const {normalize, schema} = require('normalizr')
+import { normalize, schema } from 'normalizr';
 
 const debuggChat = (messages) => {
   const arr = { id: 'mensajes', chats: [] };
@@ -13,7 +13,7 @@ const debuggChat = (messages) => {
   return arr;
 };
 
- const normalizeMessages = (msj) => {
+export const normalizeMessages = (msj) => {
   //depuro y foramteo el char el chat
   const debuggedChat = debuggChat(msj);
   //Creo las entidades
@@ -27,7 +27,3 @@ const debuggChat = (messages) => {
 
   return normalizedPosts;
 };
-
-module.exports = {normalizeMessages};
-
-

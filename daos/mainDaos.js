@@ -1,4 +1,4 @@
-const basketDaos = require('./Basket')
-const productsDaos = require('./Products')
+import basketDaos from'./Basket.js'
+import productsDaos from'./Products.js'
 
-module.exports = {basketDaos, productsDaos}
+export default {basketDaos, productsDaos}

@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const esquemaProducto = require('./modelsMDB/schemaProduct');
-const generarUsuario = require('../public/generadorDeProductos');
-const generarId = require('../public/generadorDeIds');
+import mongoose from'mongoose' ;
+import { MongoClient, ServerApiVersion } from'mongodb';
+import esquemaProducto from'./modelsMDB/schemaProduct.js';
+import generarUsuario from'../public/generadorDeProductos.js';
+import generarId from'../public/generadorDeIds.js';
 
 class ContenedorDB {
   async connectMDB() {
@@ -108,4 +108,4 @@ class ContenedorDB {
   }
 }
 
-module.exports = ContenedorDB;
+export default ContenedorDB;

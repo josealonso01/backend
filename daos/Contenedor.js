@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+import fs from'fs';
+import { uuidv4 } from'uuid';
 
 class Contenedor {
   constructor(nombreArchivo) {
@@ -63,4 +63,4 @@ class Contenedor {
 
 }
 
-module.exports = Contenedor;
+export default Contenedor;
