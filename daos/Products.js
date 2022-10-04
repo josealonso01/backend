@@ -1,8 +1,8 @@
-import mongoose from'mongoose' ;
-import { MongoClient, ServerApiVersion } from'mongodb';
-import esquemaProducto from'./modelsMDB/schemaProduct.js';
-import generarUsuario from'../public/generadorDeProductos.js';
-import generarId from'../public/generadorDeIds.js';
+import mongoose from 'mongoose';
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import esquemaProducto from './modelsMDB/schemaProduct.js';
+import generarUsuario from '../public/generadorDeProductos.js';
+import generarId from '../public/generadorDeIds.js';
 
 class ContenedorDB {
   async connectMDB() {
@@ -21,13 +21,10 @@ class ContenedorDB {
 
   async save(nuevoProducto) {
     try {
-      let tiempo = new Date();
       await this.connectMDB();
-      nuevoProducto.time = tiempo.toString();
       await esquemaProducto.create(nuevoProducto);
-      const id = nuevoProducto.id;
       mongoose.disconnect();
-      return id;
+      return nuevoProducto;
     } catch (error) {
       console.log('error en el save', error);
     }

@@ -11,6 +11,9 @@ import Messagges from './daos/Messages.js';
 import { normalizeMessages } from './src/normalize.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import cookieParser from 'cookie-parser';
+import MongoStore from 'connect-mongo';
+import session from 'express-session';
 
 const app = express();
 const PORT = 8080;
@@ -23,6 +26,20 @@ httpServer.listen(process.env.PORT || PORT, () =>
 );
 httpServer.on('error', (error) =>
   console.log(`Error en servidor ${error}`)
+);
+
+app.use(cookieParser('A secret'));
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl:
+        'mongodb+srv://joseealonsoo01:josealonso01@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority',
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
+  })
 );
 
 const __filename = fileURLToPath(import.meta.url);

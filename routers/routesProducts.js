@@ -1,41 +1,17 @@
-import  express from  'express';
-import  Messagges from '../daos/Messages.js';
-import ContenedorDB from  '../daos/Products.js';
-import  router from  './router.js';
+import express from 'express';
+import Messagges from '../daos/Messages.js';
+import ContenedorDB from '../daos/Products.js';
+import router from './router.js';
 
-const  routerProducts = express.Router();
+const routerProducts = express.Router();
 const app = express();
 
 const archivo = new ContenedorDB('productos');
-const mensajes = new Messagges('mensajes');
-
-routerProducts.get('/-test', (req, res, next) => {
-  archivo.getProductos().then((prod) => {
-    res.render('productsList', { prod, productsExist: true });
-    console.log(prod);
-  });
-});
-
-routerProducts.post('/-test', (req, res, next) => {
-  archivo.popular().then((prod) => {
-    res.json({ prod: prod });
-  });
-});
 
 routerProducts.get('/', (req, res) => {
   archivo.getProductos().then((productos) => {
     res.json({ product: productos });
   });
-});
-
-routerProducts.get('/mensajes', (req, res) => {
-  res.render('centroMensajes');
-});
-
-routerProducts.delete('/mensajes', (req, res) => {
- mensajes.deleteAll().then((productos) => {
-   res.json({ productosBorrados: productos });
- });
 });
 
 routerProducts.get('/:id', (req, res) => {
