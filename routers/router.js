@@ -4,6 +4,7 @@ import routerProducts from './routesProducts.js';
 import routerBasket from './routesBasket.js';
 import ContenedorDB from '../daos/Products.js';
 import Messagges from '../daos/Messages.js';
+import passport from 'passport';
 
 const router = express.Router();
 const archivo = new ContenedorDB('productos');
@@ -40,73 +41,82 @@ router.delete('/mensajes', (req, res) => {
   });
 });
 
-const validateLogIn = (req, res, next) => {
-  if (req.session.info && req.session.info.loggedIn) next();
-  else res.redirect('login');
+const passportOptions = {
+  badRequestMessage: 'falta usuario / contraseña',
 };
 
-router.get('/', validateLogIn, (req, res) => {
-  req.session.contador++;
-  res.redirect('api/datos');
+function checkAuthentication(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect('login');
+  }
+}
+
+router.get('/ruta-protegida', checkAuthentication, (req, res) => {
+  const { username, password } = req.user;
+  const user = { username, password };
+  res.send('<h1>Ruta ok!</h1>', user);
 });
 
+router.get('/signup', (req, res) => {
+  res.render('register');
+});
+
+router.post('/signup', (req, res, next) => {
+  passport.authenticate(
+    'signup',
+    passportOptions,
+    (err, user, info) => {
+      console.log('Info SIGNUP');
+      console.log('err', err, 'user:', user, 'info:', info);
+      if (err) {
+        return next(err);
+      }
+      if (!user) return res.render('register-error');
+
+      res.render('userCreated');
+    }
+  )(req, res, next);
+});
 
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
-
-router.get('/register', (req, res) => {
-  res.render('register');
+router.get('/login-error', (req, res) => {
+  res.render('login-error');
 });
 
+router.post(
+  '/login',
+  passport.authenticate('login', {
+    failureRedirect: 'login-error',
+    failureMessage: true,
+  }),
+  (req, res) => {
+    res.redirect('/api/datos');
+  }
+);
 
-router.get('/datos', validateLogIn, (req, res) => {
+router.get('/datos', checkAuthentication, async (req, res) => {
+  const { username, password } = req.user;
+  const user = { username, password };
+  req.session.contador = 0;
   req.session.contador++;
   const datos = req.session;
-  console.log(datos);
-  res.render('form', { datos });
+  res.render('form', { user, datos });
 });
 
-router.post('/login', (req, res) => {
-  let { nombre } = req.body;
-
-  const index = usuarios.findIndex(
-    (aUser) => aUser.nombre === nombre
-  );
-
-  if (index < 0) res.render('nologin', {});
-  else {
-    req.session.nombre = nombre;
-    req.session.contador = 0;
-    req.session.info = { loggedIn: true };
-    res.redirect('datos');
-  }
+router.get('/', (req, res) => {
+  res.redirect('api/login');
 });
-
-router.post('/register', (req, res) => {
-  let { nombre } = req.body;
-  console.log('nombre', nombre);
-  let encontrado = usuarios.filter(
-    (usuario) => usuario.nombre == nombre
-  ).length;
-  if (!encontrado) {
-    usuarios.push(req.body);
-    req.session.nombre = nombre;
-    req.session.contador = 0;
-
-    res.redirect('datos');
-  } else {
-    res.render('register-error', {});
-  }
-});
-
 
 router.get('/logout', (req, res) => {
-  const datos = req.session;
-  res.render('logout', { datos });
+  const { username } = req.user;
+  const user = { username };
+  res.render('logout', { user });
   req.session.destroy();
 });
-
 
 export default router;
