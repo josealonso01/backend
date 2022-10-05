@@ -1,83 +1,40 @@
 <html lang='en'>
-  <head>
-    <meta charset='UTF-8' />
-    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
-    <meta
-      name='viewport'
-      content='width=device-width, initial-scale=1.0'
-    />
-    <title>Document</title>
-  </head>
-  <body>
-    {{> navbar}}
-    <div class="container d-flex flex-column w-50 my-2">
-      <h1 class="text-center text-uppercase"> BIENVENIDO</h1>
 
-      <h2 class="text-center">CENTRO DE MENSAJES</h2>
-      <h3 id="div-compres" class ="text-center"></h3>
-      <input
-        type="email"
-        id="email"
-        class="form-control w-100"
-        value=""
-        placeholder="...@email.com"
-      />
-      <input
-        type="text"
-        id="nombre"
-        class="form-control w-100"
-        value=""
-        placeholder="Nombre"
-      />
-      <input
-        type="text"
-        id="apellido"
-        class="form-control w-100"
-        value=""
-        placeholder="Apellido"
-      />
-      <input
-        type="number"
-        id="edad"
-        class="form-control w-100"
-        value=""
-        placeholder="Edad"
-      />
-      <input
-        type="text"
-        id="alias"
-        class="form-control w-100"
-        value=""
-        placeholder="Alias"
-      />
-      <input
-        type="text"
-        id="avatar"
-        class="form-control w-100"
-        value="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/2_avatar-256.png"
-        placeholder="Avatar"
-      />
-      <input
-        type="text"
-        id="caja-msg"
-        class="form-control w-100"
-        value=""
-        placeholder="Escriba su mensaje"
-      />
-      <div class="d-flex flex-row no-wrap w-100">
-          <button  id="submitMessage" class="btn btn-success w-100 mx-1" > ENVIAR </button>
-        </div>
-        <div class="w-100 text-center" id="div-chats"></div>
-        <div id="html"> </div>
+<head>
+  <meta charset='UTF-8' />
+  <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>Document</title>
+</head>
+
+<body>
+  {{> navbar}}
+  <div class="container d-flex flex-column w-50 my-2">
+    <h1 class="text-center text-uppercase"> BIENVENIDO</h1>
+
+    <h2 class="text-center">CENTRO DE MENSAJES</h2>
+    <h3 id="div-compres" class="text-center"></h3>
+    <input type="email" id="email" class="form-control w-100" value="" placeholder="...@email.com" />
+    <input type="text" id="nombre" class="form-control w-100" value="" placeholder="Nombre" />
+    <input type="text" id="apellido" class="form-control w-100" value="" placeholder="Apellido" />
+    <input type="number" id="edad" class="form-control w-100" value="" placeholder="Edad" />
+    <input type="text" id="alias" class="form-control w-100" value="" placeholder="Alias" />
+    <input type="text" id="avatar" class="form-control w-100"
+      value="https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/2_avatar-256.png" placeholder="Avatar" />
+    <input type="text" id="caja-msg" class="form-control w-100" value="" placeholder="Escriba su mensaje" />
+    <div class="d-flex flex-row no-wrap w-100">
+      <button id="submitMessage" class="btn btn-success w-100 mx-1"> ENVIAR </button>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
-    <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    <div class="w-100 text-center" id="div-chats"></div>
+    <div id="html"> </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-    crossorigin="anonymous"
-    ></script>
-    <script type="module" src="/index.js"></script>
-    {{> footer}}
-  </body>
+    crossorigin="anonymous"></script>
+  <script type="module" src="/index.js"></script>
+  {{> footer}}
+</body>
+
 </html>
