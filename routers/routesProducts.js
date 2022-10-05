@@ -1,18 +1,17 @@
 import express from 'express';
-import Messagges from '../daos/Messages.js';
-import ContenedorDB from '../daos/Products.js';
-import router from './router.js';
+import ContenedorDB from '../daos/Products.js'
+import router from './router.js';;
 
 const routerProducts = express.Router();
 const app = express();
-
 const archivo = new ContenedorDB('productos');
 
 routerProducts.get('/', (req, res) => {
-  archivo.getProductos().then((productos) => {
-    res.json({ product: productos });
+   archivo.getProductos().then((prod) => {
+    res.render('productsList', { prod, productsExist: true });
   });
-});
+  });
+
 
 routerProducts.get('/:id', (req, res) => {
   let { id } = req.params;

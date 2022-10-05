@@ -8,7 +8,7 @@ import Messagges from '../daos/Messages.js';
 const router = express.Router();
 const archivo = new ContenedorDB('productos');
 const mensajes = new Messagges('mensajes');
-let usuarios = [{ nombre: 'Josefina' }];
+let usuarios = [{ nombre: '' }];
 
 router.use('/productos', routerProducts);
 router.use('/basket', routerBasket);
@@ -47,28 +47,27 @@ const validateLogIn = (req, res, next) => {
 
 router.get('/', validateLogIn, (req, res) => {
   req.session.contador++;
-  res.redirect('/datos');
+  res.redirect('api/datos');
 });
 
-/* --------- LOGIN ---------- */
+
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
-/* --------- REGISTER ---------- */
+
 router.get('/register', (req, res) => {
   res.render('register');
 });
 
-/* --------- DATOS ---------- */
+
 router.get('/datos', validateLogIn, (req, res) => {
   req.session.contador++;
   const datos = req.session;
   console.log(datos);
-  res.render('datos', { datos });
+  res.render('form', { datos });
 });
-///////////////////////////////////////////////////////////////
-/* --------- LOGIN ---------- */
+
 router.post('/login', (req, res) => {
   let { nombre } = req.body;
 
@@ -85,7 +84,6 @@ router.post('/login', (req, res) => {
   }
 });
 
-/*-----------------REGISTER----------------- */
 router.post('/register', (req, res) => {
   let { nombre } = req.body;
   console.log('nombre', nombre);
@@ -103,7 +101,7 @@ router.post('/register', (req, res) => {
   }
 });
 
-/* --------- LOGOUT ---------- */
+
 router.get('/logout', (req, res) => {
   const datos = req.session;
   res.render('logout', { datos });
