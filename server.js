@@ -1,5 +1,4 @@
 import express from 'express';
-
 import router from './routers/router.js';
 import Handlebars from 'handlebars';
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
@@ -17,16 +16,30 @@ import redis from 'redis';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import { createRequire } from 'module';
+import * as dotenv from 'dotenv';
+import minimist from 'minimist';
 import Usuarios from './daos/modelsMDB/Usuarios.js';
 const require = createRequire(import.meta.url);
-
 const LocalStrategy = require('passport-local').Strategy;
 const RedisStore = require('connect-redis')(session);
+dotenv.config();
 
 //CONECTO SERVIDOR
 
 const app = express();
-const PORT = 8080;
+
+const optionalArgsObject = {
+  alias: {
+    port: 'puerto',
+  },
+  default: {
+    port: 8080,
+  },
+};
+const args = minimist(process.argv.slice(2), optionalArgsObject);
+
+const PORT = args.puerto;
+
 const httpServer = createServer(app);
 const io = new Server(httpServer, {});
 
@@ -36,6 +49,8 @@ httpServer.listen(process.env.PORT || PORT, () =>
 httpServer.on('error', (error) =>
   console.log(`Error en servidor ${error}`)
 );
+
+
 
 //AUTH
 const client = redis.createClient({
@@ -53,7 +68,7 @@ function createHash(password) {
 }
 
 mongoose
-  .connect('mongodb://localhost:27017/ecommerce')
+  .connect(process.env.MONGOOSE)
   .then(() => console.log('Connected to DB'))
   .catch((e) => {
     console.error(e);
