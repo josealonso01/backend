@@ -1,12 +1,7 @@
 import admin from 'firebase-admin';
 import Producto from './Products.js';
-import { query } from 'express';
-import arrayRemove from 'firebase-admin';
-import FieldValue from 'firebase-admin';
-import FirebaseFirestore from 'firebase-admin';
-import remove  from './modelsMDB/schemaProduct.js';
-
 import { createRequire } from 'module';
+
 const require = createRequire(import.meta.url);
 const config = require('./bd/ecommerce-nodejs-90296-firebase-adminsdk-ltiph-b74c0a1b45.json');
 

@@ -1,21 +1,29 @@
 import express from 'express';
-
 import routerProducts from './routesProducts.js';
 import routerBasket from './routesBasket.js';
 import ContenedorDB from '../daos/Products.js';
 import Messagges from '../daos/Messages.js';
 import passport from 'passport';
+import { fork } from 'child_process';
 
 const router = express.Router();
 const archivo = new ContenedorDB('productos');
 const mensajes = new Messagges('mensajes');
-let usuarios = [{ nombre: '' }];
 
 router.use('/productos', routerProducts);
 router.use('/basket', routerBasket);
 
 router.get('/form', (req, res) => {
   res.render('form');
+});
+
+router.get('/random', (req, res) => {
+  const cant = req.query.cant || 100000;
+  const computo = fork('./public/randomsFunction.js');
+  computo.send({ message: 'start', cant: cant });
+  computo.on('message', (msg) => {
+    res.json({ mensaje: msg });
+  });
 });
 
 router.get('/-test', (req, res, next) => {
@@ -39,6 +47,21 @@ router.delete('/mensajes', (req, res) => {
   mensajes.deleteAll().then((productos) => {
     res.json({ productosBorrados: productos });
   });
+});
+
+const infodelProceso = {
+  args: process.argv.slice(2),
+  plataforma: process.platform,
+  nodeVersion: process.version,
+  memoria: JSON.stringify(process.memoryUsage.rss()),
+  execPath: process.cwd(),
+  processID: process.pid,
+  carpeta: process.argv[1],
+};
+
+router.get('/info', (req, res) => {
+  const data = infodelProceso;
+  res.render('info', { data });
 });
 
 const passportOptions = {

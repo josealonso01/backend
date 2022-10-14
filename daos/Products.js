@@ -3,13 +3,14 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import esquemaProducto from './modelsMDB/schemaProduct.js';
 import generarUsuario from '../public/generadorDeProductos.js';
 import generarId from '../public/generadorDeIds.js';
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 class ContenedorDB {
   async connectMDB() {
     try {
-      const uri =
-        'mongodb+srv://joseealonsoo01:josealonso01@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority';
-      let rta = await mongoose.connect(uri, {
+      const url = process.env.URL; 
+        
+      let rta = await mongoose.connect(url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         serverApi: ServerApiVersion.v1,
