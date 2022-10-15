@@ -15,11 +15,12 @@ const calcularNumeros = (cant) => {
 };
 
 process.on('message', (msg) => {
+  console.log(`mensajes desde parent process ${msg}`);
+  console.log('CHILD');
   let sum;
-
   if (msg) {
     const cant = msg;
     sum = calcularNumeros(cant);
-  }
+  } else process.exit(1);
   process.send(sum);
 });
