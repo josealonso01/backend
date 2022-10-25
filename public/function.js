@@ -1,4 +1,4 @@
-export const denormalize = (messages) => {
+const denormalize = (messages) => {
   const author = new normalizr.schema.Entity('authors');
   const mensajes = new normalizr.schema.Entity('mensajes', {
     author: author,
@@ -15,3 +15,5 @@ export const denormalize = (messages) => {
 
   return denormalizedMessages;
 };
+
+module.exports = { denormalize };

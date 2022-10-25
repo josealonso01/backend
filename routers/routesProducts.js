@@ -1,6 +1,6 @@
-import express from 'express';
-import ContenedorDB from '../daos/Products.js'
-import router from './router.js';;
+const express = require ('express');
+const ContenedorDB = require ('../daos/Products.js')
+const router = require ('./router.js');
 
 const routerProducts = express.Router();
 const app = express();
@@ -52,4 +52,4 @@ routerProducts.delete('/', (req, res) => {
   });
 });
 
-export default routerProducts;
+module.exports = routerProducts;

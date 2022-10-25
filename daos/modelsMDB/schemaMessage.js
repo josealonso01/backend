@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
 const esquemaMensaje = new Schema(
@@ -19,4 +19,4 @@ const esquemaMensaje = new Schema(
   }
 );
 
-export default mongoose.model('Messages', esquemaMensaje);
+module.exports = mongoose.model('Messages', esquemaMensaje);

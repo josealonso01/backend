@@ -1,17 +1,18 @@
-import express from 'express';
-import routerProducts from './routesProducts.js';
-import routerBasket from './routesBasket.js';
-import ContenedorDB from '../daos/Products.js';
-import Messagges from '../daos/Messages.js';
-import passport from 'passport';
-import { fork } from 'child_process';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-var cp = require('child_process');
+const express = require('express');
+const routerProducts = require('./routesProducts.js');
+const routerBasket = require('./routesBasket.js');
+const ContenedorDB = require('../daos/Products.js');
+const Messagges = require('../daos/Messages.js');
+const passport = require('passport');
+const { fork } = require('child_process');
+const os = require('os');
+const path = require('path');
 
 const router = express.Router();
+
 const archivo = new ContenedorDB('productos');
 const mensajes = new Messagges('mensajes');
+const numCPUs = os.cpus().length;
 
 router.use('/productos', routerProducts);
 router.use('/basket', routerBasket);
@@ -20,17 +21,23 @@ router.get('/form', (req, res) => {
   res.render('form');
 });
 
+const scriptPath = path.resolve(
+  __dirname,
+  '../public/randomsFunction.js'
+);
+
 router.get('/random', (req, res) => {
   const cant = req.query.cant || 100000;
-  const computo = cp.fork('./public/randomsFunction.js');
+  const computo = fork(scriptPath);
+  computo.send(cant);
   computo.on('exit', (code) => {
     console.log(`child_process exited with code ${code}`);
   });
-  computo.on('message', (msg) => {
-    console.log(`mensaje desde child process ${msg}`);
-    console.log('PARENT');
-    res.json({ mensaje: msg });
-    computo.send(cant);
+
+  computo.on('message', (resultado) => {
+    res.json({
+      result: resultado,
+    });
   });
 });
 
@@ -65,6 +72,7 @@ const infodelProceso = {
   execPath: process.cwd(),
   processID: process.pid,
   carpeta: process.argv[1],
+  cantidadNucleos: numCPUs,
 };
 
 router.get('/info', (req, res) => {
@@ -150,4 +158,4 @@ router.get('/logout', (req, res) => {
   req.session.destroy();
 });
 
-export default router;
+module.exports = router;

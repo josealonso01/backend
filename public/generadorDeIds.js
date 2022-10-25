@@ -1,4 +1,4 @@
-import faker from 'faker';
+const faker = require ('faker');
 
 function generarId(id) {
   return {
@@ -6,4 +6,4 @@ function generarId(id) {
   };
 }
 
-export default generarId;
+module.exports = {generarId};
