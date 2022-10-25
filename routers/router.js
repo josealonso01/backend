@@ -5,9 +5,6 @@ import ContenedorDB from '../daos/Products.js';
 import Messagges from '../daos/Messages.js';
 import passport from 'passport';
 import { fork } from 'child_process';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-var cp = require('child_process');
 
 const router = express.Router();
 const archivo = new ContenedorDB('productos');
@@ -22,7 +19,7 @@ router.get('/form', (req, res) => {
 
 router.get('/random', (req, res) => {
   const cant = req.query.cant || 100000;
-  const computo = cp.fork('./public/randomsFunction.js');
+  const computo = fork('./public/randomsFunction.js');
   computo.on('exit', (code) => {
     console.log(`child_process exited with code ${code}`);
   });
