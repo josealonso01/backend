@@ -6,6 +6,7 @@ const Messagges = require('../daos/Messages.js');
 const passport = require('passport');
 const { fork } = require('child_process');
 const os = require('os');
+const path = require('path');
 
 const router = express.Router();
 
@@ -20,21 +21,23 @@ router.get('/form', (req, res) => {
   res.render('form');
 });
 
+const scriptPath = path.resolve(
+  __dirname,
+  '../public/randomsFunction.js'
+);
+
 router.get('/random', (req, res) => {
   const cant = req.query.cant || 100000;
-  const computo = fork('./public/randomsFunction.js');
+  const computo = fork(scriptPath);
+  computo.send(cant);
   computo.on('exit', (code) => {
     console.log(`child_process exited with code ${code}`);
   });
-  computo.on('message', (msg) => {
-    console.log(`mensaje desde child process ${msg}`);
-    console.log('PARENT');
-    if (msg) {
-      res.json({ mensaje: msg });
-      computo.send(cant);
-    } else {
-      res.statu(500).json({ error: 'ocurrio un error' });
-    }
+
+  computo.on('message', (resultado) => {
+    res.json({
+      result: resultado,
+    });
   });
 });
 

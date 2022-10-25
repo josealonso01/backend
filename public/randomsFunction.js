@@ -21,7 +21,6 @@ process.on('message', (msg) => {
   if (msg) {
     const cant = msg;
     sum = calcularNumeros(cant);
-    return process.send(sum);
+    process.send(sum);
   } else process.exit(1);
 });
-process.send('sum');
