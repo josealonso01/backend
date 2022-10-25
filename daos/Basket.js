@@ -1,8 +1,6 @@
-import admin from 'firebase-admin';
-import Producto from './Products.js';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
+const admin = require ('firebase-admin');
+const Producto = require ('./Products.js');
+const { createRequire } = require ('module');
 const config = require('./bd/ecommerce-nodejs-90296-firebase-adminsdk-ltiph-b74c0a1b45.json');
 
 const catalogo = new Producto('productos');
@@ -155,4 +153,4 @@ class Basket {
   }
 }
 
-export default Basket;
+module.exports = Basket;

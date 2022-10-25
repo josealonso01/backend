@@ -1,4 +1,4 @@
-import mongoose from'mongoose';
+const mongoose = require ('mongoose');
 
 const Schema = mongoose.Schema;
 
@@ -11,4 +11,4 @@ const esquemaProducto = new Schema({
   stock: { type: Number, required: true },
 });
 
-export default mongoose.model('productos', esquemaProducto);
+module.exports = mongoose.model('productos', esquemaProducto);

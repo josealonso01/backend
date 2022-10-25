@@ -1,6 +1,5 @@
 const sockets = io();
-
-import { denormalize } from './function.js';
+const { denormalize } = require('./function.js');
 //ATRAPAN MSGS QUE ENVIE EL SERVER
 
 sockets.on('connect', () => {

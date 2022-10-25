@@ -1,14 +1,17 @@
-import express from 'express';
-import routerProducts from './routesProducts.js';
-import routerBasket from './routesBasket.js';
-import ContenedorDB from '../daos/Products.js';
-import Messagges from '../daos/Messages.js';
-import passport from 'passport';
-import { fork } from 'child_process';
+const express = require('express');
+const routerProducts = require('./routesProducts.js');
+const routerBasket = require('./routesBasket.js');
+const ContenedorDB = require('../daos/Products.js');
+const Messagges = require('../daos/Messages.js');
+const passport = require('passport');
+const { fork } = require('child_process');
+const os = require('os');
 
 const router = express.Router();
+
 const archivo = new ContenedorDB('productos');
 const mensajes = new Messagges('mensajes');
+const numCPUs = os.cpus().length;
 
 router.use('/productos', routerProducts);
 router.use('/basket', routerBasket);
@@ -26,8 +29,12 @@ router.get('/random', (req, res) => {
   computo.on('message', (msg) => {
     console.log(`mensaje desde child process ${msg}`);
     console.log('PARENT');
-    res.json({ mensaje: msg });
-    computo.send(cant);
+    if (msg) {
+      res.json({ mensaje: msg });
+      computo.send(cant);
+    } else {
+      res.statu(500).json({ error: 'ocurrio un error' });
+    }
   });
 });
 
@@ -62,6 +69,7 @@ const infodelProceso = {
   execPath: process.cwd(),
   processID: process.pid,
   carpeta: process.argv[1],
+  cantidadNucleos: numCPUs,
 };
 
 router.get('/info', (req, res) => {
@@ -147,4 +155,4 @@ router.get('/logout', (req, res) => {
   req.session.destroy();
 });
 
-export default router;
+module.exports = router;

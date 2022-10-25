@@ -1,4 +1,4 @@
-import faker from 'faker';
+const faker = require ('faker');
 
 function generarUsuario(id) {
   return {
@@ -12,4 +12,4 @@ function generarUsuario(id) {
   };
 }
 
-export default generarUsuario;
+module.exports = {generarUsuario};

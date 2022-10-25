@@ -1,25 +1,25 @@
-import express from 'express';
-import router from './routers/router.js';
-import Handlebars from 'handlebars';
-import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
-import { engine } from 'express-handlebars';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import Products from './daos/Products.js';
-import Messagges from './daos/Messages.js';
-import { normalizeMessages } from './src/normalize.js';
-import { createServer } from 'http';
-import { Server } from 'socket.io';
-import passport from 'passport';
-import bCrypt from 'bcrypt';
-import redis from 'redis';
-import mongoose from 'mongoose';
-import session from 'express-session';
-import { createRequire } from 'module';
-import * as dotenv from 'dotenv';
-import minimist from 'minimist';
-import Usuarios from './daos/modelsMDB/Usuarios.js';
-const require = createRequire(import.meta.url);
+const express = require('express');
+const router = require('./routers/router.js');
+const Handlebars = require('handlebars');
+const {
+  allowInsecurePrototypeAccess,
+} = require('@handlebars/allow-prototype-access');
+const { engine } = require('express-handlebars');
+const { dirname } = require('path');
+const { fileURLToPath } = require('url');
+const Products = require('./daos/Products.js');
+const Messagges = require('./daos/Messages.js');
+const { normalizeMessages } = require('./src/normalize.js');
+const { createServer } = require('http');
+const { Server } = require('socket.io');
+const passport = require('passport');
+const bCrypt = require('bcrypt');
+const redis = require('redis');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const dotenv = require('dotenv');
+const minimist = require('minimist');
+const Usuarios = require('./daos/modelsMDB/Usuarios.js');
 const LocalStrategy = require('passport-local').Strategy;
 const RedisStore = require('connect-redis')(session);
 dotenv.config();
@@ -49,8 +49,6 @@ httpServer.listen(process.env.PORT || PORT, () =>
 httpServer.on('error', (error) =>
   console.log(`Error en servidor ${error}`)
 );
-
-
 
 //AUTH
 const client = redis.createClient({
@@ -159,8 +157,6 @@ app.use(
 
 //CONFIG APP
 
-const __filename = fileURLToPath(import.meta.url);
-export const __dirname = dirname(__filename);
 app.use(express.static(__dirname + '/public'));
 
 app.use(passport.initialize());

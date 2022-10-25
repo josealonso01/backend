@@ -1,7 +1,7 @@
-import express from 'express';
-import Basket from '../daos/Basket.js';
-import Products from '../daos/Products.js';
-import router from './router.js';
+const express = require ('express');
+const Basket = require ('../daos/Basket.js');
+const Products = require ('../daos/Products.js');
+const router = require ('./router.js');
 const routerBasket = express.Router();
 const app = express();
 
@@ -103,4 +103,4 @@ routerBasket.delete(
   }
 });
 
-export default routerBasket;
+module.exports = routerBasket;

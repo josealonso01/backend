@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import { MongoClient, ServerApiVersion } from 'mongodb';
-import esquemaMensaje from './modelsMDB/schemaMessage.js';
-import * as dotenv from 'dotenv';
+const mongoose = require ('mongoose');
+const { MongoClient, ServerApiVersion } = require ('mongodb');
+const esquemaMensaje = require ('./modelsMDB/schemaMessage.js');
+const  dotenv = require ('dotenv');
 dotenv.config();
 
 class Messagges {
@@ -50,4 +50,4 @@ class Messagges {
     }
   }
 }
-export default Messagges;
+module.exports = Messagges;
