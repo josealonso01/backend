@@ -1,3 +1,8 @@
+const datos = {
+  puerto: process.argv.puerto,
+  proceso: process.pid,
+};
+
 const calcularNumeros = (cant) => {
   const randomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
@@ -15,12 +20,10 @@ const calcularNumeros = (cant) => {
 };
 
 process.on('message', (msg) => {
-  console.log(`mensajes desde parent process ${msg}`);
-  console.log('CHILD');
   let sum;
   if (msg) {
     const cant = msg;
     sum = calcularNumeros(cant);
-    process.send(sum);
-  } else process.exit(1);
+  }
+  process.send(datos);
 });
