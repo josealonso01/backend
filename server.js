@@ -22,8 +22,10 @@ const minimist = require('minimist');
 const Usuarios = require('./daos/modelsMDB/Usuarios.js');
 const LocalStrategy = require('passport-local').Strategy;
 const RedisStore = require('connect-redis')(session);
+const cluster = require('cluster');
+const os = require('os');
 dotenv.config();
-
+const numCPUs = os.cpus().length;
 //CONECTO SERVIDOR
 
 const app = express();
@@ -31,25 +33,38 @@ const app = express();
 const optionalArgsObject = {
   alias: {
     port: 'puerto',
+    m: 'modo',
   },
   default: {
     port: 8080,
+    m: 'FORK',
   },
 };
 const args = minimist(process.argv.slice(2), optionalArgsObject);
 
 const PORT = args.puerto;
-
+const modoCluster = args.modo === 'CLUSTER';
 const httpServer = createServer(app);
 const io = new Server(httpServer, {});
 
-httpServer.listen(process.env.PORT || PORT, () =>
-  console.log('Servidor Funcionando en Puerto: ' + PORT)
-);
-httpServer.on('error', (error) =>
-  console.log(`Error en servidor ${error}`)
-);
+if (modoCluster && cluster.isPrimary) {
+  console.log('MODO CLUSTER');
 
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+  cluster.on('exit', (worker) => {
+    console.log(`Worker ${worker.process.pid} died at ${Date()}`);
+    cluster.fork();
+  });
+} else {
+  httpServer.listen(process.env.PORT || PORT, () =>
+    console.log('Servidor Funcionando en Puerto: ' + PORT)
+  );
+  httpServer.on('error', (error) =>
+    console.log(`Error en servidor ${error}`)
+  );
+}
 //AUTH
 const client = redis.createClient({
   legacyMode: true,
