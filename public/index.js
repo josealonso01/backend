@@ -1,10 +1,25 @@
 const sockets = io();
-const { denormalize } = require('./function.js');
 //ATRAPAN MSGS QUE ENVIE EL SERVER
 
 sockets.on('connect', () => {
   console.log('me conecte!');
 });
+
+const denormalize = (messages) => {
+  const author = new normalizr.schema.Entity('authors');
+  const mensajes = new normalizr.schema.Entity('mensajes', {
+    author: author,
+  });
+  const chats = new normalizr.schema.Entity('chats', {
+    chats: [mensajes],
+  });
+  const denormalizedMessages = normalizr.denormalize(
+    messages.result,
+    chats,
+    messages.entities
+  );
+  return denormalizedMessages;
+};
 
 const button = document.getElementById('submitMessage');
 button.addEventListener('click', (e) => {
