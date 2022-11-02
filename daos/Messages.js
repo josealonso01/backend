@@ -1,18 +1,20 @@
-const mongoose = require ('mongoose');
-const { MongoClient, ServerApiVersion } = require ('mongodb');
-const esquemaMensaje = require ('./modelsMDB/schemaMessage.js');
-const  dotenv = require ('dotenv');
+const mongoose = require('mongoose');
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const esquemaMensaje = require('./modelsMDB/schemaMessage.js');
+const dotenv = require('dotenv');
 dotenv.config();
 
 class Messagges {
   async connect() {
     try {
-      const url = process.env.URL;
-      let rta = await mongoose.connect(url, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverApi: ServerApiVersion.v1,
-      });
+      const client = await new MongoClient(
+        `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majorit`,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+          serverApi: ServerApiVersion.v1,
+        }
+      );
     } catch (error) {
       console.log('hubo un error conectando mongodb', error);
     }
