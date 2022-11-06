@@ -80,7 +80,7 @@ const advancedOptions = {
 app.use(cookieParser());
 app.use(
   session({
-    store: MongoStore.create({
+    store: MongoStore.connect({
       mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority`,
       mongoOptions: {
         useNewUrlParser: true,
@@ -89,7 +89,9 @@ app.use(
     }),
     secret: 'shhhhhhhh',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+  }).then(() => {
+    console.log('Connected to MongoDB Cloud :)');
   })
 );
 
