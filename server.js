@@ -195,6 +195,10 @@ app.engine(
   })
 );
 
+app.get('/', (req, res) => {
+  res.sendFile('index.hbs', { root: __dirname });
+});
+
 //SOCKETS
 
 let chat = [];
