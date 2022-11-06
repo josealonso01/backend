@@ -82,7 +82,7 @@ app.use(cookieParser());
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority`,
+      mongoUrl: process.env.URL,
       mongoOptions: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
