@@ -34,8 +34,7 @@
     "nodemon": "^2.0.19"
   },
   "scripts": {
-    "test": "node public/benchmark.js",
-    "start": "0x server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

@@ -16,6 +16,8 @@ const passport = require('passport');
 const bCrypt = require('bcrypt');
 const redis = require('redis');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const minimist = require('minimist');
@@ -74,11 +76,25 @@ if (modoCluster && cluster.isPrimary) {
 }
 
 //AUTH
-const client = redis.createClient({
-  legacyMode: true,
-});
-
-client.connect();
+const advancedOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+app.use(cookieParser());
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority`,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
+    secret: 'shhhhhhhh',
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
 function isValidPassword(username, password) {
   return bCrypt.compareSync(password, username.password);
@@ -157,26 +173,6 @@ passport.deserializeUser((id, done) => {
   console.log('Se Ejecuta el deserializeUser');
   Usuarios.findById(id, done);
 });
-
-app.use(
-  session({
-    store: new RedisStore({
-      host: 'localhost',
-      port: 6379,
-      client,
-      ttl: 300,
-    }),
-    secret: 'keyboard cat',
-    cookie: {
-      httpOnly: false,
-      secure: false,
-      maxAge: 86400000, // 1 dia
-    },
-    rolling: true,
-    resave: true,
-    saveUninitialized: false,
-  })
-);
 
 //CONFIG APP
 

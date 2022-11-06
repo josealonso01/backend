@@ -9,7 +9,7 @@ class ContenedorDB {
   async connectMDB() {
     try {
       const client = await new MongoClient(
-        `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majorit`,
+        `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority`,
         {
           useNewUrlParser: true,
           useUnifiedTopology: true,
