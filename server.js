@@ -22,6 +22,7 @@ const Usuarios = require('./daos/modelsMDB/Usuarios.js');
 const LocalStrategy = require('passport-local').Strategy;
 const cluster = require('cluster');
 const os = require('os');
+const { url } = require('inspector');
 
 dotenv.config();
 
@@ -79,10 +80,13 @@ const advancedOptions = {
 };
 app.use(cookieParser());
 
+const  urlMongo = process.env.URL;
+
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl: process.env.URL,
+    
+      mongoUrl: urlMongo,
       mongoOptions: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
