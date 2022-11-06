@@ -78,20 +78,19 @@ const advancedOptions = {
   useUnifiedTopology: true,
 };
 app.use(cookieParser());
+
 app.use(
   session({
-    store: MongoStore.connect({
+    store: MongoStore.create({
       mongoUrl: `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority`,
       mongoOptions: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       },
     }),
-    secret: 'shhhhhhhh',
+    secret: 'shhhhhh',
     resave: false,
     saveUninitialized: false,
-  }).then(() => {
-    console.log('Connected to MongoDB Cloud :)');
   })
 );
 
