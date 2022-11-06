@@ -5,8 +5,6 @@ const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
 const { engine } = require('express-handlebars');
-const { dirname } = require('path');
-const { fileURLToPath } = require('url');
 const Products = require('./daos/Products.js');
 const Messagges = require('./daos/Messages.js');
 const { normalizeMessages } = require('./src/normalize.js');
@@ -14,7 +12,6 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const passport = require('passport');
 const bCrypt = require('bcrypt');
-const redis = require('redis');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const MongoStore = require('connect-mongo');
@@ -23,7 +20,6 @@ const dotenv = require('dotenv');
 const minimist = require('minimist');
 const Usuarios = require('./daos/modelsMDB/Usuarios.js');
 const LocalStrategy = require('passport-local').Strategy;
-const RedisStore = require('connect-redis')(session);
 const cluster = require('cluster');
 const os = require('os');
 
