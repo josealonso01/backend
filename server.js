@@ -83,18 +83,14 @@ app.use(cookieParser());
 const  urlMongo = process.env.URL;
 
 app.use(
-  session({
-    store: MongoStore.create({
-    
-      mongoUrl: urlMongo,
-      mongoOptions: {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-    }),
+  express.Routersession({
     secret: 'shhhhhh',
     resave: false,
     saveUninitialized: false,
+    store: new MongoStore({
+      url: process.env.URL,
+      collection: 'sessions',
+    }),
   })
 );
 
