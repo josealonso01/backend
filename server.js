@@ -87,14 +87,15 @@ const StoreOptions = {
 app.use(cookieParser());
 app.use(session(StoreOptions));
 
-mongoose
-  .connect(process.env.MONGOOSE)
-  .then(() => console.log('Connected to DB'))
-  .catch((e) => {
-    console.error(e);
-    throw 'can not connect to the db';
-  });
+mongoose.connect(process.env.MONGOOSE);
 
+let db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+db.once('open', function () {
+  console.log('Connected correctly to server');
+});
 
 function isValidPassword(username, password) {
   return bCrypt.compareSync(password, username.password);
@@ -103,7 +104,6 @@ function isValidPassword(username, password) {
 function createHash(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
-
 
 passport.use(
   'login',
