@@ -22,13 +22,10 @@ const Usuarios = require('./daos/modelsMDB/Usuarios.js');
 const LocalStrategy = require('passport-local').Strategy;
 const cluster = require('cluster');
 const os = require('os');
-const { url } = require('inspector');
-
 dotenv.config();
+const app = express();
 
 //CONECTO SERVIDOR
-
-const app = express();
 
 const optionalArgsObject = {
   alias: {
@@ -74,25 +71,30 @@ if (modoCluster && cluster.isPrimary) {
 }
 
 //AUTH
-const advancedOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+
+const StoreOptions = {
+  store: MongoStore.create({
+    mongoUrl: process.env.URL,
+    crypto: {
+      secret: 'squirrel',
+    },
+  }),
+  secret: 'shhhhhhhhhhhhhhhhhhhhh',
+  resave: false,
+  saveUninitialized: false,
 };
+
 app.use(cookieParser());
+app.use(session(StoreOptions));
 
-const  urlMongo = process.env.URL;
+mongoose
+  .connect(process.env.MONGOOSE)
+  .then(() => console.log('Connected to DB'))
+  .catch((e) => {
+    console.error(e);
+    throw 'can not connect to the db';
+  });
 
-app.use(
-  express.Routersession({
-    secret: 'shhhhhh',
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({
-      url: process.env.URL,
-      collection: 'sessions',
-    }),
-  })
-);
 
 function isValidPassword(username, password) {
   return bCrypt.compareSync(password, username.password);
@@ -102,13 +104,6 @@ function createHash(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
 
-mongoose
-  .connect(process.env.MONGOOSE)
-  .then(() => console.log('Connected to DB'))
-  .catch((e) => {
-    console.error(e);
-    throw 'can not connect to the db';
-  });
 
 passport.use(
   'login',
