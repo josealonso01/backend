@@ -12,7 +12,6 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const passport = require('passport');
 const bCrypt = require('bcrypt');
-const redis = require('redis');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const dotenv = require('dotenv');
@@ -189,6 +188,10 @@ app.engine(
   })
 );
 
+app.get('/', (req, res) => {
+  logger.info('RUTA: /api/ || METODO: get');
+  res.render('form');
+});
 //SOCKETS
 
 let chat = [];
