@@ -82,7 +82,7 @@ function createHash(password) {
 }
 
 mongoose
-  .connect(process.env.MONGOOSE)
+  .connect(process.env.URL)
   .then(() => console.log('Connected to DB'))
   .catch((e) => {
     console.error(e);
