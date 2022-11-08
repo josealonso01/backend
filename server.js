@@ -87,16 +87,6 @@ const StoreOptions = {
 app.use(cookieParser());
 app.use(session(StoreOptions));
 
-mongoose.connect(process.env.MONGOOSE);
-
-let db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-
-db.once('open', function () {
-  console.log('Connected correctly to server');
-});
-
 function isValidPassword(username, password) {
   return bCrypt.compareSync(password, username.password);
 }
@@ -165,6 +155,16 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   console.log('Se Ejecuta el deserializeUser');
   Usuarios.findById(id, done);
+});
+
+mongoose.connect(process.env.URL);
+
+let db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+db.once('open', function () {
+  console.log('Connected correctly to server');
 });
 
 //CONFIG APP

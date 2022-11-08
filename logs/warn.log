@@ -1,2 +1,5 @@
 {"level":"error","message":"RUTA:  /api/basket/:id || METODO: get"}
 {"level":"warn","message":"RUTA: /signup || METODO: post"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"warn","message":"RUTA: /signup || METODO: post"}
