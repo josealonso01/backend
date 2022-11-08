@@ -39,7 +39,7 @@ const optionalArgsObject = {
 };
 const args = minimist(process.argv.slice(2), optionalArgsObject);
 
-const PORT = parseInt(process.argv[2]) || 8080;
+const PORT = parseInt(process.argv[2]) || process.env.PORT;
 const modoCluster = process.argv[3] == 'CLUSTER';
 const httpServer = createServer(app);
 const io = new Server(httpServer, {});
