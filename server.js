@@ -12,9 +12,8 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const passport = require('passport');
 const bCrypt = require('bcrypt');
+const redis = require('redis');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const minimist = require('minimist');
@@ -22,10 +21,12 @@ const Usuarios = require('./daos/modelsMDB/Usuarios.js');
 const LocalStrategy = require('passport-local').Strategy;
 const cluster = require('cluster');
 const os = require('os');
-dotenv.config();
-const app = express();
+const MongoStore = require('connect-mongo');
 
+dotenv.config();
 //CONECTO SERVIDOR
+
+const app = express();
 
 const optionalArgsObject = {
   alias: {
@@ -72,21 +73,6 @@ if (modoCluster && cluster.isPrimary) {
 
 //AUTH
 
-const StoreOptions = {
-  store: MongoStore.create({
-    mongoUrl: process.env.URL,
-    crypto: {
-      secret: 'squirrel',
-    },
-  }),
-  secret: 'shhhhhhhhhhhhhhhhhhhhh',
-  resave: false,
-  saveUninitialized: false,
-};
-
-app.use(cookieParser());
-app.use(session(StoreOptions));
-
 function isValidPassword(username, password) {
   return bCrypt.compareSync(password, username.password);
 }
@@ -94,6 +80,14 @@ function isValidPassword(username, password) {
 function createHash(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
+
+mongoose
+  .connect(process.env.MONGOOSE)
+  .then(() => console.log('Connected to DB'))
+  .catch((e) => {
+    console.error(e);
+    throw 'can not connect to the db';
+  });
 
 passport.use(
   'login',
@@ -157,15 +151,19 @@ passport.deserializeUser((id, done) => {
   Usuarios.findById(id, done);
 });
 
-mongoose.connect(process.env.URL);
-
-let db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-
-db.once('open', function () {
-  console.log('Connected correctly to server');
-});
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl:
+        process.env.URL,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
+    secret: 'shhhhh'
+  })
+);
 
 //CONFIG APP
 
@@ -190,10 +188,6 @@ app.engine(
     handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
 );
-
-app.get('/', (req, res) => {
-  res.sendFile('index.hbs', { root: __dirname });
-});
 
 //SOCKETS
 
