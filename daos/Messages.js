@@ -7,16 +7,13 @@ dotenv.config();
 class Messagges {
   async connect() {
     try {
-      const client = await new MongoClient(
-        `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@cluster0.brkhg8m.mongodb.net/?retryWrites=true&w=majority`,
-        {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-          serverApi: ServerApiVersion.v1,
-        }
-      );
+      await MongoClient.connect(process.env.URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+      console.log('ya estoy conectado');
     } catch (error) {
-      console.log('hubo un error conectando mongodb', error);
+      console.log(`Ocurrio un error: ${error}`);
     }
   }
 
@@ -34,7 +31,6 @@ class Messagges {
     try {
       await this.connect();
       const prod = await esquemaMensaje.find({});
-      mongoose.disconnect();
       return prod;
     } catch (error) {
       throw Error(error.message);
@@ -45,7 +41,6 @@ class Messagges {
     try {
       await this.connect();
       const deleteAll = await esquemaMensaje.deleteMany({});
-      mongoose.disconnect();
       return deleteAll;
     } catch (error) {
       throw Error(error.message);

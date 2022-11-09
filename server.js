@@ -80,13 +80,13 @@ function createHash(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
 
-mongoose
-  .connect(process.env.URL)
-  .then(() => console.log('Connected to DB'))
-  .catch((e) => {
-    console.error(e);
-    throw 'can not connect to the db';
-  });
+   mongoose
+    .connect(process.env.URL)
+    .then(() => console.log('Connected to DB'))
+    .catch((e) => {
+      console.error(e);
+      throw 'can not connect to the db';
+    });
 
 passport.use(
   'login',
@@ -153,14 +153,13 @@ passport.deserializeUser((id, done) => {
 app.use(
   session({
     store: MongoStore.create({
-      mongoUrl:
-        process.env.URL,
+      mongoUrl: process.env.URL,
       mongoOptions: {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       },
     }),
-    secret: 'shhhhh'
+    secret: 'shhhhh',
   })
 );
 
@@ -189,8 +188,7 @@ app.engine(
 );
 
 app.get('/', (req, res) => {
-  logger.info('RUTA: /api/ || METODO: get');
-  res.render('form');
+  res.redirect('api/login');
 });
 //SOCKETS
 
@@ -225,3 +223,4 @@ io.on('connection', async (socket) => {
     });
   });
 });
+
