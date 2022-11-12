@@ -31,7 +31,7 @@ routerProducts.post('/', (req, res) => {
       res.render('oneProduct', { body });
     } else {
       logger.error('RUTA:  /api/basket/:id || METODO: get');
-      res.render('nologin');;
+      res.render('errorProductos');;
     }
   });
 });
