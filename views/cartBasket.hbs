@@ -1,78 +1,47 @@
-<html lang='en'>
-
-<head>
-  <meta charset='UTF-8' />
-  <meta http-equiv='X-UA-Compatible' content='IE=edge' />
-  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <link rel="stylesheet" href='../public/styles.css'>
-  <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css' rel='stylesheet'
-    integrity='sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx' crossorigin='anonymous' />
-  <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js'
-    integrity='sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa'
-    crossorigin='anonymous'></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/public/index.js"></script>
-  <title>Document</title>
-</head>
-
-<body>
-  {{> navbar}}
-  <a href='/api/form'>
-    <button class='btn btn-secondary'>VOLVER AL FORMULARIO</button>
-  </a>
-  {{#if productsExist}}
-  {{#each product}}
-  <div class="card">
-    <div class="row">
-      <div class="col-md-8 cart">
-        <div class="title">
-          <div class="row">
-            <div class="col">
-              <h4><b>CARRITO</b></h4>
+{{> navbar}}
+<a href='/api/form'>
+  <button class='btn btn-secondary'>VOLVER AL FORMULARIO</button>
+</a>
+{{#if productsExist}}
+{{#each product}}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container padding-bottom-3x mb-1">
+  <!-- Shopping Cart-->
+  <div class="table-responsive shopping-cart">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th class="text-center">Quantity</th>
+          <th class="text-center">Subtotal</th>
+          <th class="text-center"><a class="btn btn-sm btn-outline-danger" href="#">Clear Cart</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="product-item">
+              <a class="product-thumb" href=""><img src='{{this.picture}}' alt="Product"></a>
             </div>
-            <div class="col align-self-center text-right text-muted">{{this.id}}</div>
-          </div>
-        </div>
-        <div class="row border-top border-bottom">
-          <div class="row main align-items-center">
-            <div class="col-2"><img class="img-fluid" src="{{this.picture}}"></div>
-            <div class="col">
-              <div class="row text-muted">{{this.name}}</div>
+          </td>
+          <td class="text-center">
+            <div class="count-input">
+              <select class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+              </select>
             </div>
-            <div class="col">{{this.price}}</div>
-          </div>
-        </div>
-
-        <div class="back-to-shop"><a href="/api/productos">Volver Al listado de Productos</a><span
-            class="text-muted"></span></div>
-      </div>
-      <div class="col-md-4 summary">
-        <div>
-          <h5><b>TOTAL</b></h5>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col" style="padding-left:0;">{{this.id}}</div>
-          <div class="col text-right">{{this.price}}</div>
-        </div>
-        <form>
-          <p>SHIPPING</p>
-          <select>
-            <option class="text-muted">Envio gratis a domicilio</option>
-          </select>
-        </form>
-        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-          <div class="col">PRECIO TOTAL</div>
-          <div class="col text-right">{{this.price}}</div>
-        </div>
-        <button class="btn">CHECKOUT</button>
-      </div>
-    </div>
+          </td>
+          <td class="text-center text-lg text-medium">{{this.price}}</td>
+          <td class="text-center"><a class="remove-from-cart" href="#" data-toggle="tooltip" title=""
+              data-original-title="Remove item"><i class="fa fa-trash"></i></a></td>
+        </tr>
   </div>
-  </div>
-  {{/each}}
-  {{/if}}
-  {{> footer}}
-</body>
-
-</html>
+</div>
+{{/each}}
+{{/if}}
+<br />
+{{> footer}}
+<br />

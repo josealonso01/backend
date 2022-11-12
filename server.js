@@ -80,13 +80,13 @@ function createHash(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
 
-   mongoose
-    .connect(process.env.URL)
-    .then(() => console.log('Connected to DB'))
-    .catch((e) => {
-      console.error(e);
-      throw 'can not connect to the db';
-    });
+mongoose
+  .connect(process.env.URL)
+  .then(() => console.log('Connected to DB'))
+  .catch((e) => {
+    console.error(e);
+    throw 'can not connect to the db';
+  });
 
 passport.use(
   'login',
@@ -201,10 +201,10 @@ io.on('connection', async (socket) => {
   setTimeout(() => {
     socket.emit('Este es mi mensaje desde el servidor');
   }, 4000);
-
   let messages = await mensajes.getAll();
 
   io.sockets.emit('arr-chat', normalizeMessages(messages));
+
   socket.on('data-generica', async (data) => {
     let message = JSON.parse(data);
     await mensajes.save(message);
@@ -223,4 +223,3 @@ io.on('connection', async (socket) => {
     });
   });
 });
-

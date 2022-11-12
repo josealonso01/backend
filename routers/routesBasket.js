@@ -12,7 +12,8 @@ const productos = new Products('productos');
 routerBasket.get('/', (req, res) => {
   logger.info('RUTA: /api/basket/ || METODO: get');
   basket.getAll().then((productos) => {
-    res.json({ product: productos });
+    res.json({productos})
+    console.log(productos);
   });
 });
 
