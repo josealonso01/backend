@@ -80,6 +80,19 @@ function createHash(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
 
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: process.env.URL,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
+    secret: 'shhhhh',
+  })
+);
+
 mongoose
   .connect(process.env.URL)
   .then(() => console.log('Connected to DB'))
@@ -141,27 +154,17 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  console.log('Se Ejecuta el serializeUser');
+  console.log('Se Ejecuta el serializeUser', user);
   done(null, user._id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log('Se Ejecuta el deserializeUser');
+  console.log('Se Ejecuta el deserializeUser', id);
   Usuarios.findById(id, done);
 });
 
-app.use(
-  session({
-    store: MongoStore.create({
-      mongoUrl: process.env.URL,
-      mongoOptions: {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-    }),
-    secret: 'shhhhh',
-  })
-);
+
+
 
 //CONFIG APP
 

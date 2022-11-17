@@ -1,14 +1,16 @@
-const admin = require ('firebase-admin');
-const Producto = require ('./Products.js');
-const { createRequire } = require ('module');
+const admin = require('firebase-admin');
+const Producto = require('./Products.js');
+const { createRequire } = require('module');
 const config = require('./bd/ecommerce-nodejs-90296-firebase-adminsdk-ltiph-b74c0a1b45.json');
 
 const catalogo = new Producto('productos');
 class Basket {
   constructor() {
-    admin.initializeApp({
-      credential: admin.credential.cert(config),
-    });
+    if (admin.apps.length === 0) {
+      admin.initializeApp({
+        credential: admin.credential.cert(config),
+      });
+    }
   }
 
   async save() {
@@ -44,14 +46,36 @@ class Basket {
       const db = admin.firestore();
       const query = db.collection('basket');
       const doc = query.doc(String(id));
-      const found = await doc.get();
+       const item = await doc.update({
+         productos: admin.firestore.FieldValue.arrayUnion({
+           id: product.id,
+           name: product.name,
+           price: product.price,
+           Descripcion: product.Descripcion,
+           Codigo: product.Codigo,
+           stock: product.stock,
+           picture: product.picture,
+         }),
+       });
+      return item;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+
+  async getByUserId(id) {
+    try {
+      const db = admin.firestore();
+      const query = db.collection('basket');
+      const found = await query.doc.where('user_id', id);
+      //const found = await doc.where('user_id',id);
       return found.data();
     } catch (error) {
       throw Error(error.message);
     }
   }
 
-  async addProductToCart(idcart, idProduct) {
+  async addProductToCart(id, idProduct) {
     try {
       function random(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
@@ -60,7 +84,7 @@ class Basket {
 
       const db = admin.firestore();
       const query = db.collection('basket');
-      const doc = query.doc(idcart);
+      const doc = query.doc(id);
 
       let idRandom = random(1, 10000);
 

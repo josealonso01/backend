@@ -1,20 +1,40 @@
 const express = require('express');
 const Basket = require('../daos/Basket.js');
 const Products = require('../daos/Products.js');
+const userDaos = require('../daos/userDaos.js');
 const { logger } = require('../public/logger.js');
 const router = require('./router.js');
 const routerBasket = express.Router();
 const app = express();
 
 const basket = new Basket('basket');
-const productos = new Products('productos');
+const catalogo = new Products('productos');
+const users = new userDaos('usuarios');
 
-routerBasket.get('/', (req, res) => {
+routerBasket.get('/', async (req, res) => {
   logger.info('RUTA: /api/basket/ || METODO: get');
-  basket.getAll().then((productos) => {
-    res.json({productos})
-    console.log(productos);
-  });
+  try {
+    console.log('El id del user', req.user._id);
+    const user = await users.getItemById(req.user._id);
+    const sanitizedUser = { name: user.username, _id: user._id };
+
+    const response = await basket.getByUserId(req.user._id);
+
+    const allProducts = response.catalogo.map((product) => ({
+      name: product.name,
+      description: product.Descripcion,
+      picture: product.picture,
+      price: product.price,
+      _id: product._id,
+    }));
+
+    return res.render('cartBasket', {
+      sanitizedUser,
+      cart: { allProducts },
+    });
+  } catch (err) {
+    logger.error(err);
+  }
 });
 
 routerBasket.get('/:id', (req, res) => {

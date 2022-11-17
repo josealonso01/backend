@@ -2,46 +2,33 @@
 <a href='/api/form'>
   <button class='btn btn-secondary'>VOLVER AL FORMULARIO</button>
 </a>
-{{#if productsExist}}
-{{#each product}}
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container padding-bottom-3x mb-1">
-  <!-- Shopping Cart-->
-  <div class="table-responsive shopping-cart">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Product Name</th>
-          <th class="text-center">Quantity</th>
-          <th class="text-center">Subtotal</th>
-          <th class="text-center"><a class="btn btn-sm btn-outline-danger" href="#">Clear Cart</a></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <div class="product-item">
-              <a class="product-thumb" href=""><img src='{{this.picture}}' alt="Product"></a>
-            </div>
-          </td>
-          <td class="text-center">
-            <div class="count-input">
-              <select class="form-control">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </select>
-            </div>
-          </td>
-          <td class="text-center text-lg text-medium">{{this.price}}</td>
-          <td class="text-center"><a class="remove-from-cart" href="#" data-toggle="tooltip" title=""
-              data-original-title="Remove item"><i class="fa fa-trash"></i></a></td>
-        </tr>
+<div class="row">
+
+  {{#if cart.allProducts.length}}
+  {{#each cart.allProducts}}
+  <div class="col-md-3">
+
+    <div class="card" style="margin-top: 15px;">
+      <img class="card-img-top" src="{{this.photo_url}}" alt="Card image cap"
+        style="margin: 0 auto; max-height: 200px; max-width: 200px; height: 200px; width: auto">
+      <div class="card-body">
+        <h5 class="card-title">{{this.name}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{this.price}}</h6>
+        <p class="card-text">{{this.description}}</p>
+
+      </div>
+    </div>
   </div>
-</div>
-{{/each}}
-{{/if}}
-<br />
-{{> footer}}
-<br />
+
+  {{/each}}
+  <div class="mt-4">
+    <form action="/api/carrito/{{cart.cart_id}}" method="POST">
+      <button class="btn btn-primary btn-sm" type="submit">Terminar compra</button>
+    </form>
+  </div>
+  {{else}}
+  <h2>El carrito esta vacio</h2>
+  {{/if}}
+  <br />
+  {{> footer}}
+  <br />
