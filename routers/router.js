@@ -9,6 +9,8 @@ const os = require('os');
 const path = require('path');
 const compression = require('compression');
 const { logger } = require('../public/logger.js');
+const { createTransport } = require('nodemailer');
+const fs = require('fs');
 const router = express.Router();
 
 const archivo = new ContenedorDB('productos');
@@ -124,12 +126,40 @@ router.get('/signup', (req, res) => {
   }
 });
 
+const transporter = createTransport({
+  service: 'gmail',
+  port: 587,
+  auth: {
+    user: process.env.GMAIL_ACCOUNT,
+    pass: process.env.GMAIL_PASSWORD,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
 router.post('/signup', (req, res, next) => {
+  const { body } = req;
+  console.log(body);
+  const mailOptions = {
+    from: 'Servidor Node.js',
+    to: body.email,
+    subject: 'Nuevo registro',
+    html: `<h1 style="color: blue;">Nuevo Registro<span style="color: black;">  tu usario es ${body.username} y tu contraseña ${body.password}</span></h1>`,
+  };
   logger.info('RUTA: /api/signup || METODO: post');
   passport.authenticate(
     'signup',
     passportOptions,
-    (err, user, info) => {
+    async (err, user, info) => {
+      if (user) {
+        try {
+          const enviarMail = await transporter.sendMail(mailOptions);
+          console.log('se envia', enviarMail);
+        } catch (err) {
+          console.log(err);
+        }
+      }
       console.log('Info SIGNUP');
       console.log('err', err, 'user:', user, 'info:', info);
       if (err) {

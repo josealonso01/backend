@@ -24,9 +24,15 @@ routerProducts.get('/:id', (req, res) => {
 
 routerProducts.post('/', (req, res) => {
   const { body } = req;
+
   archivo.save(body).then((body) => {
-    logger.info('RUTA: /api/products/ || METODO: post');
-    res.json({ productosagregados: body });
+    if (body) {
+      logger.info('RUTA: /api/products/ || METODO: post');
+      res.render('oneProduct', { body });
+    } else {
+      logger.error('RUTA:  /api/basket/:id || METODO: get');
+      res.render('errorProductos');;
+    }
   });
 });
 

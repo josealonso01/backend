@@ -80,13 +80,26 @@ function createHash(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 }
 
-   mongoose
-    .connect(process.env.URL)
-    .then(() => console.log('Connected to DB'))
-    .catch((e) => {
-      console.error(e);
-      throw 'can not connect to the db';
-    });
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: process.env.URL,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    }),
+    secret: 'shhhhh',
+  })
+);
+
+mongoose
+  .connect(process.env.URL)
+  .then(() => console.log('Connected to DB'))
+  .catch((e) => {
+    console.error(e);
+    throw 'can not connect to the db';
+  });
 
 passport.use(
   'login',
@@ -141,27 +154,17 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  console.log('Se Ejecuta el serializeUser');
+  console.log('Se Ejecuta el serializeUser', user);
   done(null, user._id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log('Se Ejecuta el deserializeUser');
+  console.log('Se Ejecuta el deserializeUser', id);
   Usuarios.findById(id, done);
 });
 
-app.use(
-  session({
-    store: MongoStore.create({
-      mongoUrl: process.env.URL,
-      mongoOptions: {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-    }),
-    secret: 'shhhhh',
-  })
-);
+
+
 
 //CONFIG APP
 
@@ -201,10 +204,10 @@ io.on('connection', async (socket) => {
   setTimeout(() => {
     socket.emit('Este es mi mensaje desde el servidor');
   }, 4000);
-
   let messages = await mensajes.getAll();
 
   io.sockets.emit('arr-chat', normalizeMessages(messages));
+
   socket.on('data-generica', async (data) => {
     let message = JSON.parse(data);
     await mensajes.save(message);
@@ -223,4 +226,3 @@ io.on('connection', async (socket) => {
     });
   });
 });
-

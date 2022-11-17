@@ -34,16 +34,20 @@
           <th scope="col">STOCK</th>
           <th scope="col">CODIGO</th>
           <th scope="col">FOTO</th>
+          <th scope="col"> </th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>{{this.id}} </td>
-          <td> {{this.name}}</td>
-          <td>{{this.price}} </td>
-          <td>{{this.stock}} </td>
-          <td>{{this.Codigo}} </td>
-          <td><img src="{{this.picture}}" class="img-thumbnail " style="width: 15%;" /></td>
+          <form action="/api/basket" method="post">
+            <td>{{this.id}} </td>
+            <td> {{this.name}}</td>
+            <td>{{this.price}} </td>
+            <td>{{this.stock}} </td>
+            <td>{{this.Codigo}} </td>
+            <td><img src="{{this.picture}}" class="img-thumbnail " style="width: 15%;" /></td>
+            <td><button> Agregar al carrito </button></td>
+          </form>
         </tr>
       </tbody>
     </table>

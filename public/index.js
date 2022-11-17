@@ -1,25 +1,11 @@
-const sockets = io();
+sockets = io();
 //ATRAPAN MSGS QUE ENVIE EL SERVER
 
-sockets.on('connect', () => {
-  console.log('me conecte!');
+socket.on('connect', function () {
+  console.log('connected to server');
 });
 
-const denormalize = (messages) => {
-  const author = new normalizr.schema.Entity('authors');
-  const mensajes = new normalizr.schema.Entity('mensajes', {
-    author: author,
-  });
-  const chats = new normalizr.schema.Entity('chats', {
-    chats: [mensajes],
-  });
-  const denormalizedMessages = normalizr.denormalize(
-    messages.result,
-    chats,
-    messages.entities
-  );
-  return denormalizedMessages;
-};
+console.log('entra al index', sockets);
 
 const button = document.getElementById('submitMessage');
 button.addEventListener('click', (e) => {
@@ -37,6 +23,22 @@ button.addEventListener('click', (e) => {
   sockets.emit('data-generica', JSON.stringify(mensaje));
   document.getElementById('caja-msg').value = '';
 });
+
+const denormalize = (messages) => {
+  const author = new normalizr.schema.Entity('authors');
+  const mensajes = new normalizr.schema.Entity('mensajes', {
+    author: author,
+  });
+  const chats = new normalizr.schema.Entity('chats', {
+    chats: [mensajes],
+  });
+  const denormalizedMessages = normalizr.denormalize(
+    messages.result,
+    chats,
+    messages.entities
+  );
+  return denormalizedMessages;
+};
 
 sockets.on('arr-chat', (data) => {
   let denormalizedChats = denormalize(data);
