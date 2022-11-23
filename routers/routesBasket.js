@@ -52,8 +52,8 @@ routerBasket.post('/', async (req, res) => {
 
 routerBasket.post('/:id/productos/', async (req, res) => {
   const product = await catalogoController.getById(req.body.prod_id);
-  await basketController.addCartProduct(req.params.id, product);
-  return res.sendStatus(204);
+ const basket = await basketController.addCartProduct(req.params.id, product);
+  return res.render('cartBasket', { allProducts: basket });
 });
 
 routerBasket.delete(

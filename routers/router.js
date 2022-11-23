@@ -37,8 +37,8 @@ router.get('/home', async (req, res) => {
     const response = await basket.save(req.user._id);
     await users.addCart(user._id, response._id);
   }
-
   const response = await catalogo.getProductos();
+
   const allProducts = response.map((product) => ({
     name: product.name,
     description: product.Descripcion,
