@@ -76,7 +76,7 @@ routerBasket.post('/:id', async (req, res) => {
   );
   await sendMail(
     null,
-    `Nuevo pedido de ${req.user.name} - ${req.user.email}`,
+    `Nuevo pedido de ${req.user.email}`,
     `<p>${formattedProducts.join('</p><p>')}</p>`
   );
   const newUser = await usersController.deleteCart(cart._id);

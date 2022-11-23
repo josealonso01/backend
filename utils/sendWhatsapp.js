@@ -2,7 +2,7 @@ const twilio = require('twilio');
 
 const ACCOUNT_SID = 'AC6ec33532229012091d9f7bfb804c04cb';
 const AUTH_TOKEN = '62898f1da5b46f98cd047e7b2355d79c';
-const PHONE_NUMBER = 'whatsapp:+5492494374440';
+const PHONE_NUMBER = 'whatsapp:+19894808912';
 
 const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 
