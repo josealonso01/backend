@@ -7,20 +7,20 @@ const router = require('./router.js');
 const routerBasket = express.Router();
 const app = express();
 
-const basket = new Basket('basket');
-const catalogo = new Products('productos');
-const users = new userDaos('usuarios');
+const basketController = new Basket('basket');
+const catalogoController = new Products('productos');
+const usersController = new userDaos('usuarios');
 
 routerBasket.get('/', async (req, res) => {
   logger.info('RUTA: /api/basket/ || METODO: get');
   try {
-    const user = await users.getItemById(req.user._id);
+    const user = await usersController.getItemById(req.user._id);
     const sanitizedUser = {
       name: user.username,
       _id: user._id,
       cart_id: user.cart_id,
     };
-    const response = await basket.getItemById(req.user._id);
+    const response = await basketController.getItemById(req.user._id);
 
     const allProducts = response.catalogo.map((product) => ({
       name: product.name,
@@ -39,20 +39,20 @@ routerBasket.get('/', async (req, res) => {
 });
 
 routerBasket.get('/:id/productos', async (req, res) => {
-  const products = await basket.getCartProducts(req.params.id);
+  const products = await basketController.getCartProducts(req.params.id);
   if (products) return res.json(products);
   return res.json(null);
 });
 
 routerBasket.post('/', async (req, res) => {
-  if (req.user.cart_id) return basket.getById(req.user.cart_id);
-  const newCartId = await basket.save(req.user._id);
+  if (req.user.cart_id) return basketController.getById(req.user.cart_id);
+  const newCartId = await basketController.save(req.user._id);
   return res.json(newCartId);
 });
 
 routerBasket.post('/:id/productos/', async (req, res) => {
-  const product = await catalogo.getById(req.body.prod_id);
-  await basket.addCartProduct(req.params.id, product);
+  const product = await catalogoController.getById(req.body.prod_id);
+  await basketController.addCartProduct(req.params.id, product);
   return res.sendStatus(204);
 });
 
@@ -65,7 +65,7 @@ routerBasket.delete(
       logger.info(
         'RUTA: /api/basket/:id/eliminarProducto/:id_prod || METODO: delete'
       );
-      const agregado = await basket.deleteProductoDeCarrito(
+      const agregado = await basketController.deleteProductoDeCarrito(
         id,
         id_prod
       );
@@ -90,7 +90,7 @@ routerBasket.delete(
 
 routerBasket.delete('/producto/:idProduct', (req, res) => {
   let { idProduct } = req.params;
-  basket.deleteById(idProduct).then((found) => {
+  basketController.deleteById(idProduct).then((found) => {
     if (found) {
       logger.info(
         'RUTA: /api/basket/producto/:idProduct || METODO: delete'
@@ -113,7 +113,7 @@ routerBasket.put('/:id/productos/:id_prod', async (req, res) => {
     logger.info(
       'RUTA: /api/basket/:id/productos/:id_prod || METODO: put'
     );
-    const nuevoProducto = await basket.updateById(id, id_prod, body);
+    const nuevoProducto = await basketController.updateById(id, id_prod, body);
     res.json({ success: 'ok', nuevoProducto, new: body });
   } catch (error) {
     logger.error(

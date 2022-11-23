@@ -5,7 +5,7 @@ const esquemaProducto = require('../modelsMDB/schemaProduct.js');
 const MongoClient = require('mongodb').MongoClient;
 const { logger } = require('../../public/logger.js');
 
-const catalogo = new Producto('productos');
+const catalogoController = new Producto('productos');
 class Basket {
   async connectMDB() {
     try {
@@ -44,7 +44,7 @@ class Basket {
   getItemById = async (id) => {
     let item = {};
     try {
-      item = esquemaProducto.findById(id);
+      item = esquemaCart.findById(id);
     } catch (err) {
       logger.error(err);
     }
@@ -112,13 +112,19 @@ class Basket {
     return cart.products;
   };
 
-  addCartProduct = async (id, prod) => {
-    const product = await this.getItemById({ _id: id });
-    console.log('llega aca', product);
-    if (!cart.products) cart.products = [];
+  addCartProduct = async (id_user, id_prod) => {
+    const cart = await this.getCartByUserId({ _id: id_user });
+    if (cart == null){
+      let newCartData = {
+        products: [],
+        user_id: id_user,
+      };
+      cart = await this.createItem(newCartData);
+    }
+    const prod = await catalogoController.getById(id_prod);
+    console.log('a ver el producto',prod);
     cart.products.push(prod);
     await cart.save();
-    this.updateItem(id, cart);
     return;
   };
 }
