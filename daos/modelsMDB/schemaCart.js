@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const { esquemaProducto } = require('./schemaProduct');
+const esquemaProducto = require(__dirname + '/schemaProduct');
 
 const esquemaCart = new mongoose.Schema(
   {
-    productos: { type: [String], required: true },
+    products: { type: [esquemaProducto.schema], required: true },
     user_id: { type: mongoose.Schema.ObjectId, required: true },
   },
   { timestamps: true }

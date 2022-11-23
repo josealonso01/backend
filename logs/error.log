@@ -99,3 +99,154 @@
 {"level":"error","message":"RUTA:  /api/basket/ || METODO: post"}
 {"level":"error","message":"RUTA:  /api/basket/ || METODO: post"}
 {"level":"error","message":"RUTA:  /api/basket/ || METODO: post"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ _id: undefined }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ _id: undefined }\"","value":{},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ _id: undefined }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ _id: undefined }\"","value":{},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ _id: undefined }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ _id: undefined }\"","value":{},"valueType":"Object"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ _id: undefined }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ _id: undefined }\"","value":{},"valueType":"Object"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ ObjectId: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ ObjectId: '6375282d6718d602346a570c' }\"","value":{"ObjectId":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ ObjectId: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ ObjectId: '6375282d6718d602346a570c' }\"","value":{"ObjectId":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ ObjectId: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ ObjectId: '6375282d6718d602346a570c' }\"","value":{"ObjectId":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ ObjectId: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ ObjectId: '6375282d6718d602346a570c' }\"","value":{"ObjectId":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ id: '6375282d6718d602346a570c' }\"","value":{"id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ user_id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ user_id: '6375282d6718d602346a570c' }\"","value":{"user_id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ user_id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ user_id: '6375282d6718d602346a570c' }\"","value":{"user_id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ user_id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ user_id: '6375282d6718d602346a570c' }\"","value":{"user_id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ user_id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ user_id: '6375282d6718d602346a570c' }\"","value":{"user_id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ user_id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ user_id: '6375282d6718d602346a570c' }\"","value":{"user_id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ user_id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ user_id: '6375282d6718d602346a570c' }\"","value":{"user_id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ user_id: '6375282d6718d602346a570c' }\" (type Object) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ user_id: '6375282d6718d602346a570c' }\"","value":{"user_id":"6375282d6718d602346a570c"},"valueType":"Object"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const esquemaMensaje = require('./modelsMDB/schemaMessage.js');
+const esquemaMensaje = require('../modelsMDB/schemaMessage');
 const dotenv = require('dotenv');
 dotenv.config();
 

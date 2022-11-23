@@ -4,8 +4,10 @@ const UsuarioSchema = new mongoose.Schema({
   username: { type: String, required: true, max: 100 },
   password: { type: String, required: true, max: 100 },
   email: { type: String },
+  cart_id: { type: mongoose.Schema.ObjectId, required: true},
 });
 
-const Usuarios = mongoose.model('usuarios', UsuarioSchema);
 
-module.exports = Usuarios;
+module.exports = mongoose.model('usuarios', UsuarioSchema);
+
+

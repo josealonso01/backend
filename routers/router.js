@@ -1,8 +1,8 @@
 const express = require('express');
 const routerProducts = require('./routesProducts.js');
 const routerBasket = require('./routesBasket.js');
-const ContenedorDB = require('../daos/Products.js');
-const Messagges = require('../daos/Messages.js');
+const ContenedorDB = require('../daos/controllers/Products.js');
+const Messagges = require('../daos/controllers/Messages');
 const passport = require('passport');
 const { fork } = require('child_process');
 const os = require('os');
@@ -11,14 +11,44 @@ const compression = require('compression');
 const { logger } = require('../public/logger.js');
 const { createTransport } = require('nodemailer');
 const fs = require('fs');
+const userDaos = require('../daos/controllers/userDaos.js');
+const Products = require('../daos/controllers/Products.js');
+const Basket = require('../daos/controllers/Basket.js');
 const router = express.Router();
 
 const archivo = new ContenedorDB('productos');
-const mensajes = new Messagges('mensajes');
+const users = new userDaos('usuarios');
+const catalogo = new Products('productos');
+const basket = new Basket('basket');
 const numCPUs = os.cpus().length;
 
 router.use('/productos', routerProducts);
 router.use('/basket', routerBasket);
+
+router.get('/home', async (req, res) => {
+  const user = await users.getItemById(req.user._id);
+  const sanitizedUser = {
+    name: user.username,
+    _id: user._id,
+    cart_id: user.cart_id,
+  };
+  logger.info('entro');
+  if (!sanitizedUser.cart_id) {
+    const response = await basket.save(req.user._id);
+    await users.addCart(user._id, response._id);
+  }
+
+  const response = await catalogo.getProductos();
+  const allProducts = response.map((product) => ({
+    name: product.name,
+    description: product.Descripcion,
+    picture: product.picture,
+    price: product.price,
+    _id: product._id,
+  }));
+
+  return res.render('home', { sanitizedUser, allProducts });
+});
 
 router.get('/form', (req, res) => {
   logger.info('RUTA: /api/form || METODO: get');

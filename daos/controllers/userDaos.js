@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const Usuarios = require('./modelsMDB/Usuarios');
+const UsuarioSchema = require('../modelsMDB/Usuarios');
 
 class userDaos {
   async connectMDB() {
@@ -17,7 +17,7 @@ class userDaos {
   async getItemById(id) {
     try {
       await this.connectMDB();
-      const usuario = await Usuarios.findById(id);
+      const usuario = await UsuarioSchema.findById(id);
       return usuario;
     } catch (error) {
       throw Error(error.message);
@@ -27,7 +27,7 @@ class userDaos {
   getByEmail = async (email) => {
     console.log('entro');
     try {
-      const user = await Usuarios.findOne({ email });
+      const user = await UsuarioSchema.findOne({ email });
       return user;
     } catch (err) {
       console.log(err);
@@ -36,7 +36,7 @@ class userDaos {
 
   addCart = async (userId, cartId) => {
     try {
-      const user = await Usuarios.findOneAndUpdate(
+      const user = await UsuarioSchema.findOneAndUpdate(
         { _id: userId },
         { cart_id: cartId }
       );
@@ -48,7 +48,7 @@ class userDaos {
 
   deleteCart = async (id) => {
     try {
-      const user = Usuarios.findOneAndUpdate(
+      const user = UsuarioSchema.findOneAndUpdate(
         { cart_id: id },
         { $unset: { cart_id: 1 } }
       );

@@ -5,8 +5,8 @@ const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
 const { engine } = require('express-handlebars');
-const Products = require('./daos/Products.js');
-const Messagges = require('./daos/Messages.js');
+const Products = require('./daos/controllers/Products');
+const Messagges = require('./daos/controllers/Messages');
 const { normalizeMessages } = require('./src/normalize.js');
 const { createServer } = require('http');
 const { Server } = require('socket.io');

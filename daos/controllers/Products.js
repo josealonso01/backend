@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
-const esquemaProducto = require('./modelsMDB/schemaProduct.js');
-const generarUsuario = require('../public/generadorDeProductos.js');
-const generarId = require('../public/generadorDeIds.js');
+const esquemaProducto = require('../modelsMDB/schemaProduct.js');
+const generarUsuario = require('../../public/generadorDeProductos.js');
+const generarId = require('../../public/generadorDeIds.js');
 const dotenv = require('dotenv');
 dotenv.config();
 class ContenedorDB {
@@ -54,7 +54,7 @@ class ContenedorDB {
   async getById(id) {
     try {
       await this.connectMDB();
-      if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      if (id) {
         const prodId = await esquemaProducto.findById(id);
         return prodId;
       }

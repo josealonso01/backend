@@ -11,4 +11,6 @@ const esquemaProducto = new Schema({
   stock: { type: Number, required: true },
 });
 
+
+
 module.exports = mongoose.model('productos', esquemaProducto);
