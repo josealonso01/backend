@@ -5,6 +5,8 @@ const Products = require('../daos/controllers/Products.js');
 const userDaos = require('../daos/controllers/userDaos.js');
 const { logger } = require('../public/logger.js');
 const sendMail = require('../utils/sendMail.js');
+const sendSMS = require('../utils/sendMessage.js');
+const sendWhatsapp = require('../utils/sendWhatsapp.js');
 const router = require('./router.js');
 const routerBasket = express.Router();
 const app = express();
@@ -78,7 +80,11 @@ routerBasket.post('/:id', async (req, res) => {
     `<p>${formattedProducts.join('</p><p>')}</p>`
   );
   const newUser = await usersController.deleteCart(cart._id);
-  console.log(newUser);
+  await sendSMS('La orden fue confirmada');
+  await sendWhatsapp(
+      'Se ha creado una nueva orden de compra de parte de: ' +
+        req.user.name
+    );
   return res.redirect('/api/home');
 });
 

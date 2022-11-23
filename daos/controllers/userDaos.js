@@ -50,7 +50,6 @@ class userDaos {
     try {
       const user = UsuarioSchema.findOneAndUpdate(
         { cart_id: id },
-        { $unset: { cart_id: 1 } }
       );
       return user;
     } catch (e) {

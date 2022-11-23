@@ -1,7 +1,7 @@
 const { createTransport } = require("nodemailer");
 const { logger } = require("../public/logger");
 
-const sendMail = async (email, subject, content) => {
+const sendMail = async (to, subject, content) => {
   const transporter = createTransport({
     service: 'gmail',
     port: 587,
@@ -16,13 +16,14 @@ const sendMail = async (email, subject, content) => {
 
   const mailOptions = {
     from: `e-commerce <${process.env.GMAIL_ACCOUNT}>`,
-    to: email,
+    to: to ?? process.env.GMAIL_ACCOUNT,
     subject: subject,
     html: content,
   };
 
   try {
     const response = await transporter.sendMail(mailOptions);
+    console.log(response);
   } catch (e) {
   logger.error(e)
   }

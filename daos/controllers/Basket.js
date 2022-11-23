@@ -95,7 +95,6 @@ class Basket {
   getCartByUserId = async (id) => {
     await this.connectMDB();
     let cart;
-    console.log('a ver el getcarts by user id');
     try {
       cart = await esquemaCart.findOne({ user_id: id });
     } catch (err) {
@@ -116,7 +115,8 @@ class Basket {
         products: [],
         user_id: id_user,
       };
-      cart = await this.createItem(newCartData);
+    const cart = await this.createItem(newCartData);
+    console.log(cart);
     }
     const prod = await catalogoController.getById(id_prod);
     cart.products.push(prod);
