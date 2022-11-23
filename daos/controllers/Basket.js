@@ -13,9 +13,8 @@ class Basket {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
-      console.log('ya estoy conectado');
     } catch (error) {
-      console.log(`Ocurrio un error: ${error}`);
+      logger.error(err);
     }
   }
 
@@ -25,7 +24,7 @@ class Basket {
       await esquemaCart.create(nuevoProducto);
       return nuevoProducto;
     } catch (error) {
-      console.log('error en el save', error);
+      logger.error(error)
     }
   }
 
@@ -33,7 +32,6 @@ class Basket {
     await this.connectMDB();
     let arr = [];
     try {
-      //console.log(model);
       arr = await esquemaCart.find({});
     } catch (err) {
       logger.error(err);
@@ -48,14 +46,12 @@ class Basket {
     } catch (err) {
       logger.error(err);
     }
-    console.log(item);
     return item;
   };
 
   createItem = async (item) => {
     await this.connectMDB();
     let newItem = new esquemaCart(item);
-
     try {
       await newItem.save();
       return newItem;
@@ -99,6 +95,7 @@ class Basket {
   getCartByUserId = async (id) => {
     await this.connectMDB();
     let cart;
+    console.log('a ver el getcarts by user id');
     try {
       cart = await esquemaCart.findOne({ user_id: id });
     } catch (err) {
@@ -114,7 +111,7 @@ class Basket {
 
   addCartProduct = async (id_user, id_prod) => {
     const cart = await this.getCartByUserId({ _id: id_user });
-    if (cart == null){
+    if (cart == null) {
       let newCartData = {
         products: [],
         user_id: id_user,
@@ -122,7 +119,6 @@ class Basket {
       cart = await this.createItem(newCartData);
     }
     const prod = await catalogoController.getById(id_prod);
-    console.log('a ver el producto',prod);
     cart.products.push(prod);
     await cart.save();
     return;

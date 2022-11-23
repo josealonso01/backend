@@ -9,12 +9,12 @@
   <div class="col-md-3">
 
     <div class="card" style="margin-top: 15px;">
-      <img class="card-img-top" src="{{this.photo_url}}" alt="Card image cap"
+      <img class="card-img-top" src="{{this.picture}}" alt="Card image cap"
         style="margin: 0 auto; max-height: 200px; max-width: 200px; height: 200px; width: auto">
       <div class="card-body">
         <h5 class="card-title">{{this.name}}</h5>
         <h6 class="card-subtitle mb-2 text-muted">{{this.price}}</h6>
-        <p class="card-text">{{this.description}}</p>
+        <p class="card-text">{{this.Descripcion}}</p>
 
       </div>
     </div>
@@ -22,7 +22,7 @@
 
   {{/each}}
   <div class="mt-4">
-    <form action="/api/carrito/{{cart.cart_id}}" method="POST">
+    <form action="/api/basket/{{cart.cart_id}}" method="post">
       <button class="btn btn-primary btn-sm" type="submit">Terminar compra</button>
     </form>
   </div>

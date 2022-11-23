@@ -252,3 +252,195 @@
 {"level":"error"}
 {"level":"error"}
 {"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"[Function (anonymous)]\" (type function) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"[Function (anonymous)]\"","valueType":"function"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"level":"error"}
+{"level":"error"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"{ email: 'Josefina Alonso' }\" (type Object) at path \"_id\" for model \"usuarios\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"{ email: 'Josefina Alonso' }\"","value":{"email":"Josefina Alonso"},"valueType":"Object"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"level":"error"}
+{"level":"error","message":"RUTA: /api/login || METODO: get"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"_message":"cart validation failed","errors":{"user_id":{"kind":"required","message":"Path `user_id` is required.","name":"ValidatorError","path":"user_id","properties":{"message":"Path `user_id` is required.","path":"user_id","type":"required"}}},"level":"error","message":"cart validation failed: user_id: Path `user_id` is required.","name":"ValidationError"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}

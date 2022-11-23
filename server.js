@@ -5,9 +5,6 @@ const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
 const { engine } = require('express-handlebars');
-const Products = require('./daos/controllers/Products');
-const Messagges = require('./daos/controllers/Messages');
-const { normalizeMessages } = require('./src/normalize.js');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const passport = require('passport');
@@ -16,11 +13,13 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const minimist = require('minimist');
-const Usuarios = require('./daos/modelsMDB/Usuarios.js');
 const LocalStrategy = require('passport-local').Strategy;
 const cluster = require('cluster');
 const os = require('os');
 const MongoStore = require('connect-mongo');
+const userDaos = require('./daos/controllers/userDaos.js');
+const UsuarioSchema = require('./daos/modelsMDB/Usuarios');
+const sendMail = require('./utils/sendMail.js');
 
 dotenv.config();
 //CONECTO SERVIDOR
@@ -101,54 +100,61 @@ mongoose
     throw 'can not connect to the db';
   });
 
+const usersController = new userDaos('usuarios');
+
 passport.use(
   'login',
-  new LocalStrategy((username, password, done) => {
-    Usuarios.findOne({ username }, (err, user) => {
-      if (err) return done(err);
-      if (!user) {
-        console.log('usuario no encontrado' + username);
-        return done(null, false);
-      }
-      if (!isValidPassword(user, password)) {
-        console.log('contraseña invalida');
-        return done(null, false);
-      }
-      return done(null, user);
-    });
-  })
+  new LocalStrategy(
+    { username: 'email' },
+    (username, password, done) => {
+      UsuarioSchema.findOne({ username }, (err, user) => {
+        if (err) return done(err);
+        if (!user) {
+          console.log('usuario no encontrado' + username);
+          return done(null, false);
+        }
+        if (!isValidPassword(user, password)) {
+          console.log('contraseña invalida');
+          return done(null, false);
+        }
+        return done(null, user);
+      });
+    }
+  )
 );
 
 passport.use(
   'signup',
   new LocalStrategy(
-    {
-      passReqToCallback: true,
-    },
-    (req, username, password, done) => {
-      Usuarios.findOne({ username: username }, function (err, user) {
-        if (err) {
-          console.log('Error in SignUp: ' + err);
-          return done(err);
-        }
-        if (user) {
-          console.log('User already exists');
-          return done(null, false);
-        }
+    { username: 'email', passReqToCallback: true },
+    async (req, email, password, done) => {
+      try {
+        const user = await usersController.getByEmail(email);
+        if (user)
+          return done(null, false, {
+            message: 'El nombre de usuario ya esta en uso.',
+          });
+
         const newUser = {
-          username: username,
+          email: req.body.email,
           password: createHash(password),
+          age: req.body.age,
+          username: req.body.username,
+          address: req.body.address,
+          phone: req.body.phone,
+          photo_url: req.file,
         };
-        Usuarios.create(newUser, (err, userWithId) => {
-          if (err) {
-            console.log('Error in Saving user: ' + err);
-            return done(err);
-          }
-          console.log(user);
-          console.log('User Registration succesful');
-          return done(null, userWithId);
-        });
-      });
+
+        const response = await usersController.createItem(newUser);
+        await sendMail(
+          process.env.GMAIL_ACCOUNT,
+          'Nuevo Registro',
+          JSON.stringify(newUser, null, 2)
+        );
+        return done(null, response);
+      } catch (err) {
+        return done(err);
+      }
     }
   )
 );
@@ -160,11 +166,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   console.log('Se Ejecuta el deserializeUser', id);
-  Usuarios.findById(id, done);
+  UsuarioSchema.findById(id, done);
 });
-
-
-
 
 //CONFIG APP
 
@@ -192,37 +195,4 @@ app.engine(
 
 app.get('/', (req, res) => {
   res.redirect('api/login');
-});
-//SOCKETS
-
-let chat = [];
-
-const catalogo = new Products('productos');
-const mensajes = new Messagges('mensajes');
-
-io.on('connection', async (socket) => {
-  setTimeout(() => {
-    socket.emit('Este es mi mensaje desde el servidor');
-  }, 4000);
-  let messages = await mensajes.getAll();
-
-  io.sockets.emit('arr-chat', normalizeMessages(messages));
-
-  socket.on('data-generica', async (data) => {
-    let message = JSON.parse(data);
-    await mensajes.save(message);
-    let allMessages = await mensajes.getAll({ sort: true });
-
-    console.log('arr-chat adentro del on', allMessages);
-
-    io.sockets.emit('arr-chat', normalizeMessages(allMessages));
-  });
-
-  io.sockets.emit('prod', catalogo.getProductos());
-  socket.on('prod', async () => {
-    const productos = await catalogo.getProductos();
-    productos.forEach((unProducto) => {
-      socket.emit('prod', unProducto);
-    });
-  });
 });
