@@ -1,8 +1,7 @@
 const express = require('express');
 const routerProducts = require('./routesProducts.js');
 const routerBasket = require('./routesBasket.js');
-const ContenedorDB = require('../daos/Products.js');
-const Messagges = require('../daos/Messages.js');
+const ContenedorDB = require('../daos/controllers/Products.js');
 const passport = require('passport');
 const { fork } = require('child_process');
 const os = require('os');
@@ -11,14 +10,44 @@ const compression = require('compression');
 const { logger } = require('../public/logger.js');
 const { createTransport } = require('nodemailer');
 const fs = require('fs');
+const userDaos = require('../daos/controllers/userDaos.js');
+const Products = require('../daos/controllers/Products.js');
+const Basket = require('../daos/controllers/Basket.js');
 const router = express.Router();
 
-const archivo = new ContenedorDB('productos');
-const mensajes = new Messagges('mensajes');
+const archivoController = new ContenedorDB('productos');
+const usersController = new userDaos('usuarios');
+const catalogoController = new Products('productos');
+const basketController = new Basket('basket');
 const numCPUs = os.cpus().length;
 
 router.use('/productos', routerProducts);
 router.use('/basket', routerBasket);
+ 
+router.get('/home', async (req, res) => {
+  const user = await usersController.getItemById(req.user._id);
+  const sanitizedUser = {
+    name: user.username,
+    _id: user._id,
+    cart_id: user.cart_id,
+  };
+  logger.info('entro');
+  if (!sanitizedUser.cart_id) {
+    const response = await basketController.save(req.user._id);
+    await usersController.addCart(user._id, response._id);
+  }
+  const response = await catalogoController.getProductos();
+
+  const allProducts = response.map((product) => ({
+    name: product.name,
+    description: product.Descripcion,
+    picture: product.picture,
+    price: product.price,
+    _id: product._id,
+  }));
+
+  return res.render('home', { sanitizedUser, allProducts });
+});
 
 router.get('/form', (req, res) => {
   logger.info('RUTA: /api/form || METODO: get');
@@ -52,30 +81,19 @@ router.get('/random', (req, res) => {
 
 router.get('/-test', (req, res, next) => {
   logger.info('RUTA: /api/-test || METODO: get');
-  archivo.getProductos().then((prod) => {
+  archivoController.getProductos().then((prod) => {
     res.render('productsList', { prod, productsExist: true });
-    console.log(prod);
   });
 });
 
-router.get('/mensajes', (req, res) => {
-  logger.info('RUTA: /api/mensajes || METODO: get');
-  res.render('centroMensajes');
-});
 
 router.post('/-test', (req, res, next) => {
   logger.info('RUTA: /api/-test || METODO: post');
-  archivo.popular().then((prod) => {
+  archivoController.popular().then((prod) => {
     res.json({ prod: prod });
   });
 });
 
-router.delete('/mensajes', (req, res) => {
-  logger.info('RUTA: /api/mensajes || METODO: delete');
-  mensajes.deleteAll().then((productos) => {
-    res.json({ productosBorrados: productos });
-  });
-});
 
 const infodelProceso = {
   args: process.argv.slice(2),
@@ -140,7 +158,6 @@ const transporter = createTransport({
 
 router.post('/signup', (req, res, next) => {
   const { body } = req;
-  console.log(body);
   const mailOptions = {
     from: 'Servidor Node.js',
     to: body.email,
@@ -155,12 +172,10 @@ router.post('/signup', (req, res, next) => {
       if (user) {
         try {
           const enviarMail = await transporter.sendMail(mailOptions);
-          console.log('se envia', enviarMail);
         } catch (err) {
-          console.log(err);
+        logger.error(err);
         }
       }
-      console.log('Info SIGNUP');
       console.log('err', err, 'user:', user, 'info:', info);
       if (err) {
         return next(err);
@@ -191,7 +206,7 @@ router.post(
   (req, res) => {
     try {
       logger.info('RUTA: /api/login || METODO: post');
-      res.redirect('/api/datos');
+      res.redirect('/api/home');
     } catch (error) {
       logger.error('RUTA: /api/login || METODO: post');
     }

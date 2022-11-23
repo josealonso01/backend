@@ -1,5 +1,5 @@
 const express = require('express');
-const ContenedorDB = require('../daos/Products.js');
+const ContenedorDB = require('../daos/controllers/Products.js');
 const { logger } = require('../public/logger.js');
 const router = require('./router.js');
 
@@ -31,7 +31,7 @@ routerProducts.post('/', (req, res) => {
       res.render('oneProduct', { body });
     } else {
       logger.error('RUTA:  /api/basket/:id || METODO: get');
-      res.render('errorProductos');;
+      res.render('errorProductos');
     }
   });
 });

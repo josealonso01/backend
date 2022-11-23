@@ -1,26 +1,34 @@
 const express = require('express');
-const Basket = require('../daos/Basket.js');
-const Products = require('../daos/Products.js');
-const userDaos = require('../daos/userDaos.js');
+const { createTransport } = require('nodemailer');
+const Basket = require('../daos/controllers/Basket.js');
+const Products = require('../daos/controllers/Products.js');
+const userDaos = require('../daos/controllers/userDaos.js');
 const { logger } = require('../public/logger.js');
+const sendMail = require('../utils/sendMail.js');
+const sendSMS = require('../utils/sendMessage.js');
+const sendWhatsapp = require('../utils/sendWhatsapp.js');
 const router = require('./router.js');
 const routerBasket = express.Router();
 const app = express();
 
-const basket = new Basket('basket');
-const catalogo = new Products('productos');
-const users = new userDaos('usuarios');
+const basketController = new Basket('basket');
+const catalogoController = new Products('productos');
+const usersController = new userDaos('usuarios');
 
 routerBasket.get('/', async (req, res) => {
   logger.info('RUTA: /api/basket/ || METODO: get');
   try {
-    console.log('El id del user', req.user._id);
-    const user = await users.getItemById(req.user._id);
-    const sanitizedUser = { name: user.username, _id: user._id };
+    const user = await usersController.getItemById(req.user._id);
 
-    const response = await basket.getByUserId(req.user._id);
-
-    const allProducts = response.catalogo.map((product) => ({
+    const sanitizedUser = {
+      name: user.username,
+      _id: user._id,
+      cart_id: user.cart_id.toString(),
+    };
+    const response = await basketController.getCartByUserId(
+      sanitizedUser.cart_id
+    );
+    const allProducts = response.products.map((product) => ({
       name: product.name,
       description: product.Descripcion,
       picture: product.picture,
@@ -30,61 +38,54 @@ routerBasket.get('/', async (req, res) => {
 
     return res.render('cartBasket', {
       sanitizedUser,
-      cart: { allProducts },
+      cart: { allProducts, cart_id: response._id },
     });
   } catch (err) {
     logger.error(err);
   }
 });
 
-routerBasket.get('/:id', (req, res) => {
-  let { id } = req.params;
-  basket.getById(id).then((found) => {
-    if (found) {
-      logger.info('RUTA: /api/basket/:id || METODO: get');
-      res.json({ product: found });
-    } else {
-      logger.error('RUTA:  /api/basket/:id || METODO: get');
-      res.json({ error: 'el producto no existe' });
-    }
-  });
+routerBasket.get('/:id/productos', async (req, res) => {
+  const products = await basketController.getCartProducts(
+    req.params.id
+  );
+  if (products) return res.json(products);
+  return res.json(null);
 });
 
 routerBasket.post('/', async (req, res) => {
-  try {
-    logger.info('RUTA: /api/basket/ || METODO: post');
-    const carrito = await basket.save();
-    res.json({
-      titulo: 'Carrito creado:',
-      data: { carrito },
-    });
-  } catch (error) {
-    logger.error('RUTA:  /api/basket/ || METODO: post');
-    res.status(500).send({
-      status: 500,
-      message: error.message,
-    });
-  }
+  if (req.user.cart_id)
+    return basketController.getById(req.user.cart_id);
+  const newCartId = await basketController.save(req.user._id);
+  return res.json(newCartId);
 });
 
-routerBasket.post('/:id/productos/:id_prod', async (req, res) => {
-  let { id } = req.params;
-  let { id_prod } = req.params;
-  try {
-    logger.info(
-      'RUTA: /api/basket/:id/productos/:id_prod || METODO: post'
+routerBasket.post('/:id/productos/', async (req, res) => {
+  const product = await catalogoController.getById(req.body.prod_id);
+  await basketController.addCartProduct(req.params.id, product);
+  return res.redirect('/api/basket');
+});
+
+routerBasket.post('/:id', async (req, res) => {
+  const cart = await basketController.getItemById(req.params.id);
+  const formattedProducts = cart.products.map(
+    (product) =>
+      `Producto: ${product.name} <br />
+        Precio: ${product.price}
+        `
+  );
+  await sendMail(
+    null,
+    `Nuevo pedido de ${req.user.email}`,
+    `<p>${formattedProducts.join('</p><p>')}</p>`
+  );
+  const newUser = await usersController.deleteCart(cart._id);
+  await sendSMS('La orden fue confirmada');
+  await sendWhatsapp(
+      'Se ha creado una nueva orden de compra de parte de: ' +
+        req.user.name
     );
-    const BuscoProducto = await basket.addProductToCart(id, id_prod);
-    res.json({
-      msg: 'Los productos de tu carrito son:',
-      data: { BuscoProducto },
-    });
-  } catch (error) {
-    logger.error(
-      'RUTA:  /api/basket/:id/productos/:id_prod  || METODO: post'
-    );
-    res.send({ message: error.message });
-  }
+  return res.redirect('/api/home');
 });
 
 routerBasket.delete(
@@ -96,7 +97,7 @@ routerBasket.delete(
       logger.info(
         'RUTA: /api/basket/:id/eliminarProducto/:id_prod || METODO: delete'
       );
-      const agregado = await basket.deleteProductoDeCarrito(
+      const agregado = await basketController.deleteProductoDeCarrito(
         id,
         id_prod
       );
@@ -121,7 +122,7 @@ routerBasket.delete(
 
 routerBasket.delete('/producto/:idProduct', (req, res) => {
   let { idProduct } = req.params;
-  basket.deleteById(idProduct).then((found) => {
+  basketController.deleteById(idProduct).then((found) => {
     if (found) {
       logger.info(
         'RUTA: /api/basket/producto/:idProduct || METODO: delete'
@@ -144,7 +145,11 @@ routerBasket.put('/:id/productos/:id_prod', async (req, res) => {
     logger.info(
       'RUTA: /api/basket/:id/productos/:id_prod || METODO: put'
     );
-    const nuevoProducto = await basket.updateById(id, id_prod, body);
+    const nuevoProducto = await basketController.updateById(
+      id,
+      id_prod,
+      body
+    );
     res.json({ success: 'ok', nuevoProducto, new: body });
   } catch (error) {
     logger.error(

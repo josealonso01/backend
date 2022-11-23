@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
-const esquemaProducto = require('./modelsMDB/schemaProduct.js');
-const generarUsuario = require('../public/generadorDeProductos.js');
-const generarId = require('../public/generadorDeIds.js');
+const esquemaProducto = require('../modelsMDB/schemaProduct.js');
+const generarUsuario = require('../../public/generadorDeProductos.js');
+const generarId = require('../../public/generadorDeIds.js');
 const dotenv = require('dotenv');
+const { logger } = require('../../public/logger.js');
 dotenv.config();
 class ContenedorDB {
   async connectMDB() {
@@ -12,9 +13,8 @@ class ContenedorDB {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
-      console.log('ya estoy conectado');
     } catch (error) {
-      console.log(`Ocurrio un error: ${error}`);
+      logger.error(error);
     }
   }
 
@@ -24,7 +24,7 @@ class ContenedorDB {
       await this.connectMDB();
       return nuevoProducto;
     } catch (error) {
-      console.log('error en el save', error);
+      logger.error(error);
     }
   }
 
@@ -38,7 +38,7 @@ class ContenedorDB {
       }
       return nuevos;
     } catch (error) {
-      throw Error(error.message);
+      logger.error(error);
     }
   }
   async getProductos() {
@@ -47,19 +47,19 @@ class ContenedorDB {
       const prod = await esquemaProducto.find({});
       return prod;
     } catch (error) {
-      throw Error(error.message);
+      logger.error(error);
     }
   }
 
   async getById(id) {
     try {
       await this.connectMDB();
-      if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      if (id) {
         const prodId = await esquemaProducto.findById(id);
         return prodId;
       }
     } catch (error) {
-      throw Error(error.message);
+      logger.error(error);
     }
   }
 
@@ -69,7 +69,7 @@ class ContenedorDB {
       const deleteId = await esquemaProducto.deleteOne({ id: id });
       return deleteId;
     } catch (error) {
-      throw Error(error.message);
+      logger.error(error);
     }
   }
 
@@ -79,7 +79,7 @@ class ContenedorDB {
       const deleteAll = await esquemaProducto.deleteMany({});
       return deleteAll;
     } catch (error) {
-      throw Error(error.message);
+      logger.error(error);
     }
   }
 
@@ -92,7 +92,7 @@ class ContenedorDB {
       );
       return updateId;
     } catch (error) {
-      throw Error(error.message);
+      logger.error(error);
     }
   }
 }

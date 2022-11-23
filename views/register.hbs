@@ -43,12 +43,24 @@
           </div> <!-- form-group// -->
           <div class="form-group input-group">
             <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+            </div>
+            <input id='age' name='age' class="form-control" placeholder="Edad" type="number">
+          </div>
+          <div class="form-group input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-user"> </i></span>
+            </div>
+            <input id='address' name='address' class="form-control" placeholder="Direccion" type="text">
+          </div>
+          <div class="form-group input-group">
+            <div class="input-group-prepend">
               <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
             </div>
             <select class="custom-select" style="max-width: 120px;">
               <option selected="">+549</option>
             </select>
-            <input name="" class="form-control" placeholder="Telefono" type="text">
+            <input name="phone" id="phone" class="form-control" placeholder="Telefono" type="text">
           </div> <!-- form-group// -->
           <!-- form-group end.// -->
           <div class="form-group input-group">
@@ -65,7 +77,7 @@
           </div>
           <div class="mb-3">
             <label for="formFileSm" class="form-label">Subi tu foto o avatar</label>
-            <input class="form-control form-control-sm" id="formFileSm" type="file">
+            <input class="form-control form-control-sm" id="formFileSm" type="file" name="photo_url"  accept="image/*">
           </div>
           <!-- form-group// -->
           <div class="form-group">
