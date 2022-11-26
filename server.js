@@ -17,8 +17,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const cluster = require('cluster');
 const os = require('os');
 const MongoStore = require('connect-mongo');
-const userDaos = require('./daos/controllers/userDaos.js');
-const UsuarioSchema = require('./daos/modelsMDB/Usuarios');
+const User = require('./controllers/User');
+const UsuarioSchema = require('./modelsMDB/Usuarios');
 const sendMail = require('./utils/sendMail.js');
 
 dotenv.config();
@@ -100,7 +100,7 @@ mongoose
     throw 'can not connect to the db';
   });
 
-const usersController = new userDaos('usuarios');
+const usersController = new User('usuarios');
 
 passport.use(
   'login',

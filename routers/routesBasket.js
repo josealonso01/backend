@@ -1,8 +1,8 @@
 const express = require('express');
 const { createTransport } = require('nodemailer');
-const Basket = require('../daos/controllers/Basket.js');
-const Products = require('../daos/controllers/Products.js');
-const userDaos = require('../daos/controllers/userDaos.js');
+const Basket = require('../controllers/Basket');
+const Products = require('../controllers/Products');
+const User = require('../controllers/User');
 const { logger } = require('../public/logger.js');
 const sendMail = require('../utils/sendMail.js');
 const sendSMS = require('../utils/sendMessage.js');
@@ -13,7 +13,7 @@ const app = express();
 
 const basketController = new Basket('basket');
 const catalogoController = new Products('productos');
-const usersController = new userDaos('usuarios');
+const usersController = new User('usuarios');
 
 routerBasket.get('/', async (req, res) => {
   logger.info('RUTA: /api/basket/ || METODO: get');

@@ -1,7 +1,6 @@
 const express = require('express');
 const routerProducts = require('./routesProducts.js');
 const routerBasket = require('./routesBasket.js');
-const ContenedorDB = require('../daos/controllers/Products.js');
 const passport = require('passport');
 const { fork } = require('child_process');
 const os = require('os');
@@ -10,14 +9,13 @@ const compression = require('compression');
 const { logger } = require('../public/logger.js');
 const { createTransport } = require('nodemailer');
 const fs = require('fs');
-const userDaos = require('../daos/controllers/userDaos.js');
-const Products = require('../daos/controllers/Products.js');
-const Basket = require('../daos/controllers/Basket.js');
+const User = require('../controllers/User');
+const Basket = require('../controllers/Basket');
+const ContenedorDB = require('../controllers/Products.js');
 const router = express.Router();
 
 const archivoController = new ContenedorDB('productos');
-const usersController = new userDaos('usuarios');
-const catalogoController = new Products('productos');
+const usersController = new User('usuarios');
 const basketController = new Basket('basket');
 const numCPUs = os.cpus().length;
 
@@ -36,7 +34,7 @@ router.get('/home', async (req, res) => {
     const response = await basketController.save(req.user._id);
     await usersController.addCart(user._id, response._id);
   }
-  const response = await catalogoController.getProductos();
+  const response = await archivoController.getProductos();
 
   const allProducts = response.map((product) => ({
     name: product.name,

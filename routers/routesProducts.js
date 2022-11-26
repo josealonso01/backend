@@ -1,5 +1,5 @@
 const express = require('express');
-const ContenedorDB = require('../daos/controllers/Products.js');
+const ContenedorDB = require('../controllers/Products');
 const { logger } = require('../public/logger.js');
 const router = require('./router.js');
 
