@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 const UsuarioSchema = require('../modelsMDB/Usuarios');
 
-class userDaos {
+class User {
   async connectMDB() {
     try {
       await MongoClient.connect(process.env.URL, {
@@ -48,9 +48,7 @@ class userDaos {
 
   deleteCart = async (id) => {
     try {
-      const user = UsuarioSchema.findOneAndUpdate(
-        { cart_id: id },
-      );
+      const user = UsuarioSchema.findOneAndUpdate({ cart_id: id });
       return user;
     } catch (e) {
       console.log(e);
@@ -58,4 +56,4 @@ class userDaos {
   };
 }
 
-module.exports = userDaos;
+module.exports = User;

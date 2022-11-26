@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
 const esquemaProducto = require('../modelsMDB/schemaProduct.js');
-const generarUsuario = require('../../public/generadorDeProductos.js');
-const generarId = require('../../public/generadorDeIds.js');
+const generarUsuario = require('../public/generadorDeProductos');
+const generarId = require('../public/generadorDeIds');
 const dotenv = require('dotenv');
-const { logger } = require('../../public/logger.js');
+const { logger } = require('../public/logger');
 dotenv.config();
 class ContenedorDB {
   async connectMDB() {

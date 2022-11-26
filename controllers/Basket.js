@@ -3,7 +3,7 @@ const Producto = require('./Products.js');
 const esquemaCart = require('../modelsMDB/schemaCart.js');
 const esquemaProducto = require('../modelsMDB/schemaProduct.js');
 const MongoClient = require('mongodb').MongoClient;
-const { logger } = require('../../public/logger.js');
+const { logger } = require('../public/logger');
 
 const catalogoController = new Producto('productos');
 class Basket {
