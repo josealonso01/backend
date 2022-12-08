@@ -8,15 +8,14 @@ const path = require('path');
 const compression = require('compression');
 const { logger } = require('../public/logger.js');
 const { createTransport } = require('nodemailer');
-const fs = require('fs');
 const User = require('../controllers/User');
-const Basket = require('../controllers/Basket');
-const ContenedorDB = require('../controllers/Products.js');
+const ProductosDaoMongoDb = require('../daos/ProductsDaos.js');
+const CarritosDaoMongoDb = require('../daos/BasketDaos.js');
 const router = express.Router();
 
-const archivoController = new ContenedorDB('productos');
+const archivoController = new ProductosDaoMongoDb('productos');
 const usersController = new User('usuarios');
-const basketController = new Basket('basket');
+const basketController = new CarritosDaoMongoDb('basket');
 const numCPUs = os.cpus().length;
 
 router.use('/productos', routerProducts);
@@ -34,7 +33,7 @@ router.get('/home', async (req, res) => {
     const response = await basketController.save(req.user._id);
     await usersController.addCart(user._id, response._id);
   }
-  const response = await archivoController.getProductos();
+  const response = await archivoController.getAll();
 
   const allProducts = response.map((product) => ({
     name: product.name,
@@ -79,7 +78,7 @@ router.get('/random', (req, res) => {
 
 router.get('/-test', (req, res, next) => {
   logger.info('RUTA: /api/-test || METODO: get');
-  archivoController.getProductos().then((prod) => {
+  archivoController.getAll().then((prod) => {
     res.render('productsList', { prod, productsExist: true });
   });
 });

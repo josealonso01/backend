@@ -22,3 +22,26 @@ module.exports = {
     },
   ],
 };
+
+const mongoose = require('mongoose');
+
+const connectMDB = async () => {
+  try {
+    const URL = process.env.URL;
+    await mongoose.connect(URL, {
+      useNewUrlParser: true,
+      useUniFiedTopology: true,
+    });
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
+const disconnectMDB = () => {
+  mongoose.disconnect();
+};
+
+module.exports = {
+  connectMDB,
+  disconnectMDB,
+};
