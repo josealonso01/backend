@@ -1,128 +1,315 @@
-const admin = require('firebase-admin');
-const Producto = require('./Products.js');
-const esquemaCart = require('../modelsMDB/schemaCart.js');
-const esquemaProducto = require('../modelsMDB/schemaProduct.js');
-const MongoClient = require('mongodb').MongoClient;
-const { logger } = require('../public/logger');
 
-const catalogoController = new Producto('productos');
-class Basket {
-  async connectMDB() {
-    try {
-      await MongoClient.connect(process.env.URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+const ProductosDaoMongoDb = require('../daos/ProductsDaos');
+const CarritosDaoMongoDb = require('../daos/BasketDaos.js');
+
+const carritosBD = new CarritosDaoMongoDb();
+const catalogoController = new ProductosDaoMongoDb();
+
+const findClassName = (clase) => {
+  const posExtends = clase.indexOf('extends');
+  const firstKey = clase.indexOf('{');
+  const className = clase.slice(posExtends + 7, firstKey).trim();
+  return className;
+};
+
+const classNameCarrito = findClassName(
+  carritosBD.constructor.toString()
+);
+const classNameProducto = findClassName(
+  catalogoController.constructor.toString()
+);
+
+const createCart = async (req, res) => {
+  try {
+    const timestamp = Date.now();
+    const productos = [];
+    let idAsignado;
+    if (classNameCarrito != 'ContenedorRelacional') {
+      idAsignado = await carritosBD.save({ timestamp, productos });
+    } else {
+      idAsignado = await carritosBD.save({ timestamp });
+    }
+    res.status(200).send({
+      status: 200,
+      data: {
+        idAsignado,
+      },
+      message: 'carrito creado',
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
+};
+
+const addProduct = async (req, res) => {
+  try {
+    let productoAgregarParseado;
+    const { id } = req.params;
+    const { body } = req;
+    const productoAgregar = await productosBD.getById(body.id);
+    if (productoAgregar) {
+      if (classNameProducto === 'ContenedorMongoDb') {
+        productoAgregarParseado = {
+          id: productoAgregar._id.toString(),
+          timestamp: productoAgregar.timestamp,
+          nombre: productoAgregar.nombre,
+          descripcion: productoAgregar.descripcion,
+          codigo: productoAgregar.codigo,
+          foto: productoAgregar.foto,
+          precio: productoAgregar.precio,
+          stock: productoAgregar.stock,
+        };
+      } else {
+        productoAgregarParseado = { ...productoAgregar };
+      }
+      const carrito = await carritosBD.getById(id);
+      if (carrito) {
+        if (classNameCarrito !== 'ContenedorRelacional') {
+          const productosEnCarrito = carrito.productos;
+          for (const prod of productosEnCarrito) {
+            if (prod.id == body.id) {
+              res.status(200).send({
+                status: 200,
+                message: 'este producto ya está en el carro',
+              });
+              return;
+            }
+          }
+          productosEnCarrito.push(productoAgregarParseado);
+          await carritosBD.modify(id, {
+            productos: productosEnCarrito,
+          });
+          res.status(200).send({
+            status: 200,
+            data: {
+              productoAgregado: productoAgregarParseado,
+            },
+            message: 'agregaste un producto a tu carrito',
+          });
+        } else {
+          if (productoAgregar.length !== 0) {
+            const productosEnCarrito =
+              await productosCarritosBD.getByProp('idCarrito', id);
+            for (const prod of productosEnCarrito) {
+              if (prod.idProducto == body.id) {
+                res.status(200).send({
+                  status: 200,
+                  message: 'este producto ya está en el carro',
+                });
+                return;
+              }
+            }
+            await productosCarritosBD.save({
+              idCarrito: carrito[0].id,
+              idProducto: productoAgregarParseado[0].id,
+            });
+            res.status(200).send({
+              status: 200,
+              data: {
+                productoAgregado: productoAgregarParseado[0],
+              },
+              message: 'agregaste un producto a tu carrito',
+            });
+          } else {
+            res.status(200).send({
+              status: 200,
+              message: 'este producto no existe',
+            });
+            return;
+          }
+        }
+      } else {
+        res.status(200).send({
+          status: 200,
+          message: 'este carrito no existe',
+        });
+      }
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'este producto no existe',
       });
-    } catch (error) {
-      logger.error(err);
     }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
   }
+};
 
-  async save(nuevoProducto) {
-    try {
-      await this.connectMDB();
-      await esquemaCart.create(nuevoProducto);
-      return nuevoProducto;
-    } catch (error) {
-      logger.error(error)
+const getAllProductsByCartId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const carrito = await carritosBD.getById(id);
+    let productosDelCarrito = [];
+    if (carrito) {
+      if (classNameCarrito !== 'ContenedorRelacional') {
+        productosDelCarrito = carrito.productos;
+      } else {
+        if (carrito.length !== 0) {
+          const productosEnCarro =
+            await productosCarritosBD.getByProp('idCarrito', id);
+          for (const prod of productosEnCarro) {
+            const res = await productosBD.getById(prod.idProducto);
+            productosDelCarrito.push(res[0]);
+          }
+          res.status(200).send({
+            status: 200,
+            data: {
+              id: carrito[0].id,
+              timestamp: carrito[0].timestamp,
+              productos: productosDelCarrito,
+            },
+            message: 'productos del carrito encontrados',
+          });
+          return;
+        } else {
+          res.status(200).send({
+            status: 200,
+            message: 'este carrito no existe',
+          });
+          return;
+        }
+      }
+      res.status(200).send({
+        status: 200,
+        data: {
+          carrito,
+        },
+        message: 'productos del carrito encontrados',
+      });
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'este carrito no existe',
+      });
     }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
   }
+};
 
-  getItems = async () => {
-    await this.connectMDB();
-    let arr = [];
-    try {
-      arr = await esquemaCart.find({});
-    } catch (err) {
-      logger.error(err);
+const deleteCartById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const carrito = await carritosBD.getById(id);
+    if (carrito) {
+      if (classNameCarrito == 'ContenedorRelacional') {
+        if (carrito.length !== 0) {
+          await carritosBD.deleteById(id);
+          const productosAEliminar =
+            await productosCarritosBD.getByProp('idCarrito', id);
+          for (const prod of productosAEliminar) {
+            await productosCarritosBD.deleteById(prod.id);
+          }
+        } else {
+          res.status(200).send({
+            status: 200,
+            message: 'este carrito no existe',
+          });
+          return;
+        }
+      } else {
+        await carritosBD.deleteById(id);
+      }
+      res.status(200).send({
+        status: 200,
+        message: 'carrito eliminado',
+      });
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'este carrito no existe',
+      });
     }
-    return arr;
-  };
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
+};
 
-  getItemById = async (id) => {
-    let item = {};
-    try {
-      item = esquemaCart.findById(id);
-    } catch (err) {
-      logger.error(err);
+const deleteProductById = async (req, res) => {
+  try {
+    const { id, id_prod } = req.params;
+    const carrito = await carritosBD.getById(id);
+    if (carrito) {
+      let productosCarrito = carrito.productos;
+      let productoExisteEnCarro;
+      let productosAEliminar;
+      if (classNameCarrito !== 'ContenedorRelacional') {
+        for (const prod of productosCarrito) {
+          if (prod.id == id_prod) {
+            productoExisteEnCarro = true;
+            break;
+          }
+        }
+      } else {
+        let parsedProductosAEliminar = [];
+        productosAEliminar = await productosCarritosBD.getByProp(
+          'idCarrito',
+          id
+        );
+        productosAEliminar.map((item) =>
+          parsedProductosAEliminar.push({ ...item })
+        );
+        productoExisteEnCarro = parsedProductosAEliminar.find(
+          (item) => item.idProducto == id_prod
+        );
+      }
+      if (productoExisteEnCarro) {
+        if (classNameCarrito !== 'ContenedorRelacional') {
+          const newArray = productosCarrito.filter(
+            (e) => e.id != id_prod
+          );
+          await carritosBD.modify(id, { productos: newArray });
+          res.status(200).send({
+            status: 200,
+            message: 'producto eliminado del carro',
+          });
+        } else {
+          for (const prod of productosAEliminar) {
+            if (prod.idProducto == id_prod) {
+              await productosCarritosBD.deleteById(prod.id);
+            }
+          }
+          res.status(200).send({
+            status: 200,
+            message: 'producto eliminado del carro',
+          });
+        }
+      } else {
+        res.status(200).send({
+          status: 200,
+          message: 'este producto no existe en el carro',
+        });
+      }
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'este carrito no existe',
+      });
     }
-    return item;
-  };
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
+};
 
-  createItem = async (item) => {
-    await this.connectMDB();
-    let newItem = new esquemaCart(item);
-    try {
-      await newItem.save();
-      return newItem;
-    } catch (err) {
-      throw Error(err);
-    }
-  };
-
-  updateItem = async (id, newItem) => {
-    await this.connectMDB();
-    try {
-      let product = await this.getItemById(id);
-      Object.assign(product, newItem);
-      await product.save();
-    } catch (err) {
-      logger.error(err);
-    }
-  };
-
-  deleteItem = async (id) => {
-    await this.connectMDB();
-    try {
-      await esquemaCart.deleteOne({ _id: id });
-    } catch (err) {
-      logger.error(err);
-    }
-  };
-
-  deleteCartProduct = async (id, prodId) => {
-    await this.connectMDB();
-    let cart;
-    try {
-      cart = await this.getItemById(id);
-      cart.products.id(prodId).remove();
-      await cart.save();
-    } catch (err) {
-      logger.error(err);
-    }
-  };
-
-  getCartByUserId = async (id) => {
-    await this.connectMDB();
-    let cart;
-    try {
-      cart = await esquemaCart.findOne({ user_id: id });
-    } catch (err) {
-      logger.error(err);
-    }
-    return cart ? cart : undefined;
-  };
-
-  getCartProducts = (id) => {
-    const cart = this.getItemById(Number(id));
-    return cart.products;
-  };
-
-  addCartProduct = async (id_user, id_prod) => {
-    const cart = await this.getCartByUserId({ _id: id_user });
-    if (cart == null) {
-      let newCartData = {
-        products: [],
-        user_id: id_user,
-      };
-    const cart = await this.createItem(newCartData);
-    console.log(cart);
-    }
-    const prod = await catalogoController.getById(id_prod);
-    cart.products.push(prod);
-    await cart.save();
-    return;
-  };
-}
-
-module.exports = Basket;
+module.exports = {
+  getAllProductsByCartId,
+  createCart,
+  addProduct,
+  deleteCartById,
+  deleteProductById,
+};

@@ -1,100 +1,161 @@
-const mongoose = require('mongoose');
-const MongoClient = require('mongodb').MongoClient;
-const esquemaProducto = require('../modelsMDB/schemaProduct.js');
-const generarUsuario = require('../public/generadorDeProductos');
-const generarId = require('../public/generadorDeIds');
+
 const dotenv = require('dotenv');
+const ProductosDaoMongoDb = require('../daos/ProductsDaos');
+
+const productosBD = new ProductosDaoMongoDb();
+
 const { logger } = require('../public/logger');
 dotenv.config();
-class ContenedorDB {
-  async connectMDB() {
-    try {
-      await MongoClient.connect(process.env.URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+
+const isAdmin = true;
+
+const checkAdmin = (req, res, next) => {
+  if (!isAdmin) {
+    res.send({
+      error: -1,
+      descripcion: `ruta 'api/productos' método '${req.method}' no autorizado`,
+    });
+  } else {
+    next();
+  }
+};
+
+const addProduct = async (req, res) => {
+  try {
+    const { body } = req;
+    const { nombre, descripcion, codigo, foto, precio, stock } = body;
+    const timestamp = Date.now();
+    const productoNuevo = {
+      timestamp: parseInt(timestamp),
+      nombre,
+      descripcion,
+      codigo,
+      foto,
+      precio: parseFloat(precio),
+      stock: parseInt(stock),
+    };
+    await productosBD.save(productoNuevo);
+    res.status(200).send({
+      status: 200,
+      message: 'producto agregado',
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
+  }
+};
+
+const getAllProducts = async (req, res) => {
+  try {
+    const productos = await productosBD.getAll();
+    if (productos.length !== 0) {
+      res.status(200).send({
+        status: 200,
+        data: {
+          productos,
+        },
+        message: 'productos encontrados',
       });
-    } catch (error) {
-      logger.error(error);
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'no hay productos',
+      });
     }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
   }
+};
 
-  async save(nuevoProducto) {
-    try {
-      await esquemaProducto.create(nuevoProducto);
-      await this.connectMDB();
-      return nuevoProducto;
-    } catch (error) {
-      logger.error(error);
+const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const unProducto = await productosBD.getById(id);
+    if (unProducto) {
+      res.status(200).send({
+        status: 200,
+        data: {
+          unProducto,
+        },
+        message: 'producto encontrado',
+      });
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'el producto no existe',
+      });
     }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
   }
+};
 
-  async popular(cant = 5) {
-    try {
-      const nuevos = [];
-      for (let i = 0; i < cant; i++) {
-        const nuevoUsuario = generarUsuario(generarId());
-        const guardado = await this.save(nuevoUsuario);
-        nuevos.push(guardado);
-      }
-      return nuevos;
-    } catch (error) {
-      logger.error(error);
+const updateProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let { body } = req;
+    const timestamp = Date.now();
+    body = {
+      ...body,
+      timestamp,
+    };
+    const result = await productosBD.modify(id, body);
+    if (result) {
+      res.status(200).send({
+        status: 200,
+        message: 'producto modificado',
+      });
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'el producto no existe',
+      });
     }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
   }
-  async getProductos() {
-    try {
-      await this.connectMDB();
-      const prod = await esquemaProducto.find({});
-      return prod;
-    } catch (error) {
-      logger.error(error);
-    }
-  }
+};
 
-  async getById(id) {
-    try {
-      await this.connectMDB();
-      if (id) {
-        const prodId = await esquemaProducto.findById(id);
-        return prodId;
-      }
-    } catch (error) {
-      logger.error(error);
+const deleteProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await productosBD.deleteById(id);
+    if (result) {
+      res.status(200).send({
+        status: 200,
+        message: 'producto eliminado',
+      });
+    } else {
+      res.status(200).send({
+        status: 200,
+        message: 'el producto no existe',
+      });
     }
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message,
+    });
   }
+};
 
-  async deleteById(id) {
-    try {
-      await this.connectMDB();
-      const deleteId = await esquemaProducto.deleteOne({ id: id });
-      return deleteId;
-    } catch (error) {
-      logger.error(error);
-    }
-  }
-
-  async deleteAll() {
-    try {
-      await this.connectMDB();
-      const deleteAll = await esquemaProducto.deleteMany({});
-      return deleteAll;
-    } catch (error) {
-      logger.error(error);
-    }
-  }
-
-  async updateById(id, nuevo) {
-    try {
-      await this.connectMDB();
-      const updateId = await esquemaProducto.updateOne(
-        { id: id },
-        { $set: nuevo }
-      );
-      return updateId;
-    } catch (error) {
-      logger.error(error);
-    }
-  }
-}
-
-module.exports = ContenedorDB;
+module.exports = {
+  addProduct,
+  getAllProducts,
+  getProductById,
+  updateProductById,
+  deleteProductById,
+  checkAdmin,
+  productosBD,
+};
