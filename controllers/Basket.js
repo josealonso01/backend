@@ -1,4 +1,3 @@
-
 const ProductosDaoMongoDb = require('../daos/ProductsDaos');
 const CarritosDaoMongoDb = require('../daos/BasketDaos.js');
 
@@ -22,10 +21,10 @@ const classNameProducto = findClassName(
 const createCart = async (req, res) => {
   try {
     const timestamp = Date.now();
-    const productos = [];
+    const products = [];
     let idAsignado;
     if (classNameCarrito != 'ContenedorRelacional') {
-      idAsignado = await carritosBD.save({ timestamp, productos });
+      idAsignado = await carritosBD.save({ timestamp, products });
     } else {
       idAsignado = await carritosBD.save({ timestamp });
     }
@@ -49,17 +48,19 @@ const addProduct = async (req, res) => {
     let productoAgregarParseado;
     const { id } = req.params;
     const { body } = req;
-    const productoAgregar = await productosBD.getById(body.id);
+    const productoAgregar = await catalogoController.getById(
+      body.prod_id
+    );
     if (productoAgregar) {
       if (classNameProducto === 'ContenedorMongoDb') {
         productoAgregarParseado = {
-          id: productoAgregar._id.toString(),
+          id: productoAgregar.id.toString(),
           timestamp: productoAgregar.timestamp,
-          nombre: productoAgregar.nombre,
-          descripcion: productoAgregar.descripcion,
-          codigo: productoAgregar.codigo,
-          foto: productoAgregar.foto,
-          precio: productoAgregar.precio,
+          name: productoAgregar.name,
+          Descripcion: productoAgregar.Descripcion,
+          Codigo: productoAgregar.Codigo,
+          picture: productoAgregar.picture,
+          price: productoAgregar.price,
           stock: productoAgregar.stock,
         };
       } else {
@@ -68,19 +69,17 @@ const addProduct = async (req, res) => {
       const carrito = await carritosBD.getById(id);
       if (carrito) {
         if (classNameCarrito !== 'ContenedorRelacional') {
-          const productosEnCarrito = carrito.productos;
-          for (const prod of productosEnCarrito) {
-            if (prod.id == body.id) {
-              res.status(200).send({
-                status: 200,
-                message: 'este producto ya está en el carro',
-              });
-              return;
-            }
+          const productosEnCarrito = carrito.products;
+          if (body.prod_id === productoAgregar._id) {
+            res.status(200).send({
+              status: 200,
+              message: 'este producto ya está en el carro',
+            });
+            return;
           }
           productosEnCarrito.push(productoAgregarParseado);
           await carritosBD.modify(id, {
-            productos: productosEnCarrito,
+            products: productosEnCarrito,
           });
           res.status(200).send({
             status: 200,
@@ -148,13 +147,15 @@ const getAllProductsByCartId = async (req, res) => {
     let productosDelCarrito = [];
     if (carrito) {
       if (classNameCarrito !== 'ContenedorRelacional') {
-        productosDelCarrito = carrito.productos;
+        productosDelCarrito = carrito.products;
       } else {
         if (carrito.length !== 0) {
           const productosEnCarro =
             await productosCarritosBD.getByProp('idCarrito', id);
           for (const prod of productosEnCarro) {
-            const res = await productosBD.getById(prod.idProducto);
+            const res = await catalogoController.getById(
+              prod.idProducto
+            );
             productosDelCarrito.push(res[0]);
           }
           res.status(200).send({
@@ -162,7 +163,7 @@ const getAllProductsByCartId = async (req, res) => {
             data: {
               id: carrito[0].id,
               timestamp: carrito[0].timestamp,
-              productos: productosDelCarrito,
+              products: productosDelCarrito,
             },
             message: 'productos del carrito encontrados',
           });

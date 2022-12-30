@@ -1,10 +1,11 @@
-
 const dotenv = require('dotenv');
+const CarritosDaoMongoDb = require('../daos/BasketDaos');
 const ProductosDaoMongoDb = require('../daos/ProductsDaos');
 
 const productosBD = new ProductosDaoMongoDb();
 
 const { logger } = require('../public/logger');
+const User = require('./User');
 dotenv.config();
 
 const isAdmin = true;
@@ -23,15 +24,16 @@ const checkAdmin = (req, res, next) => {
 const addProduct = async (req, res) => {
   try {
     const { body } = req;
-    const { nombre, descripcion, codigo, foto, precio, stock } = body;
+    const { name, Descripcion, Codigo, picture, price, stock } =
+      body;
     const timestamp = Date.now();
     const productoNuevo = {
       timestamp: parseInt(timestamp),
-      nombre,
-      descripcion,
-      codigo,
-      foto,
-      precio: parseFloat(precio),
+      name,
+      Descripcion,
+      Codigo,
+      picture,
+      price: parseFloat(price),
       stock: parseInt(stock),
     };
     await productosBD.save(productoNuevo);
@@ -47,17 +49,36 @@ const addProduct = async (req, res) => {
   }
 };
 
+const archivoController = new ProductosDaoMongoDb('productos');
+const usersController = new User('usuarios');
+const basketController = new CarritosDaoMongoDb('basket');
+
 const getAllProducts = async (req, res) => {
   try {
     const productos = await productosBD.getAll();
     if (productos.length !== 0) {
-      res.status(200).send({
-        status: 200,
-        data: {
-          productos,
-        },
-        message: 'productos encontrados',
-      });
+      const user = await usersController.getItemById(req.user._id);
+      const sanitizedUser = {
+        name: user.username,
+        _id: user._id,
+        cart_id: user.cart_id,
+      };
+      logger.info('entro');
+      if (!sanitizedUser.cart_id) {
+        const response = await basketController.save(req.user._id);
+        await usersController.addCart(user._id, response._id);
+      }
+      const response = await archivoController.getAll();
+
+      const allProducts = response.map((product) => ({
+        name: product.name,
+        description: product.Descripcion,
+        picture: product.picture,
+        price: product.price,
+        _id: product._id,
+      }));
+
+      return res.render('home', { sanitizedUser, allProducts });
     } else {
       res.status(200).send({
         status: 200,

@@ -1,4 +1,4 @@
-const { connectMDB, disconnectMDB } = require('../config');
+const { connectMDB } = require('../config');
 
 class ContenedorMongoDb {
   constructor(name) {
@@ -10,7 +10,6 @@ class ContenedorMongoDb {
       await connectMDB();
       const objNuevo = new this.name({ ...obj });
       const objCreado = await objNuevo.save();
-      disconnectMDB();
       return objCreado._id;
     } catch (error) {
       console.log(error);
@@ -21,7 +20,6 @@ class ContenedorMongoDb {
     try {
       await connectMDB();
       const objEncontrado = await this.name.findById(id);
-      disconnectMDB();
       return objEncontrado;
     } catch (error) {
       console.log(error);
@@ -32,7 +30,6 @@ class ContenedorMongoDb {
     try {
       await connectMDB();
       const objEncontrados = await this.name.find();
-      disconnectMDB();
       return objEncontrados;
     } catch (error) {
       console.log(error);
@@ -44,7 +41,6 @@ class ContenedorMongoDb {
       await connectMDB();
       const objEncontrado = await this.name.findById(id);
       await this.name.findByIdAndDelete(id);
-      disconnectMDB();
       return objEncontrado;
     } catch (error) {
       console.log(error);
@@ -54,10 +50,12 @@ class ContenedorMongoDb {
   async modify(id, replace) {
     try {
       await connectMDB();
-      const objModificado = await this.name.findByIdAndUpdate(id, {
-        $set: { ...replace },
-      });
-      disconnectMDB();
+      const updateObj = { $set: { ...replace } };
+      const objModificado = await this.name.findByIdAndUpdate(
+        id,
+        updateObj,
+        { new: true }
+      );
       return objModificado;
     } catch (error) {
       console.log(error);
