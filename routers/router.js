@@ -14,41 +14,25 @@ const CarritosDaoMongoDb = require('../daos/BasketDaos.js');
 const router = express.Router();
 
 const archivoController = new ProductosDaoMongoDb('productos');
-const usersController = new User('usuarios');
-const basketController = new CarritosDaoMongoDb('basket');
 const numCPUs = os.cpus().length;
 
 router.use('/productos', routerProducts);
 router.use('/basket', routerBasket);
- 
-router.get('/home', async (req, res) => {
-  const user = await usersController.getItemById(req.user._id);
-  const sanitizedUser = {
-    name: user.username,
-    _id: user._id,
-    cart_id: user.cart_id,
-  };
-  logger.info('entro');
-  if (!sanitizedUser.cart_id) {
-    const response = await basketController.save(req.user._id);
-    await usersController.addCart(user._id, response._id);
+
+function checkAuthentication(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.redirect('login');
   }
-  const response = await archivoController.getAll();
-
-  const allProducts = response.map((product) => ({
-    name: product.name,
-    description: product.Descripcion,
-    picture: product.picture,
-    price: product.price,
-    _id: product._id,
-  }));
-
-  return res.render('home', { sanitizedUser, allProducts });
-});
-
-router.get('/form', (req, res) => {
-  logger.info('RUTA: /api/form || METODO: get');
-  res.render('form');
+}
+router.get('/form', checkAuthentication, async (req, res) => {
+  const { username, password } = req.user;
+  const user = { username, password };
+  req.session.contador = 0;
+  req.session.contador++;
+  const datos = req.session;
+  res.render('form', { user, datos });
 });
 
 const scriptPath = path.resolve(
@@ -83,14 +67,12 @@ router.get('/-test', (req, res, next) => {
   });
 });
 
-
 router.post('/-test', (req, res, next) => {
   logger.info('RUTA: /api/-test || METODO: post');
   archivoController.popular().then((prod) => {
     res.json({ prod: prod });
   });
 });
-
 
 const infodelProceso = {
   args: process.argv.slice(2),
@@ -170,7 +152,7 @@ router.post('/signup', (req, res, next) => {
         try {
           const enviarMail = await transporter.sendMail(mailOptions);
         } catch (err) {
-        logger.error(err);
+          logger.error(err);
         }
       }
       console.log('err', err, 'user:', user, 'info:', info);
@@ -203,7 +185,7 @@ router.post(
   (req, res) => {
     try {
       logger.info('RUTA: /api/login || METODO: post');
-      res.redirect('/api/home');
+      res.redirect('/api/productos');
     } catch (error) {
       logger.error('RUTA: /api/login || METODO: post');
     }

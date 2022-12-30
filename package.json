@@ -32,7 +32,7 @@
     "nodemon": "^2.0.19"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",

@@ -138,20 +138,25 @@ passport.use(
         const newUser = {
           email: req.body.email,
           password: createHash(password),
-          age: req.body.age,
           username: req.body.username,
           address: req.body.address,
           phone: req.body.phone,
-          photo_url: req.file,
         };
-
-        const response = await usersController.createItem(newUser);
+        UsuarioSchema.create(newUser, (err, userWithId) => {
+          if (err) {
+            console.log('Error in Saving user: ' + err);
+            return done(err);
+          }
+          console.log(user);
+          console.log('User Registration succesful');
+          return done(null, userWithId);
+        });
         await sendMail(
           process.env.GMAIL_ACCOUNT,
           'Nuevo Registro',
           JSON.stringify(newUser, null, 2)
         );
-        return done(null, response);
+        return done(null);
       } catch (err) {
         return done(err);
       }
