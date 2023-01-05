@@ -1,11 +1,9 @@
-sockets = io();
+const socket = io();
 //ATRAPAN MSGS QUE ENVIE EL SERVER
 
 socket.on('connect', function () {
   console.log('connected to server');
 });
-
-console.log('entra al index', sockets);
 
 const button = document.getElementById('submitMessage');
 button.addEventListener('click', (e) => {
@@ -20,7 +18,7 @@ button.addEventListener('click', (e) => {
     },
     text: document.getElementById('caja-msg').value,
   };
-  sockets.emit('data-generica', JSON.stringify(mensaje));
+  socket.emit('data-generica', JSON.stringify(mensaje));
   document.getElementById('caja-msg').value = '';
 });
 
@@ -40,7 +38,7 @@ const denormalize = (messages) => {
   return denormalizedMessages;
 };
 
-sockets.on('arr-chat', (data) => {
+socket.on('arr-chat', (data) => {
   let denormalizedChats = denormalize(data);
   let compression =
     (JSON.stringify(denormalizedChats).length /
