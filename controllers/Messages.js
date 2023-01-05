@@ -18,12 +18,7 @@ const getAllMessages = async (req, res) => {
   try {
     const msg = await menssagesController.getAll();
     if (msg) {
-      res.status(200).send({
-        status: 200,
-        data: {
-          msg,
-        },
-      });
+      res.render('centroMensajes');
     }
   } catch (error) {
     res.status(500).send({

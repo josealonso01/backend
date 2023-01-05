@@ -81,13 +81,12 @@ const addProduct = async (req, res) => {
           await carritosBD.modify(id, {
             products: productosEnCarrito,
           });
-          res.status(200).send({
-            status: 200,
-            data: {
-              productoAgregado: productoAgregarParseado,
-            },
-            message: 'agregaste un producto a tu carrito',
+          res.render('cartBasket', {
+            productosEnCarrito,
+            productoAgregarParseado,
+            carritosBD,
           });
+         
         } else {
           if (productoAgregar.length !== 0) {
             const productosEnCarrito =
@@ -144,10 +143,10 @@ const getAllProductsByCartId = async (req, res) => {
   try {
     const { id } = req.params;
     const carrito = await carritosBD.getById(id);
-    let productosDelCarrito = [];
+    let productosEnCarrito = [];
     if (carrito) {
       if (classNameCarrito !== 'ContenedorRelacional') {
-        productosDelCarrito = carrito.products;
+        productosEnCarrito = carrito.products;
       } else {
         if (carrito.length !== 0) {
           const productosEnCarro =
@@ -156,14 +155,14 @@ const getAllProductsByCartId = async (req, res) => {
             const res = await catalogoController.getById(
               prod.idProducto
             );
-            productosDelCarrito.push(res[0]);
+            productosEnCarrito.push(res[0]);
           }
           res.status(200).send({
             status: 200,
             data: {
               id: carrito[0].id,
               timestamp: carrito[0].timestamp,
-              products: productosDelCarrito,
+              products: productosEnCarrito,
             },
             message: 'productos del carrito encontrados',
           });
@@ -176,13 +175,7 @@ const getAllProductsByCartId = async (req, res) => {
           return;
         }
       }
-      res.status(200).send({
-        status: 200,
-        data: {
-          carrito,
-        },
-        message: 'productos del carrito encontrados',
-      });
+      res.render('cartBasket', { productosEnCarrito });
     } else {
       res.status(200).send({
         status: 200,

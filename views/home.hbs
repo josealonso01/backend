@@ -4,7 +4,14 @@
 <div class="row">
 
     {{#if allProducts.length}}
+    <div>
+        <form action="/api/basket/{{./sanitizedUser.cart_id}}/productos" method="get">
+            <button type="submit" class="btn btn-primary btn-sm">Ir al carrito</button>
+        </form>
+
+    </div>
     {{#each allProducts}}
+
     <div class="col-md-3">
 
         <div class="card" style="margin-top: 15px;">
@@ -23,8 +30,12 @@
     </div>
 
     {{/each}}
-    {{else}}
 
-    {{/if}}
+
+    {{/if }}
 
 </div>
+<br />
+{{> footer}}
+<br />
+
