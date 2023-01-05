@@ -11,6 +11,9 @@ const { createTransport } = require('nodemailer');
 const User = require('../controllers/User');
 const ProductosDaoMongoDb = require('../daos/ProductsDaos.js');
 const CarritosDaoMongoDb = require('../daos/BasketDaos.js');
+const { Message } = require('twilio/lib/twiml/MessagingResponse.js');
+const Messagges = require('../daos/mensajes.js');
+const { getAllMessages, getMensajeById, getByEmail } = require('../controllers/Messages.js');
 const router = express.Router();
 
 const archivoController = new ProductosDaoMongoDb('productos');
@@ -66,6 +69,14 @@ router.get('/-test', (req, res, next) => {
     res.render('productsList', { prod, productsExist: true });
   });
 });
+
+router.get('/chat', (req, res, next) => {
+  logger.info('RUTA: /api/mensajes || METODO: get');
+  res.render('centroMensajes');
+});
+
+router.get('/mensajes', getAllMessages);
+router.get('/chat/:id', getByEmail);
 
 router.post('/-test', (req, res, next) => {
   logger.info('RUTA: /api/-test || METODO: post');

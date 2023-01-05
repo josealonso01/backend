@@ -15,7 +15,7 @@
 
     <h2 class="text-center">CENTRO DE MENSAJES</h2>
     <h3 id="div-compres" class="text-center"></h3>
-    <input type="email" id="email" class="form-control w-100" value="" placeholder="...@email.com" />
+    <input type="email" id="email" class="form-control w-100" value="" placeholder="email" />
     <input type="text" id="nombre" class="form-control w-100" value="" placeholder="Nombre" />
     <input type="text" id="apellido" class="form-control w-100" value="" placeholder="Apellido" />
     <input type="number" id="edad" class="form-control w-100" value="" placeholder="Edad" />
@@ -27,14 +27,14 @@
       <button id="submitMessage" class="btn btn-success w-100 mx-1"> ENVIAR </button>
     </div>
     <div class="w-100 text-center" id="div-chats"></div>
-    <div id="html"> </div>
+    <div id="html"></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"
     integrity="sha512-aTKlYRb1QfU1jlF3k+aS4AqTpnTXci4R79mkdie/bp6Xm51O5O3ESAYhvg6zoicj/PD6VYY0XrYwsWLcvGiKZQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="../socket.io/socket.io.js"></script>
-  <script type="javascript" src="../public/index.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/index.js"></script>
   {{> footer}}
 </body>
 

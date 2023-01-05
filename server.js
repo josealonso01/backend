@@ -5,8 +5,6 @@ const {
   allowInsecurePrototypeAccess,
 } = require('@handlebars/allow-prototype-access');
 const { engine } = require('express-handlebars');
-const { createServer } = require('http');
-const { Server } = require('socket.io');
 const passport = require('passport');
 const bCrypt = require('bcrypt');
 const mongoose = require('mongoose');
@@ -19,12 +17,39 @@ const os = require('os');
 const MongoStore = require('connect-mongo');
 const User = require('./controllers/User');
 const UsuarioSchema = require('./modelsMDB/Usuarios');
+const socketIO = require('socket.io');
+const http = require('http');
 const sendMail = require('./utils/sendMail.js');
+const Messagges = require('./daos/Mensajes.js');
+const { normalizeMessages } = require('./public/normalize.js');
 
 dotenv.config();
 //CONECTO SERVIDOR
 
 const app = express();
+const PORT = parseInt(process.argv[2]) || process.env.PORT;
+//SOCKETS
+let server = http.createServer(app);
+let io = socketIO(server);
+server.listen(PORT);
+
+const mensajes = new Messagges('mensajes');
+
+io.on('connection', async (socket) => {
+  console.log('New user connected');
+  let messages = await mensajes.getAll();
+
+  io.sockets.emit('arr-chat', normalizeMessages(messages));
+  socket.on('data-generica', async (data) => {
+    let message = JSON.parse(data);
+    await mensajes.save(message);
+    let allMessages = await mensajes.getAll({ sort: true });
+
+    console.log('arr-chat adentro del on', allMessages);
+
+    io.sockets.emit('arr-chat', normalizeMessages(allMessages));
+  });
+});
 
 const optionalArgsObject = {
   alias: {
@@ -37,11 +62,7 @@ const optionalArgsObject = {
   },
 };
 const args = minimist(process.argv.slice(2), optionalArgsObject);
-
-const PORT = parseInt(process.argv[2]) || process.env.PORT;
 const modoCluster = process.argv[3] == 'CLUSTER';
-const httpServer = createServer(app);
-const io = new Server(httpServer, {});
 
 if (modoCluster && cluster.isPrimary) {
   const numCPUs = os.cpus().length;
@@ -61,11 +82,6 @@ if (modoCluster && cluster.isPrimary) {
       new Date().toLocaleString()
     );
     cluster.fork();
-  });
-} else {
-  app.listen(PORT, () => {
-    console.log(`Servidor express escuchando en el puerto ${PORT}`);
-    console.log(`PID WORKER ${process.pid}`);
   });
 }
 
