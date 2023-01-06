@@ -10,7 +10,11 @@ const { logger } = require('../public/logger.js');
 const { createTransport } = require('nodemailer');
 const ProductosDaoMongoDb = require('../daos/ProductsDaos.js');
 const { Message } = require('twilio/lib/twiml/MessagingResponse.js');
-const { getAllMessages, getMensajeById, getByEmail } = require('../controllers/Messages.js');
+const {
+  getAllMessages,
+  getMensajeById,
+  getByEmail,
+} = require('../controllers/Messages.js');
 const router = express.Router();
 
 const archivoController = new ProductosDaoMongoDb('productos');
@@ -187,8 +191,6 @@ router.post(
     }
   }
 );
-
-
 
 router.get('/', (req, res) => {
   logger.info('RUTA: /api/ || METODO: get');
