@@ -1,5 +1,5 @@
 const express = require('express');
-const router = require('./routers/router.js');
+const router = require('./routers/router');
 const Handlebars = require('handlebars');
 const {
   allowInsecurePrototypeAccess,
@@ -215,5 +215,5 @@ app.engine(
 );
 
 app.get('/', (req, res) => {
-  res.redirect('api/login');
+  res.redirect('/api/login');
 });
