@@ -1,4 +1,4 @@
-const MessaggesDaoMongoDb = require('../daos/mensajes');
+const MessaggesDaoMongoDb = require('../daos/Mensajes');
 const esquemaMensaje = require('../modelsMDB/schemaMensajes');
 
 const menssagesController = new MessaggesDaoMongoDb('mensajes');
