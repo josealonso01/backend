@@ -8,11 +8,8 @@ const path = require('path');
 const compression = require('compression');
 const { logger } = require('../public/logger.js');
 const { createTransport } = require('nodemailer');
-const User = require('../controllers/User');
 const ProductosDaoMongoDb = require('../daos/ProductsDaos.js');
-const CarritosDaoMongoDb = require('../daos/BasketDaos.js');
 const { Message } = require('twilio/lib/twiml/MessagingResponse.js');
-const Messagges = require('../daos/mensajes.js');
 const { getAllMessages, getMensajeById, getByEmail } = require('../controllers/Messages.js');
 const router = express.Router();
 
