@@ -5,7 +5,7 @@
 
     {{#if allProducts.length}}
     <div>
-        <form action="/api/basket/{{./sanitizedUser.cart_id}}/productos" method="get">
+        <form action="/api/basket/{{../sanitizedUser.cart_id}}/productos" method="get">
             <button type="submit" class="btn btn-primary btn-sm">Ir al carrito</button>
         </form>
 
@@ -31,11 +31,9 @@
 
     {{/each}}
 
-
     {{/if }}
 
 </div>
 <br />
 {{> footer}}
 <br />
-

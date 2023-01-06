@@ -32,15 +32,16 @@ const getByEmail = async (req, res, next) => {
   const { id } = req.params;
   try {
     const mensajes = await esquemaMensaje.find({ id });
+    const msgJson = [];
     for (let i = 0; i < mensajes.length; i++) {
       const msg = mensajes[i];
-      const idAuthor = msg.author.id;
-      if (idAuthor === id) {
-        console.log(msg);
-        res.render('mensajes', { msg });
+      if (msg.author.id === id) {
+        msgJson.push(msg);
+        
       }
-      if (err) return req.next(err);
     }
+    console.log('msgjson', msgJson);
+    res.render('mensajes', { msgJson });
   } catch (err) {
     console.log(err);
   }

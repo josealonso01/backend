@@ -24,8 +24,7 @@ const checkAdmin = (req, res, next) => {
 const addProduct = async (req, res) => {
   try {
     const { body } = req;
-    const { name, Descripcion, Codigo, picture, price, stock } =
-      body;
+    const { name, Descripcion, Codigo, picture, price, stock } = body;
     const timestamp = Date.now();
     const productoNuevo = {
       timestamp: parseInt(timestamp),
@@ -37,10 +36,7 @@ const addProduct = async (req, res) => {
       stock: parseInt(stock),
     };
     await productosBD.save(productoNuevo);
-    res.status(200).send({
-      status: 200,
-      message: 'producto agregado',
-    });
+    res.render('home');
   } catch (error) {
     res.status(500).send({
       status: 500,

@@ -199,19 +199,7 @@ router.post(
   }
 );
 
-router.get('/datos', checkAuthentication, async (req, res) => {
-  try {
-    logger.info('RUTA: /api/datos || METODO: get');
-    const { username, password } = req.user;
-    const user = { username, password };
-    req.session.contador = 0;
-    req.session.contador++;
-    const datos = req.session;
-    res.render('form', { user, datos });
-  } catch (error) {
-    logger.error('RUTA: /datos || METODO: get');
-  }
-});
+
 
 router.get('/', (req, res) => {
   logger.info('RUTA: /api/ || METODO: get');
