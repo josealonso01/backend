@@ -63,14 +63,6 @@ router.get('/random', (req, res) => {
   }
 });
 
-router.get('/-test', (req, res, next) => {
-  logger.info('RUTA: /api/-test || METODO: get');
-  archivoController.getAll().then((prod) => {
-    res.render('productsList', { prod, productsExist: true });
-  });
-});
-
-
 router.get('/chat', getAllMessages);
 router.get('/chat/:id', getByEmail);
 

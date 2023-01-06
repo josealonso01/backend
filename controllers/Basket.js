@@ -83,8 +83,7 @@ const addProduct = async (req, res) => {
           });
           res.render('cartBasket', {
             productosEnCarrito,
-            productoAgregarParseado,
-            carritosBD,
+            productoAgregarParseado
           });
          
         } else {

@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const CarritosDaoMongoDb = require('../daos/BasketDaos');
 const ProductosDaoMongoDb = require('../daos/ProductsDaos');
+const esquemaProducto = require('../modelsMDB/schemaProduct');
 
 const productosBD = new ProductosDaoMongoDb();
 
@@ -89,29 +90,38 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-const getProductById = async (req, res) => {
+const getProductByCategory = async (req, res, next) => {
+  const name = req.params.categoria;
+  console.log('name', name);
   try {
-    const { id } = req.params;
-    const unProducto = await productosBD.getById(id);
-    if (unProducto) {
-      res.status(200).send({
-        status: 200,
-        data: {
-          unProducto,
-        },
-        message: 'producto encontrado',
-      });
-    } else {
-      res.status(200).send({
-        status: 200,
-        message: 'el producto no existe',
-      });
+    const productos = await productosBD.getAll();
+    const prodJson = [];
+    for (let i = 0; i < productos.length; i++) {
+      const prod = productos[i];
+      if (prod.name === name) {
+        prodJson.push(prod);
+      }
     }
-  } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message,
-    });
+    res.render('productsList', { productsExist: true, prodJson });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getProductById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const productos = await productosBD.getAll();
+    const prodJson = [];
+    for (let i = 0; i < productos.length; i++) {
+      const prod = productos[i];
+      if (prod.id === id) {
+        prodJson.push(prod);
+      }
+    }
+    res.render('cartProduct', { prodJson });
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -170,6 +180,7 @@ const deleteProductById = async (req, res) => {
 module.exports = {
   addProduct,
   getAllProducts,
+  getProductByCategory,
   getProductById,
   updateProductById,
   deleteProductById,
