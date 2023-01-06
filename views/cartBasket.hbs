@@ -1,11 +1,11 @@
 {{> navbar}}
-<a href='/api/form'>
-  <button class='btn btn-secondary'>VOLVER AL FORMULARIO</button>
+<a href='/api/productos'>
+  <button class='btn btn-secondary'>SEGUIR COMPRA</button>
 </a>
 <div class="row">
 
-  {{#if cart.allProducts.length}}
-  {{#each cart.allProducts}}
+  {{#if productosEnCarrito.length}}
+  {{#each productosEnCarrito}}
   <div class="col-md-3">
 
     <div class="card" style="margin-top: 15px;">
@@ -22,13 +22,14 @@
 
   {{/each}}
   <div class="mt-4">
-    <form action="/api/basket/{{cart.cart_id}}" method="post">
+    <form action="/api/productos" method="get">
       <button class="btn btn-primary btn-sm" type="submit">Terminar compra</button>
     </form>
   </div>
   {{else}}
   <h2>El carrito esta vacio</h2>
   {{/if}}
+
   <br />
   {{> footer}}
   <br />

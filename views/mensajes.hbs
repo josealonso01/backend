@@ -1,9 +1,26 @@
-{{> navbar}}
-<br />
 
-<div>Autor: {{msg.author.id}} </div>
-<div> Mensaje: {{msg.text}}</div>
+<!doctype html>
+<html>
 
-<br />
-{{> footer}}
-<br />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    {{> navbar}}
+    <br />
+    {{#each msgJson}}
+        <p class="text-center border border-dark text-light bg-dark">
+            <span style="color: blue;">{{this.author.id}}</span>
+            <span>Escribio: </span>
+            <span style="color: green;"> {{this.text}}</span>
+        </p>
+    {{/each}}
+    <br />
+    {{> footer}}
+    <br />
+</body>
+
+</html>

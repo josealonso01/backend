@@ -1,0 +1,28 @@
+{{> navbar}}
+
+
+<div class="row">
+
+    {{#if prodJson.length}}
+    {{#each prodJson}}
+
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{{this.picture}}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{this.name}}</h5>
+            <p class="card-text">
+                {{this.Descripcion}}
+            </p>
+            <a href="/api/productos" class="btn btn-primary">Ir a comprar</a>
+        </div>
+    </div>
+
+    {{/each}}
+    {{else}}
+    <h2>El producto ingresado no existe</h2>
+    {{/if}}
+
+</div>
+<br />
+{{> footer}}
+<br />
