@@ -481,3 +481,19 @@
 {"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials 15-20020aca090f000000b003509cc4ad4esm600746oij.39 - gsmtp","responseCode":535}
 {"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials bb9-20020a056820160900b0049be9c3c15dsm654595oob.33 - gsmtp","responseCode":535}
 {"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials bh31-20020a056808181f00b003436fa2c23bsm623242oib.7 - gsmtp","responseCode":535}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials l11-20020a056830268b00b006706cd202b0sm1049319otu.11 - gsmtp","responseCode":535}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials q7-20020a4aa887000000b004a376ab418fsm894030oom.27 - gsmtp","responseCode":535}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials bi38-20020a05680818a600b00353fe4fb4casm831035oib.48 - gsmtp","responseCode":535}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials eq2-20020a056870a90200b0014fb4bdc746sm1041061oab.8 - gsmtp","responseCode":535}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials m1-20020aca6501000000b0035bd1909a66sm825725oim.57 - gsmtp","responseCode":535}
+{"code":"EAUTH","command":"AUTH PLAIN","level":"error","response":"535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials bg31-20020a056808179f00b00363b5a6bc9esm864968oib.12 - gsmtp","responseCode":535}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
+{"level":"error","message":"RUTA: /api/login || METODO: post"}
